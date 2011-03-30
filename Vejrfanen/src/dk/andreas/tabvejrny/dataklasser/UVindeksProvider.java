@@ -22,26 +22,26 @@ public class UVindeksProvider {
             String resultat = getSubString(tag, webside);
             resultat = resultat.substring(resultat.indexOf("'")+1, resultat.length()-1);
             uvDato = resultat;
+            tag = "uvList=";
+            String tmpIndeks = getSubString(tag, webside);
+            uvIndeks = tmpIndeks;
+            uvIndeks = uvIndeks.substring(8, uvIndeks.length()-1);
+            uvIndeks = uvIndeks.replaceAll("'", "");
+            Pattern p = Pattern.compile(REGEX);
+            uvIndeks2 = p.split(uvIndeks);
+
+            tag = "symbolList=";
+            String tmpSymbol = getSubString(tag, webside);
+            uvSymbol = tmpSymbol;
+            uvSymbol = uvSymbol.substring(12, uvSymbol.length()-1);
+            uvSymbol = uvSymbol.replaceAll("'", "");
+            uvSymbol2 = p.split(uvSymbol);
         }
         catch(Exception ex)
         {
             uvDato = "fejl";
             webside="";
         }
-        tag = "uvList=";
-        String tmpIndeks = getSubString(tag, webside);
-        uvIndeks = tmpIndeks;
-        uvIndeks = uvIndeks.substring(8, uvIndeks.length()-1);
-        uvIndeks = uvIndeks.replaceAll("'", "");
-        Pattern p = Pattern.compile(REGEX);
-        uvIndeks2 = p.split(uvIndeks);
-
-        tag = "symbolList=";
-        String tmpSymbol = getSubString(tag, webside);
-        uvSymbol = tmpSymbol;
-        uvSymbol = uvSymbol.substring(12, uvSymbol.length()-1);
-        uvSymbol = uvSymbol.replaceAll("'", "");
-        uvSymbol2 = p.split(uvSymbol);
     }
 
     public static String uvDato() {
@@ -55,12 +55,18 @@ public class UVindeksProvider {
         if (uvIndeks==null) {
             initialiser();
         }
+        if (uvIndeks==null) {
+            return null; // ingen netforbindelse
+        }
         return uvIndeks2[region];
     }
 
     public static String uvSymbol(int region) {
         if (uvSymbol==null) {
             initialiser();
+        }
+        if (uvSymbol==null) {
+            return null; // ingen netforbindelse
         }
         return uvSymbol2[region];
     }
