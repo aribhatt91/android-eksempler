@@ -42,6 +42,11 @@ public class UVIndeks extends Activity {
         String hudType = preferences.getString(S.PREF_HUDTYPE_KEY, "2");
 
         String uvstring = UVindeksProvider.uvIndeks(6); // regionen er pt hardcodet til 6
+        if (uvstring==null) {
+          textview.setText("\n\n\nKunne ikke hente UV-indekset. Har du netforbindelse?");
+          setContentView(textview);
+          return;
+        }
         
         textview.setText("\n\n\nDagens UV indeks: " + UVindeksProvider.uvDato() + "\n\n");
         textview.append("Dagens UV-Indeks for region Hovedstaden er "+ uvstring +"\n\n");
