@@ -37,6 +37,7 @@ import java.util.logging.Logger;
 
 public class MainActivity extends TabActivity implements LocationListener, OnClickListener {
 
+
    private LocationManager mgr;
    private final String TAG = "Mainactivity";
    private boolean plByvejr=false;
