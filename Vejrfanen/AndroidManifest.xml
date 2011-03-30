@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
      package="dk.andreas.tabvejrny">
-    <application android:icon="@drawable/vejrhane">
+    <application android:icon="@drawable/p_meteorology">
          <activity android:name=".MainActivity" android:label="Vejrfanen" android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
