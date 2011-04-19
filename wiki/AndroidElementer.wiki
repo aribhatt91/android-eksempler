@@ -1,0 +1,12 @@
+Små, afgrænsede og let forståelige eksempler på hvordan man programmerer til Google Android
+
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Dette er en samling af eksempler på mest almindeligt brugte funktioner.
+De er skrevet så de så vidt muligt alle kan overskues på én side og i én fil.
+
+Hvis du er glad for samlingen så skriv en kommentar nedenfor.
+
+Jacob
