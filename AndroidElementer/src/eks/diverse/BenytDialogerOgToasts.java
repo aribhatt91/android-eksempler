@@ -2,26 +2,15 @@ package eks.diverse;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.SearchManager;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
-import android.provider.Settings.Secure;
-import android.text.InputType;
-import android.text.util.Linkify;
 import android.view.Gravity;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
 
