@@ -37,6 +37,7 @@ import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  *
@@ -67,25 +68,23 @@ public class KortAktivitet extends MapActivity {
         
         Log.d("findApiNøgle", "md5fingerprint: "+md5);
 
-        
-        if (md5.equals("5fb3a9c4a1ebb853254fa1aebc37a89b xx"))  
-          return "0osb1BfVdrk1u8XJFAcAD0tA5hvcMFVbzInEgNQ"; // Jacob Debug-nøgle
-        if (md5.equals("xxxx")) 
-          return "0osb1BfVdrk3etct3WjSX-gUUayztcGvB51EMwg"; // Jacob officielle nøgle      
+        // Jacobs debug-nøgle
+        if (md5.equals("5fb3a9c4a1ebb853254fa1aebc37a89b")) return "0osb1BfVdrk1u8XJFAcAD0tA5hvcMFVbzInEgNQ"; 
+        // Jacobs officielle nøgle
+        if (md5.equals("d9a7385fd19107698149b7576fcb8b29")) return "0osb1BfVdrk3etct3WjSX-gUUayztcGvB51EMwg"; 
       }
       
       // Ingen nøgle fundet. Vis hjælp til brugeren
       AlertDialog.Builder dialog=new AlertDialog.Builder(this);
       dialog.setTitle("Mangler API-nøgle");
-      String tekst = "Du skal registrere en API-nøgle før kortet kan vises.\n"
-          +"Dit MD5 certificat, som er: "+md5
-          +" skal registreres på http://code.google.com/android/maps-api-signup.html\n"
+      String tekst = "Kør kortet kan vises skal du registrere dig og få en API-nøgle .\n"
+          +"Dit MD5 certificat, som er: \n\n"+md5
+          +"\n\nskal registreres på http://code.google.com/android/maps-api-signup.html\n"
           + "Derefter skal begge dele skrives ind i kildekoden ("+this.getClass().getSimpleName()+".java).\n"
           + "Denne meddelelse er også kommet i loggen så du kan gøre det fra din PC.";
       Log.w("findApiNøgle", tekst);
       EditText et=new EditText(this);
       et.setText(tekst);
-      Linkify.addLinks(et, Linkify.ALL);
       dialog.setView(et);
       dialog.setPositiveButton("Regstér nu", new AlertDialog.OnClickListener() {
         public void onClick(DialogInterface arg0, int arg1) {
@@ -217,14 +216,23 @@ public class KortAktivitet extends MapActivity {
     Bitmap kort;
     Paint paint=new Paint();
 
-    {
+    public WMSOverlay() {
       paint.setAlpha(128);
       paint.setStyle(Paint.Style.STROKE);
     }
 
+
+    private Rect findKortRekt() {
+      Point p1=mapView.getProjection().toPixels(øverstVenstre, null);
+      Point p2=mapView.getProjection().toPixels(nederstHøjre, null);
+      Rect kortRekt=new Rect(p1.x, p1.y, p2.x, p2.y);
+      return kortRekt;
+    }
+    
     public Bitmap hentNytKort(int width, int height) {
       try {
-        String url=String.format("http://iceds.ge.ucl.ac.uk/cgi-bin/icedswms?"
+        // Kilde: http://androidgps.blogspot.com/2008/09/simple-wms-client-for-android.html
+        String url=String.format(Locale.US, "http://iceds.ge.ucl.ac.uk/cgi-bin/icedswms?"
             +"LAYERS=lights&TRANSPARENT=true&FORMAT=image/png&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application/vnd.ogc.se_inimage&SRS=EPSG:4326"
             +"&BBOX=%f,%f,%f,%f&WIDTH=%d&HEIGHT=%d",
             MIKRO*øverstVenstre.getLongitudeE6(), MIKRO*nederstHøjre.getLatitudeE6(),
@@ -253,20 +261,11 @@ public class KortAktivitet extends MapActivity {
           nederstHøjre=mapView.getProjection().fromPixels(c.getWidth(), c.getHeight());
           kortRekt=findKortRekt();
           kort=hentNytKort(c.getWidth(), c.getHeight());
-          //kortRekt = canvasRekt;
         }
         //Log.d("WMSOverlay", "tegner "+øvVenPix+kortRekt);
         c.drawBitmap(kort, canvasRekt, kortRekt, paint);
-        //c.drawBitmap(kort, 0, 0, paint);
         c.drawRect(kortRekt, paint);
       }
-    }
-
-    private Rect findKortRekt() {
-      Point p1=mapView.getProjection().toPixels(øverstVenstre, null);
-      Point p2=mapView.getProjection().toPixels(nederstHøjre, null);
-      Rect kortRekt=new Rect(p1.x, p1.y, p2.x, p2.y);
-      return kortRekt;
     }
 
     @Override

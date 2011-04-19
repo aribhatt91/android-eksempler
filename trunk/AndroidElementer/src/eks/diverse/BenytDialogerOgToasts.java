@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -89,7 +90,9 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
     } else if (hvadBlevDerKlikketPå==visAlertDialog2) {
       AlertDialog.Builder dialog=new AlertDialog.Builder(this);
       dialog.setTitle("En AlertDialog");
-      dialog.setMessage("Denne her har to knapper");
+      EditText et=new EditText(this);
+      et.setText("Denne her viser et generelt view har to knapper");
+      dialog.setView(et);
       dialog.setPositiveButton("Vis endnu en toast", new AlertDialog.OnClickListener() {
         public void onClick(DialogInterface arg0, int arg1) {
           Toast.makeText(BenytDialogerOgToasts.this, "Standard-toast", Toast.LENGTH_LONG).show();
