@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest package="dk.nordfalk.android.elementer" xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 
+Mangler eksempler på
+- services
+- notifikationer
+- startActivityForResult
+- sende ekstra data med et intent og bruge dem til noget
+- erstatninger for eksempler der brugte Simpla-klasserne
+- animationer
+Motorolas multitouch-eksempel?
+  XMLpullparsning
+ -->
+    <!-- tilladelser -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    
+    <application android:debuggable="true" android:icon="@drawable/logo" android:label="AndroidElementer">
+        <!--
+			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
+			internt i programmet
+		-->
+        <activity android:name="eks.diverse.Eks_lyd"/>
+        <activity android:name="eks.diverse.BenytIntents"/>
+        <activity android:name="eks.diverse.BenytHtmlTags"/>
+        <activity android:name="eks.diverse.Tegneprogram"/>
+        <activity android:name="eks.diverse.BenytWebView"/>
+        <activity android:name="eks.diverse.Eks_menuer"/>
+        <activity android:name="eks.diverse.BenytDialogerOgToasts"/>
+        <!-- android:screenOrientation slår vending af skærmen fra på denne aktivitet -->
+        <activity android:name="eks.diverse.Eks_sensorer" android:screenOrientation="portrait"/>        
+        <activity android:name="eks.diverse.Eks_stedbestemmelse"/>
+        <activity android:name="eks.data.JsonParsning"/>
+        <activity android:name="eks.data.XmlParsning"/>
+        <activity android:name="eks.vejret.ByvejrAktivitet"/>
+        <activity android:name="eks.vejret.Indstillinger"/>
+        <activity android:name="eks.asynkron.Asynkron1Thread"/>
+        <activity android:name="eks.asynkron.Asynkron2AsyncTask"/>
+        <activity android:name="eks.asynkron.Asynkron2Handler"/>
+        <activity android:name="eks.lister.BenytListView"/>
+        <activity android:name="eks.lister.BenytListActivity"/>
+        <activity android:name="eks.lister.BenytListViewMedEgetLayout"/>
+        <activity android:name="eks.lister.BenytListViewMedEgetLayout2"/>
+        <!-- aktivitet som kan ses fra startskærmen -->
+        <activity android:name="eks.lister.Aktivitetsliste">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="eks.lister.VisAndroidDrawables"/>
+        <activity android:name="eks.providers.VisKontakter"/>
+        <activity android:name="eks.providers.VisOpkald"/>
+        <activity android:name="eks.recievers.BenytReciever"/>
+        <activity android:name="eks.recievers.ModtagSMSer"/>
+        <activity android:name="eks.multitouch.MultitouchAktivitet"/>
+        <activity android:name="eks.livscyklus.LogAktivitet"/>
+        <activity android:name="eks.livscyklus.Liv1_singleton"/>
+        <activity android:name="eks.livscyklus.Liv2_gemIFil"/>
+        <activity android:name="eks.livscyklus.Liv3_nonConfigurationInstance"/>
+        <activity android:name="eks.livscyklus.Liv4_bundle"/>
+        
+        <activity android:name="eks.kort.KortAktivitet"/>
+        
+          <uses-library android:name="com.google.android.maps" android:required="false" />
+    </application>
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="8"/>
+</manifest>
