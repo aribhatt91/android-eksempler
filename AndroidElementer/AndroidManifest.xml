@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<manifest package="dk.nordfalk.android.elementer" xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="dk.nordfalk.android.elementer" 
+    android:installLocation="preferExternal" c="installér på SD-kort"
+    android:versionCode="2"
+    android:versionName="1.0">
     <!-- 
 Mangler eksempler på
 - services
@@ -68,8 +72,8 @@ Motorolas multitouch-eksempel?
         <activity android:name="eks.livscyklus.Liv4_bundle"/>
         
         <activity android:name="eks.kort.KortAktivitet"/>
+        <uses-library android:name="com.google.android.maps" android:required="false" />
         
-          <uses-library android:name="com.google.android.maps" android:required="false" />
     </application>
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="8"/>
 </manifest>
