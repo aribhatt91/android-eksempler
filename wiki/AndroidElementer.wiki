@@ -3,6 +3,10 @@ Små, afgrænsede og let forståelige eksempler på hvordan man programmerer til
 Dette er en samling af eksempler på mest almindeligt brugte funktioner.
 De er skrevet så de så vidt muligt alle kan overskues på én side og i én fil.
 
+Eksemplerne kan gennemses på 
+http://code.google.com/p/android-eksempler/source/browse/trunk/AndroidElementer/
+
+
 Hvis du er glad for samlingen så skriv en kommentar nedenfor.
 
 Jacob
