@@ -18,6 +18,9 @@ import java.net.URLConnection;
 public class HentogGemBillede {
     private final String TAG = "HentogGemBillede";
 
+    xxx skal bruge cache på sdkort!!
+    
+    
     public boolean HentBillede(Billede billede, OnImageAddedListener lytter) throws IOException {
         String[] params = new String[] {billede.LæsURL() , billede.LæsNavn()};
 

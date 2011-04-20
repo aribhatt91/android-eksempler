@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
 import android.widget.TextView;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.OverlayItem;
 import dk.nordfalk.android.elementer.R;
 import java.io.InputStream;
 import org.json.JSONArray;
