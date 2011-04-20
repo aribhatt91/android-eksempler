@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.games.boulderdash.util;
+package org.games.boulderdash;
 
 import org.games.boulderdash.R;
 
@@ -20,9 +20,9 @@ import android.widget.Button;
  *
  * @author AH
  */
-public class controlButton extends Button{
+public class ControlButton extends Button{
 
-    public controlButton(Context context, AttributeSet as ){
+    public ControlButton(Context context, AttributeSet as ){
 			super(context, as);
 			this.setBackgroundColor(Color.TRANSPARENT);
 			
