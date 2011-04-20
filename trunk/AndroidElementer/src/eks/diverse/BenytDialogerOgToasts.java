@@ -2,7 +2,12 @@ package eks.diverse;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
@@ -14,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
+import eks.recievers.BenytReciever;
 
 /**
  * 
@@ -21,7 +27,7 @@ import dk.nordfalk.android.elementer.R;
  */
 public class BenytDialogerOgToasts extends Activity implements OnClickListener {
 
-  Button standardToast, toastMedBillede, visAlertDialog, visAlertDialog1, visAlertDialog2;
+  Button standardToast, toastMedBillede, visAlertDialog, visAlertDialog1, visAlertDialog2, visNoitification;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +55,16 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
     visAlertDialog2.setText("visAlertDialog med 2 knapper");
     tl.addView(visAlertDialog2);
 
+    visNoitification=new Button(this);
+    visNoitification.setText("visNoitification");
+    tl.addView(visNoitification);
+
     standardToast.setOnClickListener(this);
     toastMedBillede.setOnClickListener(this);
     visAlertDialog.setOnClickListener(this);
     visAlertDialog1.setOnClickListener(this);
     visAlertDialog2.setOnClickListener(this);
+    visNoitification.setOnClickListener(this);
 
     ScrollView sv = new ScrollView(this);
     sv.addView(tl);
@@ -91,7 +102,7 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
       AlertDialog.Builder dialog=new AlertDialog.Builder(this);
       dialog.setTitle("En AlertDialog");
       EditText et=new EditText(this);
-      et.setText("Denne her viser et generelt view har to knapper");
+      et.setText("Denne her viser et generelt view og har to knapper");
       dialog.setView(et);
       dialog.setPositiveButton("Vis endnu en toast", new AlertDialog.OnClickListener() {
         public void onClick(DialogInterface arg0, int arg1) {
@@ -100,6 +111,18 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
       });
       dialog.setNegativeButton("Nej tak", null);
       dialog.show();
+    } else if (hvadBlevDerKlikketPå==visNoitification) {
+      Context ctx=getApplicationContext(); // Undgå this for ikke at lække hukommelse
+      Intent tegneIntent = new Intent(ctx, Tegneprogram.class);
+      PendingIntent tegneAktivitet = PendingIntent.getActivity(ctx, 0, tegneIntent, 0);
+      Notification notification = new Notification(R.drawable.logo, "Tegn!", System.currentTimeMillis());   
+      notification.setLatestEventInfo(ctx, "Der skal tegnes!", "Du er nødt til at tegne lidt", tegneAktivitet);
+
+      long[] vibrate = {0,100,300,400, 500, 510, 550, 560, 600, 610, 650, 610, -1};
+      notification.vibrate = vibrate;
+
+      NotificationManager notificationManager=(NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+      notificationManager.notify(42, notification);     
     }
   }
 
