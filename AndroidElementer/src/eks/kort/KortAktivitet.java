@@ -134,9 +134,9 @@ public class KortAktivitet extends MapActivity {
 
     wMSOverlay=new WMSOverlay();
 
-    mapView.getOverlays().add(myLocationOverlay);
-    mapView.getOverlays().add(itemizedoverlay);
     mapView.getOverlays().add(wMSOverlay);
+    mapView.getOverlays().add(itemizedoverlay);
+    mapView.getOverlays().add(myLocationOverlay);
 
     setContentView(mapView);
   }
