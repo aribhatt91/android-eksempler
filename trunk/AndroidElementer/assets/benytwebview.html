@@ -4,12 +4,18 @@
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
 	<TITLE>Benyt WebView</TITLE>
 </HEAD>
-<BODY LANG="da-DK" DIR="LTR">
-<H1 CLASS="western" STYLE="margin-top: 0cm; margin-bottom: 0cm">Teoriprøve</H1>
+<BODY>
+<H1>Benyt WebView</H1>
 <ul>
-<LI><P>Installer <A HREF="market://search?q=pname:dk.nordfalk.teoriproeve.tur">noget fra Android Marked</A></P>
-<LI><P><A HREF="javascript:mitObjekt.visToast('Her kommer en toast');">Vis toast fra Javascript</A></P>
-<LI><P><A HREF="javascript:mitObjekt.afslut();">Afslut aktivitet</A></P>
+<LI><P>Gå til <A HREF="http://javabog.dk">javabog.dk</A></P>
+<LI><P>Henvisning til at installere noget <A HREF="market://search?q=pname:dk.nordfalk.teoriproeve">direkte fra Android Marked</A></P>
+</ul>
+
+Et WebView understøtter også at man via Javascript kalder i (på forhånd registrerede) Java-objekter.
+<ul>
+<LI><P>Klik for at <A HREF="javascript:mitObjekt.visToast('Dette er en toast fra Javascript');">vise toast aktiveret fra Javascript</A></P>
+<LI><P><A HREF="javascript:mitObjekt.afslut();">Luk aktivitet</A></P>
+<LI><P><A HREF="javascript:aktiviteten.finish();">Luk aktivitet</A></P>
 </ul>
 </BODY>
 </HTML>
