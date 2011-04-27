@@ -1,7 +1,7 @@
 Små, afgrænsede og let forståelige eksempler på hvordan man programmerer til Google Android
 
 Dette er en samling af eksempler på mest almindeligt brugte funktioner.
-
+ 
 Overordnet indhold:
 
   * Asynkrone kald
