@@ -30,6 +30,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 
   private ActivityInfo[] aktiviteter;
   private CheckBox startDirekte;
+  private int onStartTæller;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,13 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     setContentView(linearLayout);
   }
 
+  
+  @Override
+  public void onStart() {
+    super.onStart();
+    if (onStartTæller++ == 2) Toast.makeText(this, "Vink: Tryk længe på et punkt for at se kildekoden", Toast.LENGTH_LONG).show();
+  }
+  
   public void onItemClick(AdapterView<?> listView, View v, int position, long id) {
     ActivityInfo aktivitetsinfo=aktiviteter[position];
     Toast.makeText(this, "Starter "+aktivitetsinfo.name, Toast.LENGTH_SHORT).show();
