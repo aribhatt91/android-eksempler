@@ -1,7 +1,26 @@
 Små, afgrænsede og let forståelige eksempler på hvordan man programmerer til Google Android
 
 Dette er en samling af eksempler på mest almindeligt brugte funktioner.
+
+Overordnet indhold:
+
+* Asynkrone kald
+* Parsning af XML og JSON
+* Benytte dialoger, toasts, intents, lyd, sensorer, stedbestemmelse (GPS), WebView, ListView
+* Google Maps, med dynamisk indlæste overlejrede kort (WMS) og symboler, gadevisning
+* API-nøgle til Google Maps kan genereres supernemt
+* Vise samtlige af Androids indbyggede drawables (billeder)
+* Demonstrere livscyklus, incl korrekt brug af NonConfigurationInstance-objekt, onSaveInstanceState() og  onRestoreInstanceState()
+* Demonstrere multitouch
+* Demonstrere brug af content providers (såsom adressebogen)
+* Demonstrere broadcast recievers
+* En minimalistisk DMI vejr-app
+* Indstillinger og PreferenceManager
+
 De er skrevet så de så vidt muligt alle kan overskues på én side og i én fil.
+
+Du kan se kildekoden til eksemplerne INDE FRA SELVE app'en, lige efter at du har kørt dem.
+
 
 Eksemplerne kan gennemses på 
 http://code.google.com/p/android-eksempler/source/browse/trunk/AndroidElementer/
