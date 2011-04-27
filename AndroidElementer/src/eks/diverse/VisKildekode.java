@@ -20,6 +20,7 @@ public class VisKildekode extends Activity {
   public final static String KILDEKODE_FILNAVN="filen der skal vises";
   private final static String LOKAL_PRÆFIX="file:///android_asset/src/";
   private final static String HS_PRÆFIX="http://code.google.com/p/android-eksempler/source/browse/trunk/AndroidElementer/src/";
+  private static int onCreateTæller = 0;
 
   WebView webView;
   String filnavn;
@@ -45,6 +46,9 @@ public class VisKildekode extends Activity {
     }
 
     setContentView(webView);
+    
+    if (onCreateTæller++ == 0) Toast.makeText(this, "Tryk MENU for andre visninger", Toast.LENGTH_LONG).show();
+    
   }
 
   @Override
