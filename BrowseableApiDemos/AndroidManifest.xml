@@ -399,7 +399,7 @@
             </intent-filter>
         </activity>
         <provider android:name=".app.LoaderThrottle$SimpleProvider"
-                  android:authorities="com.example.android.apis.app.LoaderThrottle" />
+                  android:authorities="dk.nordfalk.browseableapidemos.apis.app.LoaderThrottle" />
 
 
         <!-- Intent Samples -->
@@ -663,7 +663,7 @@
         <!-- Search suggestions, and provides information about how to access it. -->
 
         <provider android:name=".app.SearchSuggestionSampleProvider" android:enabled="@bool/showOldStuff" 
-                  android:authorities="com.example.android.apis.SuggestionProvider" />
+                  android:authorities="dk.nordfalk.browseableapidemos.apis.SuggestionProvider" />
 
         <!-- Shortcuts Samples -->
 
