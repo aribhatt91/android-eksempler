@@ -24,8 +24,8 @@ import java.util.regex.Pattern;
 public class VisKildekode extends Activity {
 
   public final static String KILDEKODE_FILNAVN="filen der skal vises";
-  private final static String LOKAL_PRÆFIX="file:///android_asset/";
-  private final static String HS_PRÆFIX="http://code.google.com/p/android-eksempler/source/browse/trunk/AndroidElementer/";
+  final static String LOKAL_PRÆFIX="file:///android_asset/";
+  final static String HS_PRÆFIX="http://code.google.com/p/android-eksempler/source/browse/trunk/BrowseableApiDemos/";
   private static int onCreateTæller = 0;
 
   String filnavn;
@@ -74,6 +74,7 @@ public class VisKildekode extends Activity {
                 
         TransformFilter filter = new TransformFilter() {
             public final String transformUrl(final Matcher match, String url) {
+               // LOKAL_PRÆFIX dur ikke her da vi starter webbrowserintent
                 return HS_PRÆFIX+ "res/" + match.group(1).replace('.', '/')+".xml";
             }
         };

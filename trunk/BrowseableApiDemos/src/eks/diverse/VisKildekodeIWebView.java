@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 public class VisKildekodeIWebView extends Activity {
 
-  private final static String LOKAL_PRÆFIX="file:///android_asset/";
-  private final static String HS_PRÆFIX="http://code.google.com/p/android-eksempler/source/browse/trunk/AndroidElementer/";
   private static int onCreateTæller = 0;
 
   WebView webView;
@@ -27,7 +25,7 @@ public class VisKildekodeIWebView extends Activity {
     if (kaldtMedIntent.getExtras()!=null) filnavn=kaldtMedIntent.getExtras().getString(VisKildekode.KILDEKODE_FILNAVN);
 
     if (filnavn!=null) {
-      webView.loadUrl(LOKAL_PRÆFIX+filnavn);
+      webView.loadUrl(VisKildekode.LOKAL_PRÆFIX+filnavn);
       webView.getSettings().setDefaultTextEncodingName("UTF-8");
       webView.getSettings().setBuiltInZoomControls(true);
       webView.setInitialScale(75);
@@ -53,9 +51,9 @@ public class VisKildekodeIWebView extends Activity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId()==100) webView.loadUrl(HS_PRÆFIX+filnavn);
-    else if (item.getItemId()==101) webView.loadUrl(LOKAL_PRÆFIX+filnavn);
-    else if (item.getItemId()==103) startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(HS_PRÆFIX+filnavn)));
+    if (item.getItemId()==100) webView.loadUrl(VisKildekode.HS_PRÆFIX+filnavn);
+    else if (item.getItemId()==101) webView.loadUrl(VisKildekode.LOKAL_PRÆFIX+filnavn);
+    else if (item.getItemId()==103) startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(VisKildekode.HS_PRÆFIX+filnavn)));
     return true;
   }
 }
