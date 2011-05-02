@@ -1,0 +1,11 @@
+#summary HoneycombGallery ported to Android 1.6
+
+= Introduction =
+
+Using the compatibility library described in http://android-developers.blogspot.com/2011/03/fragments-for-all.html Ive ported the HoneycombGallery sample http://developer.android.com/resources/samples/HoneycombGallery/index.htmlto be runnable on Android 1.6.
+
+Note that this makes the gallery partly unusable as there is no way to get to the action bar. Drag and drop, notifications as well as the animations had to be dropped as well.
+
+Code can be browsed at
+http://code.google.com/p/android-eksempler/source/browse/trunk/HoneycombGalleryCompatLib/
+
