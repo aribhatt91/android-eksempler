@@ -1,4 +1,4 @@
-package eks.lister;
+package dk.nordfalk.aktivitetsliste;
 
 import android.app.Activity;
 import android.content.Intent;

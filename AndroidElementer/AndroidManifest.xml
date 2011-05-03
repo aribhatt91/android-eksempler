@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dk.nordfalk.android.elementer" 
     android:installLocation="preferExternal" c="installér på SD-kort"
-    android:versionCode="2"
-    android:versionName="1.0">
+    android:versionCode="3"
+    android:versionName="1.01">
     <!-- 
 Mangler eksempler på
 - services
@@ -26,7 +26,7 @@ Motorolas multitouch-eksempel?
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     
-    <application android:debuggable="true" android:icon="@drawable/logo" android:label="AndroidElementer">
+    <application android:debuggable="true" android:icon="@drawable/logo">
         <!--
 			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
 			internt i programmet
@@ -41,7 +41,6 @@ Motorolas multitouch-eksempel?
         <!-- android:screenOrientation slår vending af skærmen fra på denne aktivitet -->
         <activity android:name="eks.diverse.Eks_sensorer" android:screenOrientation="portrait"/>        
         <activity android:name="eks.diverse.Eks_stedbestemmelse"/>
-        <activity android:name="eks.diverse.VisKildekode"/>
         <activity android:name="eks.data.JsonParsning"/>
         <activity android:name="eks.data.XmlParsning"/>
         <activity android:name="eks.vejret.ByvejrAktivitet"/>
@@ -53,19 +52,14 @@ Motorolas multitouch-eksempel?
         <activity android:name="eks.lister.BenytListActivity"/>
         <activity android:name="eks.lister.BenytListViewMedEgetLayout"/>
         <activity android:name="eks.lister.BenytListViewMedEgetLayout2"/>
-        <!-- aktivitet som kan ses fra startskærmen -->
-        <activity android:name="eks.lister.Aktivitetsliste">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+        <activity android:name="eks.lister.BenytExpandableListActivity"/> 
         <activity android:name="eks.lister.VisAndroidDrawables"/>
         <activity android:name="eks.providers.VisKontakter"/>
         <activity android:name="eks.providers.VisOpkald"/>
         <activity android:name="eks.recievers.BenytReciever"/>
         <activity android:name="eks.recievers.ModtagSMSer"/>
         <activity android:name="eks.multitouch.MultitouchAktivitet"/>
+        <activity android:name="eks.livscyklus.ManglendeKaldTilSuperklasse"/>
         <activity android:name="eks.livscyklus.LogAktivitet"/>
         <activity android:name="eks.livscyklus.Liv1_singleton"/>
         <activity android:name="eks.livscyklus.Liv2_gemIFil"/>
@@ -75,6 +69,31 @@ Motorolas multitouch-eksempel?
         <activity android:name="eks.kort.KortAktivitet"/>
         <uses-library android:name="com.google.android.maps" android:required="false" />
         
+        <!-- aktivitet som kan ses fra startskærmen -->
+        <activity android:name="dk.nordfalk.aktivitetsliste.Aktivitetsliste" android:label="AndroidElementer">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!--  Kommenter følgende ind hvis du er kommet til at autostarte noget der crasher med det samme
+        <activity android:name="dk.nordfalk.aktivitetsliste.AktivitetslisteUdenAuto" android:label="AE (fejlsikker)">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="dk.nordfalk.aktivitetsliste.AktivitetslisteHierakisk" android:label="AElem hierakisk">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        -->
+        <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekode">
+          <meta-data android:name="web_url" android:value="http://code.google.com/p/android-eksempler/source/browse/trunk/AndroidElementer/" />
+        </activity>
+        <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekodeIWebView"/>
     </application>
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="8"/>
 </manifest>
