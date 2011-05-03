@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.support.v4.hcgallery;
+package com.example.android.hcgallery;
 
 import android.content.Context;
 import android.util.AttributeSet;
