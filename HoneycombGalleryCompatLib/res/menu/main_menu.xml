@@ -16,10 +16,6 @@
  -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/camera"
-        android:title="Camera"
-        android:icon="?attr/menuIconCamera"
-/>
     <item android:id="@+id/toggleTitles"
         android:icon="?attr/menuIconToggle"
         android:title="Toggle Titles"
@@ -30,11 +26,5 @@
 />
     <item android:id="@+id/showDialog"
         android:title="Show a dialog"
-/>
-    <item android:id="@+id/showStandardNotification"
-        android:title="Show a basic notification"
-/>
-    <item android:id="@+id/showCustomNotification"
-        android:title="Show a custom notification"
 />
 </menu>

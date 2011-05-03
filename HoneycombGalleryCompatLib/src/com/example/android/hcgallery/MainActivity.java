@@ -16,29 +16,26 @@
 
 package com.example.android.hcgallery;
 
-import com.example.android.hcgallery.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 
 public class MainActivity extends FragmentActivity {
 
-    private static final int NOTIFICATION_DEFAULT = 1;
     private static final String ACTION_DIALOG = "com.example.android.hcgallery.action.DIALOG";
 
-    private View mActionBarView;
     private String[] mToggleLabels = {"Show Titles", "Hide Titles"};
     private int mLabelIndex = 1;
     private int mThemeId = -1;
@@ -78,7 +75,10 @@ public class MainActivity extends FragmentActivity {
             } else {
                 mThemeId = R.style.AppTheme_Dark;
             }
+            Toast.makeText(this, "Mangler erstatning for Acitvity.recreate()", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Vend skærmen i stedet", Toast.LENGTH_LONG).show();            
             //this.recreate();
+            
             return true;
 
         case R.id.showDialog:
@@ -93,25 +93,16 @@ public class MainActivity extends FragmentActivity {
     public void toggleVisibleTitles() {
         // Use these for custom animations.
         final FragmentManager fm = getSupportFragmentManager();// getFragmentManager();
-        final TitlesFragment f = (TitlesFragment) fm
-                .findFragmentById(R.id.frag_title);
-        final View titlesView = f.getView();
+        final TitlesFragment f = (TitlesFragment) fm.findFragmentById(R.id.frag_title);
         mLabelIndex = 1 - mLabelIndex;
 
-        // Determine if we're in portrait, and whether we're showing or hiding the titles
-        // with this toggle.
-        final boolean isPortrait = getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_PORTRAIT;
-
         final boolean shouldShow = f.isHidden();
-
 
         if (shouldShow) {
             fm.beginTransaction().show(f).commit();
         } else {
             fm.beginTransaction().hide(f).commit();
         }
-
 
         // Manually trigger onNewIntent to check for ACTION_DIALOG.
         onNewIntent(getIntent());
@@ -136,21 +127,9 @@ public class MainActivity extends FragmentActivity {
         newFragment.show(ft, "dialog");
     }
 
-
-    PendingIntent getDialogPendingIntent(String dialogText) {
-        return PendingIntent.getActivity(
-                this,
-                dialogText.hashCode(), // Otherwise previous PendingIntents with the same
-                                       // requestCode may be overwritten.
-                new Intent(ACTION_DIALOG)
-                        .putExtra(Intent.EXTRA_TEXT, dialogText)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                0);
-    }
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(1).setTitle(mToggleLabels[mLabelIndex]);
+        menu.getItem(0).setTitle(mToggleLabels[mLabelIndex]);
         return true;
     }
 
