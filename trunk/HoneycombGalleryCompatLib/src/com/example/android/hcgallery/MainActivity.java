@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.example.android.support.v4.hcgallery;
+package com.example.android.hcgallery;
 
+import com.example.android.hcgallery.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;

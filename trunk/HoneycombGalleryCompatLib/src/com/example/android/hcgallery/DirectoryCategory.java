@@ -14,31 +14,26 @@
  * limitations under the License.
  */
 
-package com.example.android.support.v4.hcgallery;
+package com.example.android.hcgallery;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-
-public class DirectoryEntry {
+public class DirectoryCategory {
     private String name;
-    private int resID;
+    private DirectoryEntry[] entries;
 
-    public DirectoryEntry(String name, int resID) {
+    public DirectoryCategory(String name, DirectoryEntry[] entries) {
         this.name = name;
-        this.resID = resID;
+        this.entries = entries;
     }
 
     public String getName() {
         return name;
     }
 
-    public Drawable getDrawable(Resources res) {
-        return res.getDrawable(resID);
+    public int getEntryCount() {
+        return entries.length;
     }
 
-    public Bitmap getBitmap(Resources res) {
-        return BitmapFactory.decodeResource(res, resID);
+    public DirectoryEntry getEntry(int i) {
+        return entries[i];
     }
 }
