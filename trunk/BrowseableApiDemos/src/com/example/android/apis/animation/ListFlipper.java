@@ -26,7 +26,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import android.app.Activity;
 import android.os.Bundle;

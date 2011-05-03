@@ -25,7 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 
 /**

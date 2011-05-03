@@ -16,7 +16,7 @@
 
 package com.example.android.apis.preference;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

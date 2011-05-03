@@ -26,7 +26,7 @@ import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * This demonstrates idiomatic usage of the Action Bar. The default Honeycomb theme

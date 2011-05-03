@@ -15,7 +15,7 @@
  */
 package com.example.android.apis.app;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;

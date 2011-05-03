@@ -16,7 +16,7 @@
 
 package com.example.android.apis.app;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import android.app.Activity;
 import android.app.SearchManager;

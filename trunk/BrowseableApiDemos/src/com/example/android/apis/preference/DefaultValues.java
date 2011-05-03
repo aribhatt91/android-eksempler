@@ -17,7 +17,7 @@
 package com.example.android.apis.preference;
 
 import com.example.android.apis.ApiDemosApplication;
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

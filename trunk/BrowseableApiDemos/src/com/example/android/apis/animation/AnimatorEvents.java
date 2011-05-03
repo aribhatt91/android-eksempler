@@ -22,7 +22,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import java.util.ArrayList;
 

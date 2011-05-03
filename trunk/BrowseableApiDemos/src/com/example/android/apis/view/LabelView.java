@@ -25,7 +25,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 
 /**

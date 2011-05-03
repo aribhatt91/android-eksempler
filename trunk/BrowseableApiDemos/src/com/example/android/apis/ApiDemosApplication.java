@@ -16,7 +16,6 @@
 
 package com.example.android.apis;
 
-import dk.nordfalk.browseableapidemos.R;
 import android.app.Application;
 import android.preference.PreferenceManager;
 

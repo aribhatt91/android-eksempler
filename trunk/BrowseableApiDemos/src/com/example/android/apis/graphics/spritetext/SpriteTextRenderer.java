@@ -36,7 +36,7 @@ import android.opengl.GLUtils;
 import android.os.SystemClock;
 import android.util.Log;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 public class SpriteTextRenderer implements GLSurfaceView.Renderer{
 

@@ -25,7 +25,7 @@ import android.view.View.OnKeyListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import java.util.ArrayList;
 

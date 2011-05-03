@@ -20,7 +20,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 
 public class ScrollBar3 extends Activity {

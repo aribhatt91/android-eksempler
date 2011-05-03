@@ -34,7 +34,7 @@ import java.lang.reflect.Method;
 
 // Need the following import to get access to the app resources, since this
 // class is in a sub-package.
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * This is an example of implementing an application service that can

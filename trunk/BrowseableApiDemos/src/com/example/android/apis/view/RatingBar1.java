@@ -21,7 +21,7 @@ import android.os.Bundle;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * Demonstrates how to use a rating bar

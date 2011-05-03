@@ -22,7 +22,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import java.util.ArrayList;
 

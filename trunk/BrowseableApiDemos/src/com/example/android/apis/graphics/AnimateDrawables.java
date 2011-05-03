@@ -16,7 +16,7 @@
 
 package com.example.android.apis.graphics;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import android.content.Context;
 import android.graphics.Canvas;

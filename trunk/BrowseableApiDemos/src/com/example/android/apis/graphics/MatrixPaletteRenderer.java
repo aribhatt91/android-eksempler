@@ -37,7 +37,7 @@ import android.opengl.GLU;
 import android.opengl.GLUtils;
 import android.os.SystemClock;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 public class MatrixPaletteRenderer implements GLSurfaceView.Renderer{
     private Context mContext;
