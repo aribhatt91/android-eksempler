@@ -13,8 +13,6 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
- -->
-<resources>
     <style name="ActionBar"  parent="android:Theme.Light"/>
 
     <style name="ActionBar.Light" parent="@style/ActionBar">
@@ -24,17 +22,17 @@
     <style name="ActionBar.Dark" parent="@style/ActionBar">
         <item name="android:background">@color/actionbar_background_dark</item>
     </style>
+ -->
+<resources>
 
     <style name="AppTheme.Light" parent="@android:style/Theme.Light">
         <item name="listDragShadowBackground">@android:color/background_light</item>
-        <item name="menuIconCamera">@drawable/ic_menu_camera_holo_light</item>
         <item name="menuIconToggle">@drawable/ic_menu_toggle_holo_light</item>
         <item name="menuIconShare">@drawable/ic_menu_share_holo_light</item>
     </style>
 
     <style name="AppTheme.Dark" parent="@android:style/Theme">
         <item name="listDragShadowBackground">@android:color/background_dark</item>
-        <item name="menuIconCamera">@drawable/ic_menu_camera_holo_dark</item>
         <item name="menuIconToggle">@drawable/ic_menu_toggle_holo_dark</item>
         <item name="menuIconShare">@drawable/ic_menu_share_holo_dark</item>
     </style>

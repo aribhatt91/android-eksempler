@@ -17,7 +17,6 @@
 <resources>
     <declare-styleable name="AppTheme">
         <attr name="listDragShadowBackground" format="reference" />
-        <attr name="menuIconCamera" format="reference" />
         <attr name="menuIconToggle" format="reference" />
         <attr name="menuIconShare" format="reference" />
     </declare-styleable>

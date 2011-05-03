@@ -16,7 +16,6 @@
 
 package com.example.android.hcgallery;
 
-import com.example.android.hcgallery.R;
 import android.support.v4.app.ListFragment;
 import android.graphics.Color;
 import android.os.Bundle;
