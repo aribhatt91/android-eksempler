@@ -1,0 +1,17 @@
+{
+  "bank": "Merkur",  
+  "kunder": [
+  {
+    "navn": "Jacob", 
+    "kredit": 1000
+  },
+  { 
+    "navn": "Søren", 
+    "kredit": 1007
+  },
+  {
+    "navn": "Bent", 
+    "kredit": 5
+  }
+  ]
+}

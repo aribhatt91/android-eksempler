@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="dk.nordfalk.android30.elementer" 
+    android:installLocation="preferExternal" c="installér på SD-kort"
+    android:versionCode="3"
+    android:versionName="1.01">
+    <!-- 
+Mangler eksempler på
+- services
+- notifikationer
+- startActivityForResult
+- sende ekstra data med et intent og bruge dem til noget
+- erstatninger for eksempler der brugte Simpla-klasserne
+- animationer
+Motorolas multitouch-eksempel?
+  XMLpullparsning
+ -->
+    <!-- tilladelser -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    
+    <application android:debuggable="true" android:icon="@drawable/logo">
+        <!--
+			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
+			internt i programmet
+		-->
+        <activity android:name="com.example.android.apis.app.FragmentDialog"/>
+        <activity android:name="com.example.android.apis.app.FragmentLayout"/>
+        <activity android:name="com.example.android.apis.app.FragmentLayout$DetailsActivity"/>
+        <activity android:name="com.example.android.apis.app.FragmentListArray"/>
+        <activity android:name="com.example.android.apis.app.FragmentRetainInstance"/>
+
+        <activity android:name="eks.data.JsonParsning"/>
+        <activity android:name="eks.providers.VisKontakter"/>
+        <activity android:name="eks.providers.VisOpkald"/>
+        <activity android:name="eks.livscyklus.ManglendeKaldTilSuperklasse"/>
+        <activity android:name="eks.livscyklus.LogAktivitet"/>
+        <activity android:name="eks.livscyklus.Liv1_singleton"/>
+        <activity android:name="eks.livscyklus.Liv2_gemIFil"/>
+        <activity android:name="eks.livscyklus.Liv3_nonConfigurationInstance"/>
+        <activity android:name="eks.livscyklus.Liv4_bundle"/>
+                
+        <!-- aktivitet som kan ses fra startskærmen -->
+        <activity android:name="dk.nordfalk.aktivitetsliste.Aktivitetsliste" android:label="Android30Elementer">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!--  Kommenter følgende ind hvis du er kommet til at autostarte noget der crasher med det samme
+        <activity android:name="dk.nordfalk.aktivitetsliste.AktivitetslisteUdenAuto" android:label="AE (fejlsikker)">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="dk.nordfalk.aktivitetsliste.AktivitetslisteHierakisk" android:label="AElem hierakisk">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        -->
+        <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekode">
+          <meta-data android:name="web_url" android:value="http://code.google.com/p/android-eksempler/source/browse/trunk/Android30Elementer/" />
+        </activity>
+        <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekodeIWebView"/>
+    </application>
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="8"/>
+</manifest>
