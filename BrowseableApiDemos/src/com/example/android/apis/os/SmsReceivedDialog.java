@@ -28,7 +28,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 public class SmsReceivedDialog extends Activity implements OnInitListener {
     private static final String TAG = "SmsReceivedDialog";

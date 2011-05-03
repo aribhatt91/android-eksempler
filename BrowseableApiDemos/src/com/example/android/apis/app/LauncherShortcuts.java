@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.widget.TextView;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * This Activity actually handles two stages of a launcher shortcut's life cycle.

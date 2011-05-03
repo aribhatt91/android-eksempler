@@ -31,7 +31,7 @@ public class SearchSuggestionSampleProvider extends SearchRecentSuggestionsProvi
      * Manifest file, and any time you instantiate a 
      * {@link android.provider.SearchRecentSuggestions} helper class. 
      */
-    final static String AUTHORITY = "dk.nordfalk.browseableapidemos.apis.SuggestionProvider";
+    final static String AUTHORITY = "com.example.android.apis.apis.SuggestionProvider";
     /**
      * These flags determine the operating mode of the suggestions provider.  This value should 
      * not change from run to run, because when it does change, your suggestions database may 

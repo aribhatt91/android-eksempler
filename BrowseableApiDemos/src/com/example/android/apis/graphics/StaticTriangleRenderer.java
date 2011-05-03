@@ -36,7 +36,7 @@ import android.opengl.GLU;
 import android.opengl.GLUtils;
 import android.os.SystemClock;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * A GLSurfaceView.Renderer that uses the Android-specific

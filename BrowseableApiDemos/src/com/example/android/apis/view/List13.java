@@ -28,7 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 
 /**

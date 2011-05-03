@@ -27,7 +27,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 public class PreferencesFromCode extends PreferenceActivity {
 

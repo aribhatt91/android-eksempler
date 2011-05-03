@@ -32,7 +32,7 @@ import android.widget.Toast;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * Example of how to use an {@link android.app.AlertDialog}.

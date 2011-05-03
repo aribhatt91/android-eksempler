@@ -23,7 +23,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 public class MediaPlayerDemo_Audio extends Activity {
 

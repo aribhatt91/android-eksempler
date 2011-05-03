@@ -22,7 +22,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.view.LayoutInflater;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * An example of tabs that uses labels ({@link TabSpec#setIndicator(CharSequence)})

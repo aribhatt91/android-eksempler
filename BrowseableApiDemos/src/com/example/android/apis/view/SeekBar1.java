@@ -21,7 +21,7 @@ import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 
 /**

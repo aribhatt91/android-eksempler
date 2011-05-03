@@ -17,7 +17,7 @@
 <!-- Demonstrates defining custom views in a layout file. -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res/dk.nordfalk.browseableapidemos"
+        xmlns:app="http://schemas.android.com/apk/res/com.example.android.apis"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

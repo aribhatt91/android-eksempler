@@ -21,7 +21,7 @@ package com.example.android.apis.animation;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import java.util.ArrayList;
 

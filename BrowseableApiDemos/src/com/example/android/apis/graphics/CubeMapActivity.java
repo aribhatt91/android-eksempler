@@ -39,7 +39,7 @@ import android.opengl.GLUtils;
 import android.os.Bundle;
 import android.util.Log;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * Demonstrate how to use the OES_texture_cube_map extension, available on some

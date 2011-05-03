@@ -20,7 +20,7 @@ package com.example.android.apis.animation;
 // class is in a sub-package.
 import android.animation.*;
 import android.view.animation.AccelerateInterpolator;
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import java.util.ArrayList;
 

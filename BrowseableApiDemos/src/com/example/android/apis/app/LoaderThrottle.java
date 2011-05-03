@@ -62,7 +62,7 @@ public class LoaderThrottle extends Activity {
     /**
      * The authority we use to get to our sample provider.
      */
-    public static final String AUTHORITY = "dk.nordfalk.browseableapidemos.app.LoaderThrottle";
+    public static final String AUTHORITY = "com.example.android.apis.app.LoaderThrottle";
 
     /**
      * Definition of the contract for the main table of our provider.

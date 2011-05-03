@@ -23,7 +23,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * This demonstrates the use of the PopupMenu class. Clicking the button will inflate and

@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 /**
  * Demonstrates how to write an efficient list adapter. The adapter used in this example binds

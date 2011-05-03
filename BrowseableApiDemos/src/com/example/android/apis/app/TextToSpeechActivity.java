@@ -23,7 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import java.util.Locale;
 import java.util.Random;

@@ -16,7 +16,7 @@
 
 package com.example.android.apis.app;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import android.app.ListActivity;
 import android.content.Context;

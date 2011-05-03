@@ -41,7 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 public class SmsMessagingDemo extends Activity {
     /** Tag string for our debug logs */

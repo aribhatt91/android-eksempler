@@ -19,7 +19,7 @@ package com.example.android.apis.view;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 public class Focus3 extends Activity {
     private Button mTopButton;

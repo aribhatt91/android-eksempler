@@ -21,7 +21,7 @@ package com.example.android.apis.animation;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.widget.LinearLayout;
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 import android.animation.AnimatorListenerAdapter;
 import android.animation.Keyframe;

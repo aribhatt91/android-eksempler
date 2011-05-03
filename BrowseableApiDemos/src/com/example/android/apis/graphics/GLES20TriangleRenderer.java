@@ -35,7 +35,7 @@ import android.opengl.Matrix;
 import android.os.SystemClock;
 import android.util.Log;
 
-import dk.nordfalk.browseableapidemos.R;
+import com.example.android.apis.R;
 
 class GLES20TriangleRenderer implements GLSurfaceView.Renderer {
 
