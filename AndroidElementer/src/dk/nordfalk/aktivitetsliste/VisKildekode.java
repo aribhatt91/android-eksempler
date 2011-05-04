@@ -14,7 +14,6 @@ import android.text.util.Linkify;
 import android.text.util.Linkify.TransformFilter;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
@@ -57,81 +56,78 @@ public class VisKildekode extends Activity {
     Intent kaldtMedIntent=getIntent();
     if (kaldtMedIntent.getExtras()!=null) filnavn=kaldtMedIntent.getExtras().getString(KILDEKODE_FILNAVN);
 
-      try {
-        InputStream is=getAssets().open(filnavn);
-        byte b[] = new byte[is.available()]; // kun små filer
-        is.read(b);
-        is.close();
-        String str = new String(b, "UTF-8");
-        
-        tv.setText(str);
+    if (filnavn==null) tv.setText("Manglede ekstradata med filen der skal vises.\n"
+          +"Du kan lave et 'langt tryk' på aktivitetslisten for at vise kildekoden til en aktivitet");
+    else try {
+      InputStream is=getAssets().open(filnavn);
+      byte b[] = new byte[is.available()]; // kun små filer
+      is.read(b);
+      is.close();
+      String str = new String(b, "UTF-8");
 
-        {
-          TransformFilter filter = new TransformFilter() {
-              public final String transformUrl(final Matcher match, String url) {
-                String klassenavn = match.group(1);
-                return "http://developer.android.com/reference/" + klassenavn.replace('.', '/') +".html";
-              }
-          };
+      tv.setText(str);
 
-          Linkify.addLinks(tv, Pattern.compile("import (android.*?);"), null, null, filter);          
-          Linkify.addLinks(tv, Pattern.compile("import (java.*?);"), null, null, filter);
-        }
-/*        
-        {
-          TransformFilter filter = new TransformFilter() {
-              public final String transformUrl(final Matcher match, String url) {
-                  return "http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/layout/"+ match.group(1)+".xml";
-              }
-          };
-
-          Linkify.addLinks(tv, Pattern.compile("android.R.layout.([a-z0-9_]+)"), null, null, filter);          
-        }*/
-                
-        {
-          TransformFilter filter = new TransformFilter() {
-              public final String transformUrl(final Matcher match, String url) {
-                String klassenavn = match.group(1);
-                return "http://developer.android.com/reference/" + klassenavn.replace('.', '/') +".html";
-              }
-          };
-
-          Linkify.addLinks(tv, Pattern.compile("import (android.*?);"), null, null, filter);          
-          Linkify.addLinks(tv, Pattern.compile("import (java.*?);"), null, null, filter);
-        }
-        
-        {
-          TransformFilter filter = new TransformFilter() {
-              public final String transformUrl(final Matcher match, String url) {
-                  return "http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/"+ match.group(1).replace('.', '/')+".xml";
-              }
-          };
-
-          Linkify.addLinks(tv, Pattern.compile("android.R.(layout.[a-z0-9_]+)"), null, null, filter);          
-          Linkify.addLinks(tv, Pattern.compile("android.R.(xml.[a-z0-9_]+)"), null, null, filter);          
-          Linkify.addLinks(tv, Pattern.compile("android.R.(anim.[a-z0-9_]+)"), null, null, filter);          
-        }
-                
+      {
         TransformFilter filter = new TransformFilter() {
             public final String transformUrl(final Matcher match, String url) {
-               // LOKAL_PRÆFIX dur ikke her da vi starter webbrowserintent
-                return HS_PRÆFIX+ "res/" + match.group(1).replace('.', '/')+".xml";
+              String klassenavn = match.group(1);
+              return "http://developer.android.com/reference/" + klassenavn.replace('.', '/') +".html";
             }
         };
-        Linkify.addLinks(tv, Pattern.compile("R.(layout.[a-z0-9_]+)"), null, null, filter);          
-        Linkify.addLinks(tv, Pattern.compile("R.(xml.[a-z0-9_]+)"), null, null, filter);          
-        Linkify.addLinks(tv, Pattern.compile("R.(anim.[a-z0-9_]+)"), null, null, filter);          
-        
-        setContentView(tv);
-      } catch (IOException ex) {
-        Logger.getLogger(VisKildekode.class.getName()).log(Level.SEVERE, null, ex);
-        if (filnavn==null) {
-          tv.setText("Manglede ekstradata med filen der skal vises.\n"
-              +"Du kan lave et 'langt tryk' på aktivitetslisten for at vise kildekoden til en aktivitet");
-        } else {          
-          tv.setText("Kunne ikke åbne "+filnavn+":\n" +ex);
-        }
+
+        Linkify.addLinks(tv, Pattern.compile("import (android.*?);"), null, null, filter);          
+        Linkify.addLinks(tv, Pattern.compile("import (java.*?);"), null, null, filter);
       }
+/*        
+      {
+        TransformFilter filter = new TransformFilter() {
+            public final String transformUrl(final Matcher match, String url) {
+                return "http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/layout/"+ match.group(1)+".xml";
+            }
+        };
+
+        Linkify.addLinks(tv, Pattern.compile("android.R.layout.([a-z0-9_]+)"), null, null, filter);          
+      }*/
+
+      {
+        TransformFilter filter = new TransformFilter() {
+            public final String transformUrl(final Matcher match, String url) {
+              String klassenavn = match.group(1);
+              return "http://developer.android.com/reference/" + klassenavn.replace('.', '/') +".html";
+            }
+        };
+
+        Linkify.addLinks(tv, Pattern.compile("import (android.*?);"), null, null, filter);          
+        Linkify.addLinks(tv, Pattern.compile("import (java.*?);"), null, null, filter);
+      }
+
+      {
+        TransformFilter filter = new TransformFilter() {
+            public final String transformUrl(final Matcher match, String url) {
+                return "http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/"+ match.group(1).replace('.', '/')+".xml";
+            }
+        };
+
+        Linkify.addLinks(tv, Pattern.compile("android.R.(layout.[a-z0-9_]+)"), null, null, filter);          
+        Linkify.addLinks(tv, Pattern.compile("android.R.(xml.[a-z0-9_]+)"), null, null, filter);          
+        Linkify.addLinks(tv, Pattern.compile("android.R.(anim.[a-z0-9_]+)"), null, null, filter);          
+      }
+
+      TransformFilter filter = new TransformFilter() {
+          public final String transformUrl(final Matcher match, String url) {
+             // LOKAL_PRÆFIX dur ikke her da vi starter webbrowserintent
+              return HS_PRÆFIX+ "res/" + match.group(1).replace('.', '/')+".xml";
+          }
+      };
+      Linkify.addLinks(tv, Pattern.compile("R.(layout.[a-z0-9_]+)"), null, null, filter);          
+      Linkify.addLinks(tv, Pattern.compile("R.(xml.[a-z0-9_]+)"), null, null, filter);          
+      Linkify.addLinks(tv, Pattern.compile("R.(anim.[a-z0-9_]+)"), null, null, filter);          
+
+      setContentView(tv);
+    } catch (IOException ex) {
+      Logger.getLogger(VisKildekode.class.getName()).log(Level.SEVERE, null, ex);
+      tv.setText("Kunne ikke åbne "+filnavn+":\n" +ex);
+    }
 
     
     if (onCreateTæller++ == 2) Toast.makeText(this, "Tryk MENU for andre visninger", Toast.LENGTH_LONG).show();

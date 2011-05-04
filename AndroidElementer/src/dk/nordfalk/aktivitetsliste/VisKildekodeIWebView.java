@@ -17,7 +17,9 @@ public class VisKildekodeIWebView extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     webView=new WebView(this);
-    
+
+    VisKildekode.findWebUrl(this);
+
     Intent kaldtMedIntent=getIntent();
     if (kaldtMedIntent.getExtras()!=null) filnavn=kaldtMedIntent.getExtras().getString(VisKildekode.KILDEKODE_FILNAVN);
 
