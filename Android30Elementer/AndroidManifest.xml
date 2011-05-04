@@ -27,7 +27,7 @@ Motorolas multitouch-eksempel?
     <uses-permission android:name="android.permission.CALL_PHONE" />
     
     <application android:debuggable="true" android:icon="@drawable/logo">
-        <!--
+        <!--  android:label="Android30Elementer" 
 			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
 			internt i programmet
 		-->

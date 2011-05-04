@@ -14,6 +14,7 @@ import android.text.util.Linkify;
 import android.text.util.Linkify.TransformFilter;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
@@ -48,10 +49,8 @@ public class VisKildekode extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     findWebUrl(this);
-    
-    
+        
     TextView tv = new TextView(this);
-    setContentView(tv);
     
     Intent kaldtMedIntent=getIntent();
     if (kaldtMedIntent.getExtras()!=null) filnavn=kaldtMedIntent.getExtras().getString(KILDEKODE_FILNAVN);
@@ -123,7 +122,6 @@ public class VisKildekode extends Activity {
       Linkify.addLinks(tv, Pattern.compile("R.(xml.[a-z0-9_]+)"), null, null, filter);          
       Linkify.addLinks(tv, Pattern.compile("R.(anim.[a-z0-9_]+)"), null, null, filter);          
 
-      setContentView(tv);
     } catch (IOException ex) {
       Logger.getLogger(VisKildekode.class.getName()).log(Level.SEVERE, null, ex);
       tv.setText("Kunne ikke åbne "+filnavn+":\n" +ex);
@@ -132,6 +130,9 @@ public class VisKildekode extends Activity {
     
     if (onCreateTæller++ == 2) Toast.makeText(this, "Tryk MENU for andre visninger", Toast.LENGTH_LONG).show();
     
+    ScrollView sv = new ScrollView(this);
+    sv.addView(tv);    
+    setContentView(sv);    
   }
 
   @Override

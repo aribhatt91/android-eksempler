@@ -40,7 +40,37 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
       ex.printStackTrace();
     }
 
+    
+     // Anonym nedarving af ArrayAdapter med omdefineret getView()
+    ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, aktiviteter) 
+    {
+      @Override
+      public View getView(int position, View convertView, ViewGroup parent) {
+        View view=super.getView(position, convertView, parent);
+        TextView listeelem_overskrift=(TextView) view.findViewById(android.R.id.text1);
+        TextView listeelem_beskrivelse=(TextView) view.findViewById(android.R.id.text2);
 
+        String pakkeOgKlasse=aktiviteter[position].name;
+        String pakkenavn=pakkeOgKlasse.substring(0, pakkeOgKlasse.lastIndexOf("."));
+        String klassenavn=pakkeOgKlasse.substring(pakkenavn.length()+1);
+
+        listeelem_overskrift.setText(klassenavn);
+        listeelem_beskrivelse.setText(pakkenavn);
+
+        // Lad billedet på en eller anden måde afspejle pakkenavnet
+        listeelem_beskrivelse.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
+        //listeelem_billede.setImageResource(17301855+Math.abs(pakkenavn.hashCode()%10));
+        //listeelem_billede.setImageResource(android.R.drawable.ic_media_ff + pakkenavn.hashCode()%30);
+        //listeelem_billede.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
+        //listeelem_billede.setBackgroundColor( pakkenavn.hashCode() | 0xff000000 );
+        //listeelem_billede.setBackgroundColor( Color.HSVToColor(new float[] {pakkenavn.hashCode()%360, 1, 0.8f}));
+        //listeelem_billede.setColorFilter(pakkenavn.hashCode() | 0x3f000000, Mode.SRC_ATOP);
+
+        return view;
+      }
+    };
+
+/*    
      // Anonym nedarving af ArrayAdapter med omdefineret getView()
     ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, aktiviteter) 
     {
@@ -69,6 +99,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
         return view;
       }
     };
+*/    
     listView.setAdapter(adapter);
 
     SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
