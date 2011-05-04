@@ -97,8 +97,8 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 
   
   @Override
-  public void onStart() {
-    super.onStart();
+  public void onResume() {
+    super.onResume();
     if (onStartTæller++ == 2) Toast.makeText(this, "Vink: Tryk længe på et punkt for at se kildekoden", Toast.LENGTH_LONG).show();
   }
   
