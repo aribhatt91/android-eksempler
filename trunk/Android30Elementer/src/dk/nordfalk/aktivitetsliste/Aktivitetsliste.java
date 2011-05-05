@@ -15,12 +15,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import dk.nordfalk.android30.elementer.R;
 
 public class Aktivitetsliste extends Activity implements OnItemClickListener, OnItemLongClickListener {
 
@@ -58,7 +56,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
         listeelem_beskrivelse.setText(pakkenavn);
 
         // Lad billedet på en eller anden måde afspejle pakkenavnet
-        listeelem_beskrivelse.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
+        //listeelem_beskrivelse.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
         //listeelem_billede.setImageResource(17301855+Math.abs(pakkenavn.hashCode()%10));
         //listeelem_billede.setImageResource(android.R.drawable.ic_media_ff + pakkenavn.hashCode()%30);
         //listeelem_billede.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
@@ -118,9 +116,12 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
       onItemClick(listView, null, position, 0); // hack - 'klik' på listen!
     }
 
+    TextView tv = new TextView(this);
+    tv.setText("Se kildekode med langt tryk");
     
     TableLayout linearLayout=new TableLayout(this);
-    linearLayout.addView(autostart);
+    //linearLayout.addView(autostart);
+    linearLayout.addView(tv);
     linearLayout.addView(listView);
 
     setContentView(linearLayout);

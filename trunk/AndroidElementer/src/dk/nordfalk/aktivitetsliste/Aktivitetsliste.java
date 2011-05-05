@@ -15,12 +15,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import dk.nordfalk.android.elementer.R;
 
 public class Aktivitetsliste extends Activity implements OnItemClickListener, OnItemLongClickListener {
 
@@ -40,7 +38,37 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
       ex.printStackTrace();
     }
 
+    
+     // Anonym nedarving af ArrayAdapter med omdefineret getView()
+    ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, aktiviteter) 
+    {
+      @Override
+      public View getView(int position, View convertView, ViewGroup parent) {
+        View view=super.getView(position, convertView, parent);
+        TextView listeelem_overskrift=(TextView) view.findViewById(android.R.id.text1);
+        TextView listeelem_beskrivelse=(TextView) view.findViewById(android.R.id.text2);
 
+        String pakkeOgKlasse=aktiviteter[position].name;
+        String pakkenavn=pakkeOgKlasse.substring(0, pakkeOgKlasse.lastIndexOf("."));
+        String klassenavn=pakkeOgKlasse.substring(pakkenavn.length()+1);
+
+        listeelem_overskrift.setText(klassenavn);
+        listeelem_beskrivelse.setText(pakkenavn);
+
+        // Lad billedet på en eller anden måde afspejle pakkenavnet
+        //listeelem_beskrivelse.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
+        //listeelem_billede.setImageResource(17301855+Math.abs(pakkenavn.hashCode()%10));
+        //listeelem_billede.setImageResource(android.R.drawable.ic_media_ff + pakkenavn.hashCode()%30);
+        //listeelem_billede.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
+        //listeelem_billede.setBackgroundColor( pakkenavn.hashCode() | 0xff000000 );
+        //listeelem_billede.setBackgroundColor( Color.HSVToColor(new float[] {pakkenavn.hashCode()%360, 1, 0.8f}));
+        //listeelem_billede.setColorFilter(pakkenavn.hashCode() | 0x3f000000, Mode.SRC_ATOP);
+
+        return view;
+      }
+    };
+
+/*    
      // Anonym nedarving af ArrayAdapter med omdefineret getView()
     ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, aktiviteter) 
     {
@@ -69,6 +97,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
         return view;
       }
     };
+*/    
     listView.setAdapter(adapter);
 
     SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
@@ -87,9 +116,12 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
       onItemClick(listView, null, position, 0); // hack - 'klik' på listen!
     }
 
+    TextView tv = new TextView(this);
+    tv.setText("Se kildekode med langt tryk");
     
     TableLayout linearLayout=new TableLayout(this);
-    linearLayout.addView(autostart);
+    //linearLayout.addView(autostart);
+    linearLayout.addView(tv);
     linearLayout.addView(listView);
 
     setContentView(linearLayout);
@@ -97,8 +129,8 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 
   
   @Override
-  public void onResume() {
-    super.onResume();
+  public void onStart() {
+    super.onStart();
     if (onStartTæller++ == 2) Toast.makeText(this, "Vink: Tryk længe på et punkt for at se kildekoden", Toast.LENGTH_LONG).show();
   }
   
