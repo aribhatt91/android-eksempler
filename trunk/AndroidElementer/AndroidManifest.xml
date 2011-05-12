@@ -4,7 +4,7 @@
     android:installLocation="preferExternal" c="installér på SD-kort"
     android:versionCode="5"
     android:versionName="1.05">
-    <!--
+<!--
 Mangler eksempler på
 - services
 - notifikationer
