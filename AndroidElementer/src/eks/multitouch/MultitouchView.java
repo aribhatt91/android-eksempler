@@ -15,11 +15,10 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.view.MotionEvent;
 import android.view.View;
-import eks.multitouch.MultiTouchController;
+import dk.nordfalk.android.elementer.R;
 import eks.multitouch.MultiTouchController.MultiTouchObjectCanvas;
 import eks.multitouch.MultiTouchController.PointInfo;
 import eks.multitouch.MultiTouchController.PositionAndScale;
-import dk.nordfalk.android.elementer.R;
 
 public class MultitouchView extends View implements MultiTouchObjectCanvas {
 

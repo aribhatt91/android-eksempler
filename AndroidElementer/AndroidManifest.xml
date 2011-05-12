@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dk.nordfalk.android.elementer" 
+    package="dk.nordfalk.android.elementer"
     android:installLocation="preferExternal" c="installér på SD-kort"
-    android:versionCode="4"
-    android:versionName="1.04">
-    <!-- 
+    android:versionCode="5"
+    android:versionName="1.05">
+    <!--
 Mangler eksempler på
 - services
 - notifikationer
@@ -22,10 +22,9 @@ Motorolas multitouch-eksempel?
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    
+
     <application android:debuggable="true" android:icon="@drawable/logo">
         <!--
 			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
@@ -39,7 +38,7 @@ Motorolas multitouch-eksempel?
         <activity android:name="eks.diverse.Eks_menuer"/>
         <activity android:name="eks.diverse.BenytDialogerOgToasts"/>
         <!-- android:screenOrientation slår vending af skærmen fra på denne aktivitet -->
-        <activity android:name="eks.diverse.Eks_sensorer" android:screenOrientation="portrait"/>        
+        <activity android:name="eks.diverse.Eks_sensorer" android:screenOrientation="portrait"/>
         <activity android:name="eks.diverse.Eks_stedbestemmelse"/>
         <activity android:name="eks.data.JsonParsning"/>
         <activity android:name="eks.data.XmlParsning"/>
@@ -52,7 +51,7 @@ Motorolas multitouch-eksempel?
         <activity android:name="eks.lister.BenytListActivity"/>
         <activity android:name="eks.lister.BenytListViewMedEgetLayout"/>
         <activity android:name="eks.lister.BenytListViewMedEgetLayout2"/>
-        <activity android:name="eks.lister.BenytExpandableListActivity"/> 
+        <activity android:name="eks.lister.BenytExpandableListActivity"/>
         <activity android:name="eks.lister.VisAndroidDrawables"/>
         <activity android:name="eks.providers.VisKontakter"/>
         <activity android:name="eks.providers.VisOpkald"/>
@@ -65,10 +64,10 @@ Motorolas multitouch-eksempel?
         <activity android:name="eks.livscyklus.Liv2_gemIFil"/>
         <activity android:name="eks.livscyklus.Liv3_nonConfigurationInstance"/>
         <activity android:name="eks.livscyklus.Liv4_bundle"/>
-        
+
         <activity android:name="eks.kort.KortAktivitet"/>
         <uses-library android:name="com.google.android.maps" android:required="false" />
-        
+
         <!-- aktivitet som kan ses fra startskærmen -->
         <activity android:name="dk.nordfalk.aktivitetsliste.Aktivitetsliste" android:label="AndroidElementer">
             <intent-filter>
