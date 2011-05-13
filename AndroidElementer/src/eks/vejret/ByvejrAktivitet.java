@@ -313,7 +313,7 @@ public class ByvejrAktivitet extends Activity {
     ab.show();
   }
 
-  private Bitmap opretBitmapFraUrl(String url) throws IOException {
+  public static Bitmap opretBitmapFraUrl(String url) throws IOException {
     InputStream is = new URL(url).openStream();
     Bitmap bitmap=BitmapFactory.decodeStream(is);
     is.close();
