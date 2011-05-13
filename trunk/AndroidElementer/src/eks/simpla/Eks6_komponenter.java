@@ -2,7 +2,7 @@ package eks.simpla;
 
 import android.view.View;
 import android.view.View.OnClickListener;
-import org.simpla.SimplaView;
+import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,7 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import org.simpla.SimplaActivity;
+import android.widget.Toast;
 
 
 
@@ -22,54 +22,29 @@ import org.simpla.SimplaActivity;
  * 
  * @author Jacob Nordfalk
  */
-public class Eks6_komponenter extends SimplaActivity implements OnClickListener {
+public class Eks6_komponenter extends Activity implements OnClickListener {
 
   String teksten="GrafikView";
   Button okKnap;
   EditText postnrEditText;
-  GrafikView minGrafik;
-
-  public void onClick(View hvadBlevDerKlikketPå) {
-      System.out.println("Der blev klikket på "+hvadBlevDerKlikketPå);
-      if (hvadBlevDerKlikketPå == okKnap) {
-        teksten=postnrEditText.getText().toString();
-        minGrafik.postInvalidate();
-      } else {
-        simpla.showToast("Denne knap er ikke implementeret endnu");
-      }
-  }
-
-class MinKnapLytter implements OnClickListener {
-    public void onClick(View hvadBlevDerKlikketPå) {
-      System.out.println("Der blev klikket på "+hvadBlevDerKlikketPå);
-      if (hvadBlevDerKlikketPå == okKnap) {
-        teksten=postnrEditText.getText().toString();
-        minGrafik.postInvalidate();
-      } else {
-        simpla.showToast("Denne knap er ikke implementeret endnu");
-      }
-    }
-  }
-
-  public class GrafikView extends SimplaView {
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-      Paint tekstStregtype=new Paint();
-      tekstStregtype.setColor(Color.GREEN);
-      tekstStregtype.setTextSize(24);
-      canvas.drawText(teksten, 0, 20, tekstStregtype);
-    }
-  }
-
+  View minGrafik;
+  
+  
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-
     
     // Opret grafik-view
-    minGrafik=new GrafikView();
+    minGrafik=new View(this) {
+        @Override
+        protected void onDraw(Canvas canvas) {
+          Paint tekstStregtype=new Paint();
+          tekstStregtype.setColor(Color.GREEN);
+          tekstStregtype.setTextSize(24);
+          canvas.drawText(teksten, 0, 20, tekstStregtype);
+        }
+      };
+
 
     TableLayout tableLayout=new TableLayout(this);
 
@@ -113,20 +88,19 @@ class MinKnapLytter implements OnClickListener {
     ScrollView scrollView = new ScrollView(this);
     scrollView.addView(tableLayout);
 
-    simpla.setContentView(scrollView);
-
-
-    MinKnapLytter minKnapLytter = new MinKnapLytter();
-    //okKnap.setOnClickListener(minKnapLytter);
-    annullerKnap.setOnClickListener(minKnapLytter);
+    setContentView(scrollView);
 
     okKnap.setOnClickListener(this);
-    //annullerKnap.setOnClickListener(this);
-
+    annullerKnap.setOnClickListener(this);
   }
 
-  public void simplaMain() {
-    //  tom - initialisering bør lægges i onCreate()
+  public void onClick(View hvadBlevDerKlikketPå) {
+      System.out.println("Der blev klikket på "+hvadBlevDerKlikketPå);
+      if (hvadBlevDerKlikketPå == okKnap) {
+        teksten=postnrEditText.getText().toString();
+        minGrafik.postInvalidate();
+      } else {
+    	Toast.makeText(this, "Denne knap er ikke implementeret endnu", Toast.LENGTH_LONG).show();
+      }
   }
-
 }
