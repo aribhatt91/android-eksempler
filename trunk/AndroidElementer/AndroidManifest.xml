@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dk.nordfalk.android.elementer"
     android:installLocation="preferExternal" c="installér på SD-kort"
-    android:versionCode="5"
-    android:versionName="1.05">
+    android:versionCode="6"
+    android:versionName="1.06">
 <!--
 Mangler eksempler på
 - services
@@ -26,12 +26,13 @@ Motorolas multitouch-eksempel?
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application android:debuggable="true" android:icon="@drawable/logo">
-        <!--
+    <!--
 			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
 			internt i programmet
 		-->
         <activity android:name="eks.diverse.Eks_lyd"/>
         <activity android:name="eks.diverse.BenytIntents"/>
+        <activity android:name="eks.diverse.BenytIntents2" android:label="Intents fra Google"/>
         <activity android:name="eks.diverse.BenytHtmlTags"/>
         <activity android:name="eks.diverse.Tegneprogram"/>
         <activity android:name="eks.diverse.BenytWebView"/>
@@ -94,10 +95,12 @@ Motorolas multitouch-eksempel?
         </activity>
         <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekodeIWebView"/>
     </application>
-    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="8"/>
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="9"/>
+    <!-- Undgå dette - burde være unødvendigt iflg http://d.android.com/guide/practices/screens_support.html
       <supports-screens
           android:largeScreens="true"
           android:normalScreens="true"
           android:smallScreens="true"
           android:anyDensity="true" />
+     -->
 </manifest>

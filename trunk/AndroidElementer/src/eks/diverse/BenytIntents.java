@@ -21,12 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
 public class BenytIntents extends Activity implements OnClickListener {
 
-  EditText meddelelse, nummer;
+  EditText tekstfelt, nummerfelt;
   Button ringOp, ringOpDirekte, sendSms, sendEpost, websøgning;
 
   @Override
@@ -35,14 +35,14 @@ public class BenytIntents extends Activity implements OnClickListener {
 
     TableLayout tl=new TableLayout(this);
 
-    meddelelse=new EditText(this);
-    meddelelse.setText("Skriv tekst her");
-    tl.addView(meddelelse);
+    tekstfelt=new EditText(this);
+    tekstfelt.setText("Skriv tekst her");
+    tl.addView(tekstfelt);
 
-    nummer=new EditText(this);
-    nummer.setHint("evt telefonnummer");
-    nummer.setInputType(InputType.TYPE_CLASS_PHONE);
-    tl.addView(nummer);
+    nummerfelt=new EditText(this);
+    nummerfelt.setHint("evt telefonnummer her");
+    nummerfelt.setInputType(InputType.TYPE_CLASS_PHONE);
+    tl.addView(nummerfelt);
 
     ringOp=new Button(this);
     ringOp.setText("Ring op");
@@ -65,8 +65,9 @@ public class BenytIntents extends Activity implements OnClickListener {
     tl.addView(websøgning);
 
     TextView tv=new TextView(this);
-    tv.setText("Man kan også bruge klassen Linkify til at putte lænker ind i tekst.\n"
-        +"Mit telefonnummer er 26206512, min e-post er jacob.nordfalk@gmail.com og jeg har en hjemmeside på http://javabog.dk.");
+    tv.setText("Man kan også bruge klassen Linkify til at putte intents ind i tekst.\n"
+        +"Mit telefonnummer er 26206512 (jeg fik det i år 2002), min e-post er jacob.nordfalk@gmail.com og "
+            +"jeg har en hjemmeside på http://javabog.dk.");
     Linkify.addLinks(tv, Linkify.ALL);
     tl.addView(tv);
 
@@ -82,34 +83,34 @@ public class BenytIntents extends Activity implements OnClickListener {
   }
 
   public void onClick(View hvadBlevDerKlikketPå) {
-    if (hvadBlevDerKlikketPå==ringOp) {
-      ringOp(nummer.getText().toString());
-    } else if (hvadBlevDerKlikketPå==ringOpDirekte) {
-      ringOpDirekte(nummer.getText().toString());
-    } else if (hvadBlevDerKlikketPå==sendSms) {
-      åbnSendSms(nummer.getText().toString(), meddelelse.getText().toString()+lavModelinfo());
-    } else if (hvadBlevDerKlikketPå==sendEpost) {
-      åbnSendEmail(nummer.getText().toString(), meddelelse.getText().toString(), lavModelinfo());
-    } else if (hvadBlevDerKlikketPå==websøgning) {
-      websøgning(meddelelse.getText().toString());
-    }
+    String nummer = nummerfelt.getText().toString();
+    String tekst = tekstfelt.getText().toString();
+    if (hvadBlevDerKlikketPå==ringOp) ringOp(nummer);
+    else if (hvadBlevDerKlikketPå==ringOpDirekte) ringOpDirekte(nummer);
+    else if (hvadBlevDerKlikketPå==sendSms) åbnSendSms(nummer, tekst +lavTelefoninfo());
+    else if (hvadBlevDerKlikketPå==sendEpost) åbnSendEpost(tekst, nummer, lavTelefoninfo());
+    else if (hvadBlevDerKlikketPå==websøgning) websøgning(tekst);
   }
 
   private void ringOp(String nummer) {
-    Uri number=Uri.parse("tel:"+nummer);
-    Intent dial=new Intent(Intent.ACTION_DIAL, number);
-    startActivity(dial);
+    Uri nummerUri = Uri.parse("tel:"+nummer);
+    Intent dialIntent = new Intent(Intent.ACTION_DIAL, nummerUri);
+    startActivity(dialIntent);
+
+    // eller blot:
+    //     startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+nummer)));
+
   }
 
   /**
    * Kræver  <uses-permission android:name="android.permission.CALL_PHONE" />
-   * @param nummer 
+   * @param nummerfelt
    */
   private void ringOpDirekte(String nummer) {
     try {
-      Uri number=Uri.parse("tel:"+nummer);
-      Intent dial=new Intent(Intent.ACTION_CALL, number);
-      startActivity(dial);
+      Uri nummerUri = Uri.parse("tel:"+nummer);
+      Intent callIntent = new Intent(Intent.ACTION_CALL, nummerUri);
+      startActivity(callIntent);
     } catch (Exception e) {
       Toast.makeText(this, "Du mangler <uses-permission android:name=\"android.permission.CALL_PHONE\" /> i manifestet\n"+e, Toast.LENGTH_LONG).show();
     }
@@ -118,8 +119,8 @@ public class BenytIntents extends Activity implements OnClickListener {
   /** Åbner et SMS-vindue og lader brugeren sende SMS'en */
   public void åbnSendSms(String nummer, String besked) {
     // Kilde: http://andmobidev.blogspot.com/2010/01/launching-smsmessages-activity-using.html
-    Intent intent=new Intent(Intent.ACTION_VIEW);
     //Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("sms:"+number));
+    Intent intent=new Intent(Intent.ACTION_VIEW);
     intent.setType("vnd.android-dir/mms-sms");
     intent.putExtra("sms_body", besked);
     intent.putExtra("address", nummer);
@@ -137,17 +138,18 @@ public class BenytIntents extends Activity implements OnClickListener {
     startActivity(intent);
   }
 
-  void åbnSendEmail(String modtager, String emne, String txt) {
-    Intent emailIntent=new Intent(android.content.Intent.ACTION_SEND);
-    emailIntent.setType("plain/text");
-    emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {modtager});
-    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, emne);
-    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, txt);
-    startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+  void åbnSendEpost(String modtager, String emne, String txt) {
+    Intent postIntent=new Intent(android.content.Intent.ACTION_SEND);
+    postIntent.setType("plain/text");
+    postIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {modtager});
+    postIntent.putExtra(Intent.EXTRA_CC, new String[] {"jacob.nordfalk@gmail.com"});
+    postIntent.putExtra(Intent.EXTRA_SUBJECT, emne);
+    postIntent.putExtra(Intent.EXTRA_TEXT, txt);
+    startActivity(Intent.createChooser(postIntent, "Send mail..."));
   }
 
-  public String lavModelinfo() {
-    String version=null;
+  public String lavTelefoninfo() {
+    String version="(ukendt)";
     try {
       PackageInfo pi=getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES);
       version=pi.versionName;
