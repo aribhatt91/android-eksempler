@@ -9,15 +9,17 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.EditText;
 import java.util.ArrayList;
 
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
 public class Tegneprogram extends Activity {
 
-  View tegneflade;
+  EditText tegneflade;
   ArrayList<Point> berøringspunkter = new ArrayList<Point>();
 
   @Override
@@ -27,7 +29,8 @@ public class Tegneprogram extends Activity {
      tekstStregtype.setColor(Color.GREEN);
      tekstStregtype.setTextSize(24);
 
-    tegneflade = new View(this) { // anonym nedarving af View
+
+     tegneflade = new EditText(this) { // anonym nedarving af View
       @Override
       protected void onDraw(Canvas c) {
          super.onDraw(c);
@@ -36,18 +39,19 @@ public class Tegneprogram extends Activity {
          for (Point p : berøringspunkter) c.drawCircle(p.x, p.y, 3, tekstStregtype);
       }
     };
+     tegneflade.setText("hej");
 
     tegneflade.setOnTouchListener(new OnTouchListener() { // anonym implementering af OnTouchListener
-      public boolean onTouch(View view, MotionEvent hændelse) {
-        System.out.println(hændelse);
-        //System.out.println(hændelse.getX() +"," +  hændelse.getY());
-        berøringspunkter.add(new Point((int)hændelse.getX(), (int)hændelse.getY()));
+      public boolean onTouch(View view, MotionEvent berøring) {
+        System.out.println(berøring);
+        Point punktet = new Point((int)berøring.getX(), (int)berøring.getY());
+        berøringspunkter.add(punktet);
         //System.out.println(berøringspunkter);
         tegneflade.invalidate();
         return true;
       }
     });
 
-    setContentView(tegneflade);
+     setContentView(tegneflade);
   }
 }

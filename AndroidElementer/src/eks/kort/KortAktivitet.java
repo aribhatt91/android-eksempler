@@ -54,8 +54,8 @@ public class KortAktivitet extends MapActivity {
   // Geopunkter
   GeoPoint valby=new GeoPoint(55654074, 12493775);
   GeoPoint valgtPunkt=valby;
-  
-  
+
+
   /** Finder korrekt API nøgle ud fra app'ens signatur. Se
    http://stackoverflow.com/questions/3029819/android-automatically-choose-debug-release-maps-api-key  */
   String findApiNøgle() {
@@ -65,15 +65,15 @@ public class KortAktivitet extends MapActivity {
         MessageDigest m = MessageDigest.getInstance("MD5");
         m.update(sig.toByteArray());
         md5 = new BigInteger(1, m.digest()).toString(16);
-        
+
         Log.d("findApiNøgle", "md5fingerprint: "+md5);
 
         // Jacobs debug-nøgle
-        if (md5.equals("5fb3a9c4a1ebb853254fa1aebc37a89b")) return "0osb1BfVdrk1u8XJFAcAD0tA5hvcMFVbzInEgNQ"; 
+        if (md5.equals("5fb3a9c4a1ebb853254fa1aebc37a89b")) return "0osb1BfVdrk1u8XJFAcAD0tA5hvcMFVbzInEgNQ";
         // Jacobs officielle nøgle
-        if (md5.equals("d9a7385fd19107698149b7576fcb8b29")) return "0osb1BfVdrk3etct3WjSX-gUUayztcGvB51EMwg"; 
+        if (md5.equals("d9a7385fd19107698149b7576fcb8b29")) return "0osb1BfVdrk3etct3WjSX-gUUayztcGvB51EMwg";
       }
-      
+
       // Ingen nøgle fundet. Vis hjælp til brugeren
       AlertDialog.Builder dialog=new AlertDialog.Builder(this);
       dialog.setTitle("Mangler API-nøgle");
@@ -96,7 +96,7 @@ public class KortAktivitet extends MapActivity {
     } catch (Exception e) {
       e.printStackTrace();
     }
-   
+
     return "ukendt";
   }
 
@@ -188,16 +188,16 @@ public class KortAktivitet extends MapActivity {
         mapView.setStreetView(!mapView.isStreetView());
         break;
       case 53:
-        startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+        startActivity(new Intent(Intent.ACTION_VIEW,
             Uri.parse("http://maps.google.com/maps?saddr="+her.getLatitudeE6()*MIKRO+","+her.getLongitudeE6()*MIKRO
             +"&daddr="+valgtPunkt.getLatitudeE6()*MIKRO+","+valgtPunkt.getLongitudeE6()*MIKRO)));
         break;
       case 54:
-        startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+        startActivity(new Intent(Intent.ACTION_VIEW,
             Uri.parse("geo:"+valgtPunkt.getLatitudeE6()*MIKRO+","+valgtPunkt.getLongitudeE6()*MIKRO+"?z="+mapView.getZoomLevel())));
         break;
-      case 55:
-        startActivity(new Intent(android.content.Intent.ACTION_VIEW,
+      case 55: // google.streetview:cbll=55.65407,12.493775&cbp=1
+        startActivity(new Intent(Intent.ACTION_VIEW,
             Uri.parse("google.streetview:cbll="+valgtPunkt.getLatitudeE6()*MIKRO+","+valgtPunkt.getLongitudeE6()*MIKRO+"&cbp=1")));
         break;
       default:
@@ -228,7 +228,7 @@ public class KortAktivitet extends MapActivity {
       Rect kortRekt=new Rect(p1.x, p1.y, p2.x, p2.y);
       return kortRekt;
     }
-    
+
     public Bitmap hentNytKort(int width, int height) {
       try {
         // Kilde: http://androidgps.blogspot.com/2008/09/simple-wms-client-for-android.html

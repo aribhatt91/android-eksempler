@@ -22,7 +22,7 @@ import dk.nordfalk.android.elementer.R;
 public class Eks_sensorer extends Activity {
 
   TextView textView;
-  String[] senesteMålinger=new String[9];
+  String[] senesteMålinger=new String[12];
   SensorManager sensorManager;
   Sensorlytter sensorlytter=new Sensorlytter();
   MediaPlayer enLyd;
@@ -89,7 +89,8 @@ public class Eks_sensorer extends Activity {
       }
 
       System.out.println(måling);
-      senesteMålinger[sensortype]=måling;
+      if (sensortype < senesteMålinger.length)
+        senesteMålinger[sensortype]=måling;
 
       String tekst=måling;
 
