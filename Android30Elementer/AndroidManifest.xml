@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dk.nordfalk.android30.elementer" 
+    package="dk.nordfalk.android30.elementer"
     android:installLocation="preferExternal" c="installér på SD-kort"
     android:versionCode="5"
     android:versionName="1.05">
 
     <!-- tilladelser -->
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    
+
     <application android:debuggable="true" android:icon="@drawable/logo">
-        <!--  android:label="Android30Elementer" 
+        <!--  android:label="Android30Elementer"
 			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
 			internt i programmet
 		-->
@@ -28,7 +20,7 @@
         <activity android:name="com.example.android.apis.app.FragmentRetainInstance"/>
 
         <activity android:name="eks.livscyklus.LogFragmentActivity"/>
-                
+
         <!-- aktivitet som kan ses fra startskærmen -->
         <activity android:name="dk.nordfalk.aktivitetsliste.Aktivitetsliste" android:label="Android30Elementer">
             <intent-filter>
@@ -55,10 +47,7 @@
         </activity>
         <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekodeIWebView"/>
     </application>
-    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="8"/>
-      <supports-screens
-          android:largeScreens="true"
-          android:normalScreens="true"
-          android:smallScreens="true"
-          android:anyDensity="true" />
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="9"/>
+
+
 </manifest>
