@@ -1,6 +1,7 @@
-package eks.diverse;
+package eks.intents;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -9,12 +10,13 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
 /**
  *
  * @author Jacob Nordfalk
  */
-public class BenytIntents2 extends Activity implements OnClickListener {
+public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
 
   Button kortvisning, rutevisning, gadevisning;
 
@@ -44,15 +46,19 @@ public class BenytIntents2 extends Activity implements OnClickListener {
   }
 
   public void onClick(View hvadBlevDerKlikketPå) {
-    if (hvadBlevDerKlikketPå == kortvisning) {
-      startActivity(new Intent(Intent.ACTION_VIEW,
-              Uri.parse("geo:55.65407,12.493775?z=6")));
-    } else if (hvadBlevDerKlikketPå == rutevisning) {
-      startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-              "http://maps.google.com/maps?saddr=55.65407,12.493775&daddr=55.66,12.5")));
-    } else {
-      startActivity(new Intent(Intent.ACTION_VIEW,
-              Uri.parse("google.streetview:cbll=55.65407,12.493775&cbp=1")));
+    try {
+      if (hvadBlevDerKlikketPå == kortvisning) {
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse("geo:55.65407,12.493775?z=3")));
+      } else if (hvadBlevDerKlikketPå == rutevisning) {
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://maps.google.com/maps?saddr=55.65407,12.493775&daddr=55.66,12.5")));
+      } else {
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse("google.streetview:cbll=55.65407,12.493775&cbp=1")));
+      }
+    } catch (ActivityNotFoundException e) {
+      Toast.makeText(this, "Du mangler Googles udvidelser på denne telefon:\n"+e.getMessage(), Toast.LENGTH_LONG).show();
     }
   }
 }
