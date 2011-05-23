@@ -1,4 +1,4 @@
-package eks.diverse;
+package eks.intents;
 
 import android.app.Activity;
 import android.app.SearchManager;
