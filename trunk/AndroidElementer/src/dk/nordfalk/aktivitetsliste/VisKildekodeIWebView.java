@@ -29,8 +29,8 @@ public class VisKildekodeIWebView extends Activity {
       webView.getSettings().setBuiltInZoomControls(true);
       webView.setInitialScale(75);
     } else {
-      webView.loadData("Manglede ekstradata med filen der skal vises.\n"
-          +"Du kan lave et 'langt tryk' på aktivitetslisten for at vise kildekoden til en aktivitet", "text/plain", "UTF-8");
+      webView.loadData("<h2>Manglede ekstradata med filen der skal vises.</h2> \n"
+          +"Du kan lave et 'langt tryk' på aktivitetslisten for at vise kildekoden til en aktivitet", "text/html", "UTF-8");
       webView.setInitialScale(100);
     }
 

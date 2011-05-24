@@ -18,7 +18,7 @@ import eks.vejret.Indstillinger;
  *
  * @author Jacob Nordfalk
  */
-public class Eks_menuer extends Activity {
+public class BenytMenuer extends Activity {
 
   private TextView tv;
 

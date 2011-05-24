@@ -19,7 +19,7 @@ import dk.nordfalk.android.elementer.R;
  *
  * @author Jacob Nordfalk
  */
-public class Eks_sensorer extends Activity {
+public class VisSensorer extends Activity {
 
   TextView textView;
   String[] senesteMålinger=new String[12];

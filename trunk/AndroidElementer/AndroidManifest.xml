@@ -31,19 +31,23 @@ Motorolas multitouch-eksempel?
     aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
     internt i programmet
   -->
-    <activity android:name="eks.diverse.Eks_lyd"/>
-    <activity android:name="eks.diverse.Eks_menuer"/>
+    <activity android:name="eks.diverse.AfspilLyd"/>
+    <activity android:name="eks.diverse.BenytMenuer"/>
     <activity android:name="eks.intents.BenytIntents"/>
     <activity android:name="eks.intents.BenytIntentsFraGoogle" android:label="Intents fra Google"/>
     <activity android:name="eks.diverse.BenytHtmlTags"/>
     <activity android:name="eks.diverse.BenytWebView"/>
-    <activity android:name="eks.diverse.Tegneprogram"/>
+    <activity android:name="eks.diverse.ProgrammatiskLayout"/>
+    <activity android:name="eks.grafik.Tegneprogram"/>
+    <activity android:name="eks.grafik.Grafikdemo1"/>
+    <activity android:name="eks.grafik.Grafikdemo2"/>
+    <activity android:name="eks.grafik.FlytbarVejrudsigt"/>
     <activity android:name="eks.diverse.BenytDialogerOgToasts"/>
     <!-- android:screenOrientation slår vending af skærmen fra på denne aktivitet -->
-    <activity android:name="eks.diverse.Eks_sensorer" android:screenOrientation="portrait"/>
-    <activity android:name="eks.diverse.Eks_stedbestemmelse"/>
+    <activity android:name="eks.diverse.VisSensorer" android:screenOrientation="portrait"/>
+    <activity android:name="eks.diverse.Stedbestemmelse"/>
 
-    <activity android:name="eks.intents.ModtagBrowserIntent">
+    <activity android:name="eks.intents.FangBrowseIntent">
     <!-- Fanger URLer der starter med http://javabog.dk/OOP/ og viser dem -->
     <intent-filter>
       <action android:name="android.intent.action.VIEW"/>
@@ -102,9 +106,12 @@ Motorolas multitouch-eksempel?
         </intent-filter>
     </activity>
     -->
+
     <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekode">
+      <!-- bruges af metoden VisKildekode.findWebUrl() -->
       <meta-data android:name="web_url" android:value="http://code.google.com/p/android-eksempler/source/browse/trunk/AndroidElementer/" />
     </activity>
+
     <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekodeIWebView"/>
   </application>
 

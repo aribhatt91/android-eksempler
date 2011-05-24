@@ -66,7 +66,7 @@ public class BenytIntents extends Activity implements OnClickListener {
 
     TextView tv=new TextView(this);
     tv.setText("Man kan også bruge klassen Linkify til at putte intents ind i tekst.\n"
-        +"Mit telefonnummer er 26206512 (jeg fik det i år 2002), min e-post er jacob.nordfalk@gmail.com og "
+        +"Mit telefonnummer er 26206512, min e-post er jacob.nordfalk@gmail.com og "
             +"jeg har en hjemmeside på http://javabog.dk.");
     Linkify.addLinks(tv, Linkify.ALL);
     tl.addView(tv);

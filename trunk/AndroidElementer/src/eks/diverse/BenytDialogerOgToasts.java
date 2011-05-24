@@ -1,5 +1,6 @@
 package eks.diverse;
 
+import eks.grafik.Tegneprogram;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -19,10 +20,9 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
-import eks.recievers.BenytReciever;
 
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
 public class BenytDialogerOgToasts extends Activity implements OnClickListener {
@@ -115,14 +115,14 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
       Context ctx=getApplicationContext(); // Undgå this for ikke at lække hukommelse
       Intent tegneIntent = new Intent(ctx, Tegneprogram.class);
       PendingIntent tegneAktivitet = PendingIntent.getActivity(ctx, 0, tegneIntent, 0);
-      Notification notification = new Notification(R.drawable.logo, "Tegn!", System.currentTimeMillis());   
+      Notification notification = new Notification(R.drawable.logo, "Tegn!", System.currentTimeMillis());
       notification.setLatestEventInfo(ctx, "Der skal tegnes!", "Du er nødt til at tegne lidt", tegneAktivitet);
 
       long[] vibrate = {0,100,300,400, 500, 510, 550, 560, 600, 610, 650, 610, -1};
       notification.vibrate = vibrate;
 
       NotificationManager notificationManager=(NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
-      notificationManager.notify(42, notification);     
+      notificationManager.notify(42, notification);
     }
   }
 
