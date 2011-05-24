@@ -3,10 +3,12 @@ package eks.intents;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.webkit.WebView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class ModtagBrowserIntent extends Activity {
+public class FangBrowseIntent extends Activity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -16,8 +18,13 @@ public class ModtagBrowserIntent extends Activity {
     String url = i.getDataString();
 
     if (url == null) {
-      url = "http://javabog.dk";
-      Toast.makeText(this, "URL manglede", Toast.LENGTH_LONG).show();
+      TextView tv=new TextView(this);
+      tv.setText("Dette eksempel viser hvordan man fanger et browserintent.\n"
+          +"Gå ind på http://javabog.dk og vælg et kapitel fra grundbogen,"
+          +"f.eks http://javabog.dk/OOP/kapitel3.jsp ");
+      Linkify.addLinks(tv, Linkify.ALL);
+      setContentView(tv);
+      return;
     }
 
     Toast.makeText(this, "AndroidElementer viser\n"+url, Toast.LENGTH_LONG).show();

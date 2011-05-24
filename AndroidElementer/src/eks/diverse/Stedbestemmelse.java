@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package eks.diverse;
 
 import android.app.Activity;
@@ -19,30 +18,31 @@ import android.widget.TextView;
  *
  * @author Jacob Nordfalk
  */
-public class Eks_stedbestemmelse extends Activity {
+public class Stedbestemmelse extends Activity {
 
   TextView textView;
   ScrollView scrollView;
   LocationManager locationManager;
-  Locationlytter locationlytter=new Locationlytter();
+  Locationlytter locationlytter = new Locationlytter();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    textView=new TextView(this);
-    scrollView=new ScrollView(this);
+    textView = new TextView(this);
+    scrollView = new ScrollView(this);
     scrollView.addView(textView);
     setContentView(scrollView);
-    locationManager=(LocationManager) getSystemService(LOCATION_SERVICE);
+    locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
+    // Løb igennem alle udbyderne (typisk "gps", "network" og "passive")
     for (String udbyderNavn : locationManager.getAllProviders()) {
       LocationProvider udbyder = locationManager.getProvider(udbyderNavn);
       Location sidsteSted = locationManager.getLastKnownLocation(udbyderNavn);
 
-      textView.append(udbyderNavn+" - tændt: "+locationManager.isProviderEnabled(udbyderNavn)+"\n" +
-          "præcision="+udbyder.getAccuracy()+" " + "strømforbrug="+udbyder.getPowerRequirement()+"\n" +
-          "requiresSatellite="+udbyder.requiresSatellite()+ " requiresNetwork="+udbyder.requiresNetwork()+"\n" +
-          "sidsteSted="+sidsteSted+"\n\n");
+      textView.append(udbyderNavn + " - tændt: " + locationManager.isProviderEnabled(udbyderNavn) + "\n"
+              + "præcision=" + udbyder.getAccuracy() + " " + "strømforbrug=" + udbyder.getPowerRequirement() + "\n"
+              + "requiresSatellite=" + udbyder.requiresSatellite() + " requiresNetwork=" + udbyder.requiresNetwork() + "\n"
+              + "sidsteSted=" + sidsteSted + "\n\n");
     }
 
   }
@@ -54,12 +54,11 @@ public class Eks_stedbestemmelse extends Activity {
     Criteria kriterium = new Criteria();
     kriterium.setAccuracy(Criteria.ACCURACY_FINE);
     String bedsteUdbyder = locationManager.getBestProvider(kriterium, true);
-    Location sted = locationManager.getLastKnownLocation(bedsteUdbyder);
-    
-    //  Bed om opdateringer hvert 60. sekunde eller 20. meter
+
+    //  Bed om opdateringer hvert 60. sekunder eller 20. meter
     locationManager.requestLocationUpdates(bedsteUdbyder, 60000, 20, locationlytter);
 
-    textView.append("========= Bedste udbyder: "+bedsteUdbyder+"\n\n");
+    textView.append("========= Lytter til udbyder: " + bedsteUdbyder + "\n\n");
   }
 
   @Override
@@ -72,7 +71,7 @@ public class Eks_stedbestemmelse extends Activity {
   class Locationlytter implements LocationListener {
 
     public void onLocationChanged(Location sted) {
-      textView.append(sted+"\n\n");
+      textView.append(sted + "\n\n");
       scrollView.scrollTo(0, textView.getHeight()); // rul ned i bunden
     }
 

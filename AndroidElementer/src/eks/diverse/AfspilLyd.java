@@ -1,7 +1,6 @@
 package eks.diverse;
 
 import android.app.Activity;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -11,10 +10,10 @@ import android.widget.Button;
 import dk.nordfalk.android.elementer.R;
 
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
-public class Eks_lyd extends Activity implements OnClickListener {
+public class AfspilLyd extends Activity implements OnClickListener {
 
   Button spilKnap;
   MediaPlayer enLyd;
