@@ -42,6 +42,10 @@ public class BenytListViewMedEgetLayout2 extends Activity implements OnItemClick
     }
     });
 
+    //listView.setDivider(getResources().getDrawable(android.R.drawable.divider_horizontal_dark));
+    // Rød kasse omkring det valgte element
+    listView.setSelector(android.R.drawable.ic_notification_overlay);
+
     setContentView(listView);
   }
 

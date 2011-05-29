@@ -18,7 +18,7 @@ import android.widget.Toast;
  */
 public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
 
-  Button kortvisning, rutevisning, gadevisning;
+  Button kortvisning, rutevisning, gadevisning, dokumentation;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +38,18 @@ public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
     gadevisning.setText("Gadevisning");
     tl.addView(gadevisning);
 
+    dokumentation = new Button(this);
+    dokumentation.setText("Dokumentation om intents");
+    tl.addView(dokumentation);
+
     kortvisning.setOnClickListener(this);
     rutevisning.setOnClickListener(this);
     gadevisning.setOnClickListener(this);
+    dokumentation.setOnClickListener(this);
 
     setContentView(tl);
   }
+
 
   public void onClick(View hvadBlevDerKlikketPå) {
     try {
@@ -53,6 +59,9 @@ public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
       } else if (hvadBlevDerKlikketPå == rutevisning) {
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://maps.google.com/maps?saddr=55.65407,12.493775&daddr=55.66,12.5")));
+      } else if (hvadBlevDerKlikketPå == dokumentation) {
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://developer.android.com/guide/appendix/g-app-intents.html")));
       } else {
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse("google.streetview:cbll=55.65407,12.493775&cbp=1")));

@@ -17,12 +17,17 @@
 
   <TextView
     android:id="@+id/listeelem_overskrift"
-    android:textSize="16dip"
+    android:textSize="20sp"
     android:text="overskrift"
+    android:shadowRadius="5"
+    android:textColor="#ffffff"
+    android:shadowColor="#00ffff"
+    android:shadowDy="3"
+    android:shadowDx="5"
     android:layout_width="fill_parent" android:layout_height="wrap_content"/>
   <TextView
     android:id="@+id/listeelem_beskrivelse"
-    android:textSize="12dip"
+    android:textSize="12sp"
     android:text="beskrivelse"
     android:layout_width="fill_parent" android:layout_height="wrap_content"/>
   </TableLayout>

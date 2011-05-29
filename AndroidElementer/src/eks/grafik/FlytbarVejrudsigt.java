@@ -68,13 +68,12 @@ public class FlytbarVejrudsigt extends Activity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    final TextView intro = new TextView(this);
-    intro.setText("Vent, indlæser vejrudsigt...");
-    intro.setTextSize(36);
-    setContentView(intro);
-
     final MinGrafik minGrafik = new MinGrafik(this);
 
+    final TextView intro = new TextView(this);
+    intro.setTextSize(36);
+    intro.setText("Vent, indlæser vejrudsigt...");
+    setContentView(intro);
 
     new AsyncTask() {
 

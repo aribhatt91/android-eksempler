@@ -17,69 +17,47 @@ import dk.nordfalk.android.elementer.R;
  */
 public class Grafikdemo1 extends Activity {
 
-  Drawable enBil;
-  String navnet = "Jacob";
-  int x = 0;
-  int y = 0;
-  View minGrafik;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    // Indlæs res/drawable/bil.png
-    enBil = getResources().getDrawable(R.drawable.bil);
 
-    minGrafik = new View(this) { // anonym nedarving af View
+    // Indlæs res/drawable/bil.png
+    final Drawable enBil = getResources().getDrawable(R.drawable.bil);
+
+    final Paint tekststreg = new Paint(); // bør egtl. gøres udenfor onDraw
+    tekststreg.setColor(Color.GREEN);
+    tekststreg.setTextSize(24);
+    tekststreg.setStyle(Paint.Style.FILL);
+
+    final Path cirkel = new Path();
+    cirkel.addCircle(150, 150, 100, Direction.CW);
+
+    final Paint cirkelstreg = new Paint();
+    cirkelstreg.setStyle(Paint.Style.STROKE);
+    cirkelstreg.setColor(Color.LTGRAY);
+    cirkelstreg.setStrokeWidth(5);
+
+    final long t0 = System.currentTimeMillis();
+
+    View minGrafik = new View(this) { // anonym nedarving af View
 
       @Override
-      protected void onDraw(Canvas canvas) {
+      protected void onDraw(Canvas c) {
+        int t = (int) (System.currentTimeMillis() - t0)/10; // millisekunder sekunder siden start
+        int x = t * 20/1000; // går fra 0 til 200
+        int y = t * 40/1000; // går fra 0 til 400
+        System.out.println(t +" x="+ x+" y="+y);
 
-        Paint tekstStregtype = new Paint();
-        tekstStregtype.setColor(Color.GREEN);
-        tekstStregtype.setTextSize(24);
-        tekstStregtype.setStyle(Paint.Style.FILL_AND_STROKE);
+        c.drawPath(cirkel, cirkelstreg);
+        c.drawTextOnPath("Hvornår er en Tuborg bedst?", cirkel, x, y-100, tekststreg);
 
-        Path cirkel = new Path();
-        cirkel.addCircle(150, 150, 100, Direction.CW);
-
-        Paint cirkelStregtype = new Paint(Paint.ANTI_ALIAS_FLAG);
-        cirkelStregtype.setStyle(Paint.Style.STROKE);
-        cirkelStregtype.setColor(Color.LTGRAY);
-        cirkelStregtype.setStrokeWidth(3);
-
-        canvas.drawPath(cirkel, cirkelStregtype);
-        canvas.drawTextOnPath(x + "Hvornår er en Tuborg bedst?", cirkel, 0 + x, 20 + x, tekstStregtype);
-
-        canvas.rotate(x * .15f);
-        enBil.setBounds(x, y, x + 50, y + 50 + (int) (10 * Math.sin(x * Math.PI / 5)));
-        enBil.draw(canvas);
-        canvas.drawText(navnet, x, 20 + y, tekstStregtype);
+        c.rotate(t*0.05f, x, y);  // rotér om (x,y)
+        enBil.setBounds(x, y, x+50, y+50+(int) (10*Math.sin(t*Math.PI/1000)));
+        enBil.draw(c);
+        c.drawText("t="+t, x, y-20, tekststreg);
+        if (t < 10000) this.postInvalidateDelayed(10); // tegn igen om 1/100 sekund
       }
     };
-
-    minGrafik.setBackgroundResource(R.drawable.logo);
     setContentView(minGrafik);
-    new Thread(runnable).start();
   }
-
-  Runnable runnable = new Runnable() {
-
-    public void run() {
-      try {
-        Thread.sleep(500); // vent 0.5 sekund
-        int n = 0;
-        while (n < 100) {
-          x = n * 2;
-          y = n * 3;
-          minGrafik.postInvalidate(); // Får Android til at kalde onDraw() på viewet
-          Thread.sleep(100); // vent 0.1 sekund
-          n = n + 1;
-        }
-      } catch (InterruptedException ex) {
-      }
-
-      navnet = "SLUT!";
-      minGrafik.postInvalidate(); // Lad Android gentegne viewet med den nye tekst
-    }
-  };
 }

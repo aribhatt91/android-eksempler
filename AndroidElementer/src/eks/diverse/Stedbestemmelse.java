@@ -5,7 +5,9 @@
 package eks.diverse;
 
 import android.app.Activity;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -13,6 +15,10 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,6 +40,7 @@ public class Stedbestemmelse extends Activity {
     setContentView(scrollView);
     locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
+
     // Løb igennem alle udbyderne (typisk "gps", "network" og "passive")
     for (String udbyderNavn : locationManager.getAllProviders()) {
       LocationProvider udbyder = locationManager.getProvider(udbyderNavn);
@@ -43,6 +50,7 @@ public class Stedbestemmelse extends Activity {
               + "præcision=" + udbyder.getAccuracy() + " " + "strømforbrug=" + udbyder.getPowerRequirement() + "\n"
               + "requiresSatellite=" + udbyder.requiresSatellite() + " requiresNetwork=" + udbyder.requiresNetwork() + "\n"
               + "sidsteSted=" + sidsteSted + "\n\n");
+
     }
 
   }
@@ -59,6 +67,18 @@ public class Stedbestemmelse extends Activity {
     locationManager.requestLocationUpdates(bedsteUdbyder, 60000, 20, locationlytter);
 
     textView.append("========= Lytter til udbyder: " + bedsteUdbyder + "\n\n");
+
+
+    Geocoder geocoder = new Geocoder(this);
+    Location sidsteSted = locationManager.getLastKnownLocation(bedsteUdbyder);
+    if (sidsteSted!=null) try { // forsøg at finde nærmeste adresse
+      List<Address> adresser = geocoder.getFromLocation(sidsteSted.getLatitude(), sidsteSted.getLongitude(), 1);
+      if (adresser!=null && adresser.size()>0) {
+        textView.append("NÆRMESTE ADRESSE: "+adresser.get(0).toString()+ "\n\n");
+      }
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
   }
 
   @Override
