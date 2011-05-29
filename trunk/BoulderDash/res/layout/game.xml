@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FrameLayout 
+<FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/background"
     android:layout_width="fill_parent"
@@ -17,15 +17,15 @@
         android:layout_height="fill_parent"
         android:layout_width="fill_parent"
     >
-        <TextView android:id="@+id/score_board" 
-        android:layout_height="wrap_content" 
-        android:layout_width="fill_parent" 
-        android:background="@color/text_background" 
+        <TextView android:id="@+id/score_board"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:background="@color/text_background"
         android:layout_gravity="center" />
-        
-	</LinearLayout>        
+
+	</LinearLayout>
 	<TableLayout
-			android:gravity="bottom"		
+			android:gravity="bottom"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:stretchColumns="*"
@@ -33,44 +33,44 @@
          	<TableRow
                 android:gravity="center"
             >
-                <org.games.boulderdash.util.controlButton
+                <org.games.boulderdash.ControlButton
                     android:id="@+id/up">
-                  </org.games.boulderdash.util.controlButton>
-                  
+                  </org.games.boulderdash.ControlButton>
+
             </TableRow>
             <TableRow
             android:gravity="center"
             >
-                <org.games.boulderdash.util.controlButton
+                <org.games.boulderdash.ControlButton
                   android:id="@+id/left"
                    >
-                </org.games.boulderdash.util.controlButton>
-                <org.games.boulderdash.util.controlButton
+                </org.games.boulderdash.ControlButton>
+                <org.games.boulderdash.ControlButton
                     android:layout_width="fill_parent"
             		android:layout_height="fill_parent"
             		android:layout_gravity="center"
                     >
-                  </org.games.boulderdash.util.controlButton>
-                <org.games.boulderdash.util.controlButton
+                  </org.games.boulderdash.ControlButton>
+                <org.games.boulderdash.ControlButton
                     android:layout_width="fill_parent"
             		android:layout_height="fill_parent"
             		android:layout_gravity="center"
-                    
+
                     >
-                  </org.games.boulderdash.util.controlButton>
-                <org.games.boulderdash.util.controlButton
+                  </org.games.boulderdash.ControlButton>
+                <org.games.boulderdash.ControlButton
                 	 android:id="@+id/right"
                      >
-                </org.games.boulderdash.util.controlButton>
+                </org.games.boulderdash.ControlButton>
             </TableRow>
             <TableRow
             	android:gravity="center"
             >
-                <org.games.boulderdash.util.controlButton 
+                <org.games.boulderdash.ControlButton
                 	android:id="@+id/down"
                     >
-                </org.games.boulderdash.util.controlButton>
+                </org.games.boulderdash.ControlButton>
             </TableRow>
           </TableLayout>
-     
+
 </FrameLayout>
