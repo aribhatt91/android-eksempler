@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import dk.nordfalk.android.elementer.R;
 
 
 
@@ -116,12 +117,11 @@ class MinGrafik extends View {
  */
 public class Grafikdemo2 extends Activity {
 
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     MinGrafik minGrafik = new MinGrafik(this);
+    minGrafik.setBackgroundResource(R.drawable.logo);
     setContentView(minGrafik);
   }
 }

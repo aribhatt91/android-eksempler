@@ -17,6 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
 
+/**
+ * Eksempel på en broadcast
+ * @author j
+ */
 class InstallationsReciever extends BroadcastReceiver {
 
   @Override
@@ -32,11 +36,13 @@ class InstallationsReciever extends BroadcastReceiver {
     notification.setLatestEventInfo(ctx, i.getAction(), ""+i.getExtras(), aktivitet);
     NotificationManager notificationManager=(NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
     notificationManager.notify(42, notification);
+
   }
 }
 
+
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
 public class BenytReciever extends Activity implements OnClickListener {
@@ -86,9 +92,11 @@ public class BenytReciever extends Activity implements OnClickListener {
     if (hvadBlevDerKlikketPå==registrer) {
       registerReceiver(reciever, lavIntentFilter());
       Toast.makeText(this, "Installer eller fjern nu en app", Toast.LENGTH_LONG).show();
-    } else if (hvadBlevDerKlikketPå==afregistrer) {
+    } else if (hvadBlevDerKlikketPå==afregistrer) try {
       unregisterReceiver(reciever);
       Toast.makeText(this, "Afregistreret", Toast.LENGTH_LONG).show();
+    } catch (Exception e) {
+      Toast.makeText(this, "Fejl: "+e, Toast.LENGTH_LONG).show();
     }
   }
 }

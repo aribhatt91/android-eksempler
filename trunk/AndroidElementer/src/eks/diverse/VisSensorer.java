@@ -63,46 +63,46 @@ public class VisSensorer extends Activity {
     enLyd.release();
   }
 
-  // indre klasse
-  class Sensorlytter implements SensorEventListener {
+// indre klasse
+class Sensorlytter implements SensorEventListener {
 
-    public void onSensorChanged(SensorEvent e) {
-      int sensortype=e.sensor.getType();
+  public void onSensorChanged(SensorEvent e) {
+    int sensortype=e.sensor.getType();
 
-      String måling="Type: "+sensortype+" navn: "+e.sensor.getName()+"\n"
-          +"Udbyder "+e.sensor.getVendor()+"\n"
-          +"Tid: "+e.timestamp+"  præcision: "+e.accuracy;
+    String måling="Type: "+sensortype+" navn: "+e.sensor.getName()+"\n"
+        +"Udbyder "+e.sensor.getVendor()+"\n"
+        +"Tid: "+e.timestamp+"  præcision: "+e.accuracy;
 
-      if (sensortype==Sensor.TYPE_ORIENTATION) {
-        måling=måling+"\n"+e.values[0]+" - vinkel til nord\n"+e.values[1]+" - hældning\n"+e.values[2]+" - krængning";
-      } else {
-        måling=måling+"\n"+e.values[0]+"\n"+e.values[1]+"\n"+e.values[2];
-      }
-
-      if (sensortype==Sensor.TYPE_ACCELEROMETER) {
-        double g=9.80665; // normal-tyngdeaccelerationen - se http://da.wikipedia.org/wiki/Tyngdeacceleration
-        double sum=Math.abs(e.values[0])+Math.abs(e.values[1])+Math.abs(e.values[2]);
-        if (sum>3*g) {
-          if (!enLyd.isPlaying()) enLyd.start(); // BANG!
-          måling=måling+"\nBANG!!";
-        }
-      }
-
-      System.out.println(måling);
-      if (sensortype < senesteMålinger.length)
-        senesteMålinger[sensortype]=måling;
-
-      String tekst=måling;
-
-      // Tilføj alle de forskellige sensorers seneste målinger til teksteo
-      for (String m : senesteMålinger) {
-        tekst=tekst+"\n\n"+m;
-      }
-      textView.setText(tekst);
+    if (sensortype==Sensor.TYPE_ORIENTATION) {
+      måling=måling+"\n"+e.values[0]+" - vinkel til nord\n"+e.values[1]+" - hældning\n"+e.values[2]+" - krængning";
+    } else {
+      måling=måling+"\n"+e.values[0]+"\n"+e.values[1]+"\n"+e.values[2];
     }
 
-    public void onAccuracyChanged(Sensor sensor, int præcision) {
-      // ignorér - men vi er nødt til at have metoden for at implementere interfacet
+    if (sensortype==Sensor.TYPE_ACCELEROMETER) {
+      double g=9.80665; // normal-tyngdeaccelerationen - se http://da.wikipedia.org/wiki/Tyngdeacceleration
+      double sum=Math.abs(e.values[0])+Math.abs(e.values[1])+Math.abs(e.values[2]);
+      if (sum>3*g) {
+        if (!enLyd.isPlaying()) enLyd.start(); // BANG!
+        måling=måling+"\nBANG!!";
+      }
     }
+
+    System.out.println(måling);
+    if (sensortype < senesteMålinger.length)
+      senesteMålinger[sensortype]=måling;
+
+    String tekst=måling;
+
+    // Tilføj alle de forskellige sensorers seneste målinger til teksteo
+    for (String m : senesteMålinger) {
+      tekst=tekst+"\n\n"+m;
+    }
+    textView.setText(tekst);
+  }
+
+  public void onAccuracyChanged(Sensor sensor, int præcision) {
+    // ignorér - men vi er nødt til at have metoden for at implementere interfacet
+  }
   }; // Sensorlytter slut
 }

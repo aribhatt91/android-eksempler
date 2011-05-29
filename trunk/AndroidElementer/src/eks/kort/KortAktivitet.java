@@ -1,11 +1,9 @@
 package eks.kort;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.graphics.Point;
 import java.io.InputStream;
@@ -16,9 +14,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,11 +33,14 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+import com.google.android.maps.Projection;
 import dk.nordfalk.android.elementer.R;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -117,7 +121,7 @@ public class KortAktivitet extends MapActivity {
     myLocationOverlay=new MyLocationOverlay(this, mapView);
     myLocationOverlay.runOnFirstFix(new Runnable() {
 
-      public void run() { // Flyt kort til aktuelt sted når første stedbestemmelse er foretaget
+      public void run() { // Flyt overlejretKort til aktuelt sted når første stedbestemmelse er foretaget
         mapView.getController().animateTo(myLocationOverlay.getMyLocation());
       }
     });
@@ -168,15 +172,12 @@ public class KortAktivitet extends MapActivity {
     menu.add(0, 53, 0, "Rutevejledning");
     menu.add(0, 54, 0, "Start std kortvisning");
     menu.add(0, 55, 0, "Start gadevisning");
+    menu.add(0, 56, 0, "Nærmeste adresse");
     return true;
   }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    GeoPoint her=myLocationOverlay.getMyLocation();
-    if (her==null) {
-      her=valby;
-    }
     switch (item.getItemId()) {
       case 50:
         mapView.setSatellite(!mapView.isSatellite());
@@ -188,6 +189,8 @@ public class KortAktivitet extends MapActivity {
         mapView.setStreetView(!mapView.isStreetView());
         break;
       case 53:
+        GeoPoint her=myLocationOverlay.getMyLocation();
+        if (her==null) her=valby;
         startActivity(new Intent(Intent.ACTION_VIEW,
             Uri.parse("http://maps.google.com/maps?saddr="+her.getLatitudeE6()*MIKRO+","+her.getLongitudeE6()*MIKRO
             +"&daddr="+valgtPunkt.getLatitudeE6()*MIKRO+","+valgtPunkt.getLongitudeE6()*MIKRO)));
@@ -200,6 +203,19 @@ public class KortAktivitet extends MapActivity {
         startActivity(new Intent(Intent.ACTION_VIEW,
             Uri.parse("google.streetview:cbll="+valgtPunkt.getLatitudeE6()*MIKRO+","+valgtPunkt.getLongitudeE6()*MIKRO+"&cbp=1")));
         break;
+      case 56:
+        Geocoder geocoder = new Geocoder(this);
+        try { // forsøg at finde nærmeste adresse - burde ske asynkront
+          List<Address> adresser = geocoder.getFromLocation(
+                  valgtPunkt.getLatitudeE6()*MIKRO,valgtPunkt.getLongitudeE6()*MIKRO, 1);
+          if (adresser!=null && adresser.size()>0) {
+            Toast.makeText(this, adresser.get(0).toString(), Toast.LENGTH_LONG).show();
+          }
+        } catch (Exception ex) {
+          ex.printStackTrace();
+          Toast.makeText(this, ex.toString(), Toast.LENGTH_LONG).show();
+        }
+        break;
       default:
         Toast.makeText(this, "Ikke implementeret", Toast.LENGTH_SHORT).show();
     }
@@ -207,63 +223,46 @@ public class KortAktivitet extends MapActivity {
     return super.onOptionsItemSelected(item);
   }
 
-//  http://geusjuptest.geus.dk/OneGeologyEurope/
-// http://geusjuptest.geus.dk/oneGEconnector/?service=WMS&version=1.1.1&styles=age&request=GetMap&layers=OGE_1M_surface_GeologicUnit&width=500&height=500&bbox=8,54,15.5,58&format=image/png&srs=epsg:4326
+
+  /**
+   * Eksempel på hvordan man overlejrer et kort (kaldet WMS - Web Map Service)
+   */
   public class WMSOverlay extends Overlay {
 
-    GeoPoint øverstVenstre=new GeoPoint(0, 0);
-    GeoPoint nederstHøjre=new GeoPoint(0, 0);
-    Bitmap kort;
-    Paint paint=new Paint();
+    GeoPoint øverstVenstre = new GeoPoint(0, 0);
+    GeoPoint nederstHøjre = new GeoPoint(0, 0);
+    Paint paint = new Paint();
+    Bitmap overlejretKort;
+    boolean iGangMedAtHenteNytKort = false;
 
     public WMSOverlay() {
       paint.setAlpha(128);
       paint.setStyle(Paint.Style.STROKE);
     }
 
-
-    private Rect findKortRekt() {
+    private Rect geoTilSkærmRekt(GeoPoint øverstVenstre, GeoPoint nederstHøjre) {
       Point p1=mapView.getProjection().toPixels(øverstVenstre, null);
       Point p2=mapView.getProjection().toPixels(nederstHøjre, null);
       Rect kortRekt=new Rect(p1.x, p1.y, p2.x, p2.y);
       return kortRekt;
     }
 
-    public Bitmap hentNytKort(int width, int height) {
-      try {
-        // Kilde: http://androidgps.blogspot.com/2008/09/simple-wms-client-for-android.html
-        String url=String.format(Locale.US, "http://iceds.ge.ucl.ac.uk/cgi-bin/icedswms?"
-            +"LAYERS=lights&TRANSPARENT=true&FORMAT=image/png&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application/vnd.ogc.se_inimage&SRS=EPSG:4326"
-            +"&BBOX=%f,%f,%f,%f&WIDTH=%d&HEIGHT=%d",
-            MIKRO*øverstVenstre.getLongitudeE6(), MIKRO*nederstHøjre.getLatitudeE6(),
-            MIKRO*nederstHøjre.getLongitudeE6(), MIKRO*øverstVenstre.getLatitudeE6(), width, height);
-        Log.d("WMSOverlay", "henter "+url);
-        InputStream input=new URL(url).openStream();
-        Bitmap bm=BitmapFactory.decodeStream(input);
-        input.close();
-        return bm;
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
-    }
-
     @Override
     public void draw(Canvas c, MapView mapView, boolean shadow) {
-      super.draw(c, mapView, shadow);
+      //super.draw(c, mapView, shadow);
 
       if (!shadow) {
-        Rect canvasRekt=new Rect(0, 0, c.getWidth(), c.getHeight());
-        Rect kortRekt=findKortRekt();
+        Rect canvasRekt = new Rect(0, 0, c.getWidth(), c.getHeight());
+        Rect kortRekt = geoTilSkærmRekt(øverstVenstre, nederstHøjre);
 
-        if (!kortRekt.contains(canvasRekt.centerX(), canvasRekt.centerY())) {
-          øverstVenstre=mapView.getProjection().fromPixels(0, 0);
-          nederstHøjre=mapView.getProjection().fromPixels(c.getWidth(), c.getHeight());
-          kortRekt=findKortRekt();
-          kort=hentNytKort(c.getWidth(), c.getHeight());
+        if (!kortRekt.contains(canvasRekt.centerX(), canvasRekt.centerY())
+                && !iGangMedAtHenteNytKort) {
+          iGangMedAtHenteNytKort = true;
+          startHentNytKort(mapView.getProjection(), canvasRekt);
+          Toast.makeText(KortAktivitet.this, "Henter nyt overlejret kort...", Toast.LENGTH_SHORT).show();
         }
         //Log.d("WMSOverlay", "tegner "+øvVenPix+kortRekt);
-        c.drawBitmap(kort, canvasRekt, kortRekt, paint);
+        if (overlejretKort!=null) c.drawBitmap(overlejretKort, canvasRekt, kortRekt, paint);
         c.drawRect(kortRekt, paint);
       }
     }
@@ -271,11 +270,49 @@ public class KortAktivitet extends MapActivity {
     @Override
     public boolean onTap(GeoPoint pkt, MapView mv) {
       Toast.makeText(KortAktivitet.this, "Trykkede på "+pkt, Toast.LENGTH_SHORT).show();
-      valgtPunkt=pkt;
+      valgtPunkt = pkt;
       return false;
+    }
+
+    private void startHentNytKort(final Projection projektion, final Rect canvasRekt) {
+      new AsyncTask() {
+        GeoPoint nytØV=projektion.fromPixels(0, 0);
+        GeoPoint nytNH=projektion.fromPixels(canvasRekt.width(), canvasRekt.height());
+        Rect nytKortRekt = geoTilSkærmRekt(nytØV, nytNH);
+
+        @Override
+        protected Object doInBackground(Object... arg0) {
+          try {
+            // Kilde: http://androidgps.blogspot.com/2008/09/simple-wms-client-for-android.html
+            String url=String.format(Locale.US, "http://iceds.ge.ucl.ac.uk/cgi-bin/icedswms?"
+                +"LAYERS=lights&TRANSPARENT=true&FORMAT=image/png&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application/vnd.ogc.se_inimage&SRS=EPSG:4326"
+                +"&BBOX=%f,%f,%f,%f&WIDTH=%d&HEIGHT=%d",
+                MIKRO*nytØV.getLongitudeE6(), MIKRO*nytNH.getLatitudeE6(),
+                MIKRO*nytNH.getLongitudeE6(), MIKRO*nytØV.getLatitudeE6(),
+                canvasRekt.width(), canvasRekt.height());
+
+            Log.d("WMSOverlay", "henter nyt kort fra: "+url);
+            InputStream input=new URL(url).openStream();
+            overlejretKort = BitmapFactory.decodeStream(input);
+            Log.d("WMSOverlay", "færdig med at hente nyt kort");
+            øverstVenstre = nytØV;
+            nederstHøjre = nytNH;
+            mapView.postInvalidate(); // bed om en gentegning af kortet (fra en anden tråd)
+            input.close();
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          iGangMedAtHenteNytKort = false;
+          return null;
+        }
+      }.execute(); // start udførelsen asynkront
     }
   }
 
+
+  /**
+   * Eksempel på at overlejre informationer (ikoner) på et kort
+   */
   public class MitItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
     public ArrayList<OverlayItem> elementer=new ArrayList<OverlayItem>();

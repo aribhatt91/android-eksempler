@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
@@ -35,8 +34,9 @@ class SMSReciever extends BroadcastReceiver {
   }
 }
 
+
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
 public class ModtagSMSer extends Activity implements OnClickListener {
