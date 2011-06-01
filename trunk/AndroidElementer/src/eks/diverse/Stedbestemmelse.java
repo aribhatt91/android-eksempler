@@ -69,9 +69,9 @@ public class Stedbestemmelse extends Activity {
     textView.append("========= Lytter til udbyder: " + bedsteUdbyder + "\n\n");
 
 
-    Geocoder geocoder = new Geocoder(this);
     Location sidsteSted = locationManager.getLastKnownLocation(bedsteUdbyder);
     if (sidsteSted!=null) try { // forsøg at finde nærmeste adresse
+      Geocoder geocoder = new Geocoder(this);
       List<Address> adresser = geocoder.getFromLocation(sidsteSted.getLatitude(), sidsteSted.getLongitude(), 1);
       if (adresser!=null && adresser.size()>0) {
         textView.append("NÆRMESTE ADRESSE: "+adresser.get(0).toString()+ "\n\n");

@@ -8,7 +8,7 @@ import java.io.InputStream;
 import org.xmlpull.v1.XmlPullParser;
 
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
 public class XmlParsning extends Activity {
@@ -18,8 +18,6 @@ public class XmlParsning extends Activity {
     super.onCreate(savedInstanceState);
     TextView tv=new TextView(this);
 
-    String kundenavn=null;
-    double totalKredit=0;
 
     try {
       /*
@@ -32,7 +30,9 @@ public class XmlParsning extends Activity {
       InputStream is=getResources().openRawResource(R.raw.data_xmleksempel);
       // Det kan være nødvendigt at hoppe over BOM mark - se http://android.forums.wordpress.org/topic/xml-pull-error?replies=2
       //is.read(); is.read(); is.read();
-      xpp.setInput(is, "UTF-8"); // evt "ISO-8859-1" 
+      xpp.setInput(is, "UTF-8"); // evt "ISO-8859-1"
+      String kundenavn=null;
+      double totalKredit=0;
 
       int eventType=xpp.getEventType();
       while (eventType!=XmlPullParser.END_DOCUMENT) {
