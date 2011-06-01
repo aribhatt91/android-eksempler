@@ -38,8 +38,8 @@ Motorolas multitouch-eksempel?
     <activity android:name="eks.diverse.AfspilLyd"/>
     <activity android:name="eks.diverse.BenytMenuer"/>
     <activity android:name="eks.intents.BenytIntents"/>
-    <activity android:name="eks.intents.BenytIntentsFraGoogle" android:label="Intents fra Google"/>
-    <activity android:name="eks.intents.BenytIntentsMedResultat"/>
+    <activity android:name="eks.intents.BenytIntentsFraGoogle"/>
+    <activity android:name="eks.intents.BenytIntentsMedResultat" android:configChanges="orientation"/>
     <activity android:name="eks.diverse.BenytHtmlTags"/>
     <activity android:name="eks.diverse.BenytWebView"/>
     <activity android:name="eks.diverse.ProgrammatiskLayout"/>

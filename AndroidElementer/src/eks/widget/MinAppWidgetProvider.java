@@ -3,7 +3,6 @@ package eks.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -18,15 +17,18 @@ public class MinAppWidgetProvider extends AppWidgetProvider {
   private static final String TAG = "MinAppwidgetProvider";
 
   @Override
-  public void onUpdate(Context ctx, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+  public void onUpdate(Context ctx, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
 
     Log.d(TAG, "onUpdate "+Arrays.asList(appWidgetIds));
-    RemoteViews remoteViews = new RemoteViews(ctx.getPackageName(), R.layout.appwidgetlayout);
+    final RemoteViews remoteViews = new RemoteViews(ctx.getPackageName(), R.layout.appwidgetlayout);
 
-    remoteViews.setTextViewText(R.id.etTextView, "Klokken er:\n"+new Date());
+    remoteViews.setTextViewText(R.id.etTextView, "KL er:\n"+new Date());
 
-    // en tilfældig farve!
+    // Vis en tilfældig farve på TextViewet
     int farve = (int) System.currentTimeMillis() | 0xff0000ff;
+    remoteViews.setTextColor(R.id.etTextView, farve);
+
+    // generisk måde at gøre det samme på
     remoteViews.setInt(R.id.etTextView, "setTextColor", farve);
 
 
@@ -38,6 +40,20 @@ public class MinAppWidgetProvider extends AppWidgetProvider {
 
 
     appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+
+    // Lad uret opdatere hvert sekund i det næste minut. Burde gøres fra en service!!!
+    new Thread() {
+      public void run() {
+        for (int i=0; i<60; i++) {
+          remoteViews.setTextViewText(R.id.etTextView, "Klokken er:\n"+new Date());
+          appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+          try {
+            Thread.sleep(1000);
+          } catch (InterruptedException ex) {
+          }
+        }
+      }
+    }.start();
 
   }
 
