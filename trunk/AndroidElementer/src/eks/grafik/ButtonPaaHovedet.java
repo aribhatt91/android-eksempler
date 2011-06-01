@@ -23,7 +23,7 @@ public class ButtonPaaHovedet extends Button {
   @Override
   protected void onDraw(Canvas c) {
     c.save();
-    c.rotate(175, getWidth()/2, getHeight()/2);
+    c.rotate(180, getWidth()/2, getHeight()/2);
     c.scale(0.8f, 1);
     super.onDraw(c);
     c.restore();
