@@ -96,6 +96,7 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
 					AssetFileDescriptor videoAsset = getContentResolver().openAssetFileDescriptor(data.getData(), "r");
 					FileInputStream in = videoAsset.createInputStream();
           Bitmap yourSelectedImage = BitmapFactory.decodeStream(in);
+          // xxx kode mangler
 			}
 
     } catch (IOException e) {

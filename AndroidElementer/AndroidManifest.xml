@@ -130,6 +130,14 @@ Motorolas multitouch-eksempel?
         <meta-data android:name="android.service.wallpaper" android:resource="@xml/levendetapet" />
     </service>
 
+    <receiver android:name="eks.widget.MinAppWidgetProvider" >
+        <intent-filter>
+            <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        </intent-filter>
+        <meta-data android:name="android.appwidget.provider"
+                   android:resource="@xml/min_appwidget_provider" />
+    </receiver>
+
   </application>
 
 
