@@ -15,6 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import eks.grafik.ButtonPaaHovedet;
 
 /**
  *
@@ -38,7 +39,7 @@ public class ProgrammatiskLayout extends Activity implements OnClickListener {
         Paint tekstStregtype = new Paint();
         tekstStregtype.setColor(Color.GREEN);
         tekstStregtype.setTextSize(24);
-        c.rotate(23, getWidth()/2, getHeight()/2); // rotér 23 grader om midten
+        c.rotate(23, 0, 0); // getWidth()/2, getHeight()/2// rotér 23 grader om midten
         c.drawText(teksten, 0, 20, tekstStregtype);
       }
     };
@@ -46,7 +47,7 @@ public class ProgrammatiskLayout extends Activity implements OnClickListener {
     TableLayout tableLayout = new TableLayout(this);
 
     tableLayout.addView(minGrafik);
-    minGrafik.getLayoutParams().height = 200;
+    minGrafik.getLayoutParams().height = 60;
 
     // Lav en række med teksten "Vejret for 2500 Valby" (det første gult)
     TableRow række = new TableRow(this);
@@ -70,7 +71,7 @@ public class ProgrammatiskLayout extends Activity implements OnClickListener {
 
 
 
-    Button annullerKnap = new Button(this);
+    ButtonPaaHovedet annullerKnap = new ButtonPaaHovedet(this);
     annullerKnap.setText("Annuller!");
     tableLayout.addView(annullerKnap);
 

@@ -1,12 +1,8 @@
 package eks.livscyklus;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TableLayout;
-import android.widget.TextView;
-import java.util.ArrayList;
 
 /**
  *
@@ -39,7 +35,7 @@ public class Liv4_bundle extends LogAktivitet {
 
     EditText tv3 = new EditText(this);
     tv3.setText("Et view med id");
-    tv3.setId(1000042); // bare et eller andet 
+    tv3.setId(1000042); // bare et eller andet
 
     TableLayout tl = new TableLayout(this);
     tl.addView(tv1);
@@ -61,6 +57,6 @@ public class Liv4_bundle extends LogAktivitet {
     outState.putInt("etTal", data.etTal++);
     outState.putInt("etAndetTal", data.etAndetTal);
     outState.putStringArrayList("liste", data.liste);
-    //outState.putSerializable("data", data);
+    outState.putSerializable("data", data);
   }
 }

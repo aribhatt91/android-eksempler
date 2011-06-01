@@ -20,6 +20,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,6 +77,8 @@ public class KortAktivitet extends MapActivity {
         if (md5.equals("5fb3a9c4a1ebb853254fa1aebc37a89b")) return "0osb1BfVdrk1u8XJFAcAD0tA5hvcMFVbzInEgNQ";
         // Jacobs officielle nøgle
         if (md5.equals("d9a7385fd19107698149b7576fcb8b29")) return "0osb1BfVdrk3etct3WjSX-gUUayztcGvB51EMwg";
+
+        // indsæt din egen nøgle her:
       }
 
       // Ingen nøgle fundet. Vis hjælp til brugeren
@@ -83,14 +86,17 @@ public class KortAktivitet extends MapActivity {
       dialog.setTitle("Mangler API-nøgle");
       String tekst = "Kør kortet kan vises skal du registrere dig og få en API-nøgle .\n"
           +"Dit MD5 certificat, som er: \n\n"+md5
-          +"\n\nskal registreres på http://code.google.com/android/maps-api-signup.html\n"
+          +"\n\nskal registreres på:\nhttp://code.google.com/android/maps-api-signup.html\n"
           + "Derefter skal begge dele skrives ind i kildekoden ("+this.getClass().getSimpleName()+".java).\n"
-          + "Denne meddelelse er også kommet i loggen så du kan gøre det fra din PC.";
+          + "Denne meddelelse er også kommet i loggen så du kan gøre det fra din PC.\n"
+          + "MD5-certifikatet er også glevet gemt i udklipsholderen på telefonen.";
       Log.w("findApiNøgle", tekst);
+      ClipboardManager clipboardManager= (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+      clipboardManager.setText(md5);
       EditText et=new EditText(this);
       et.setText(tekst);
       dialog.setView(et);
-      dialog.setPositiveButton("Regstér nu", new AlertDialog.OnClickListener() {
+      dialog.setPositiveButton("Regstér nu)", new AlertDialog.OnClickListener() {
         public void onClick(DialogInterface arg0, int arg1) {
           startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://code.google.com/android/maps-api-signup.html")));
         }

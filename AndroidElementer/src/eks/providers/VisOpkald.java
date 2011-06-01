@@ -12,6 +12,7 @@ import android.provider.CallLog.Calls;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import java.text.DateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -33,7 +34,11 @@ public class VisOpkald extends Activity {
 		String[] kolonner = {Calls.DATE, Calls.TYPE, Calls.NUMBER, Calls.CACHED_NAME, Calls.DURATION};
 		String where = Calls.DATE + " >= " + (System.currentTimeMillis()-1000*60*60*24*7); // sidste 7 dage
 
-    Cursor c=cr.query(Calls.CONTENT_URI, kolonner, where, null, Calls.DATE); 
+    textView.append("\nkolonner = "+Arrays.asList(kolonner));
+    textView.append("\nwhere = "+where);
+    textView.append("\nURI = "+Calls.CONTENT_URI);
+    textView.append("\n\n");
+    Cursor c=cr.query(Calls.CONTENT_URI, kolonner, where, null, Calls.DATE);
     DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 
     while (c.moveToNext()) {

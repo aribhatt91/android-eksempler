@@ -1,12 +1,9 @@
 package eks.livscyklus;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Viser hvordan data kan gemmes i en fil. Her bruges serialisering.
