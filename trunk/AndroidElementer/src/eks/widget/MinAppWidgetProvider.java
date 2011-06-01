@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import dk.nordfalk.android.elementer.R;
 import eks.grafik.Tegneprogram;
+import java.util.Arrays;
 import java.util.Date;
 
 
@@ -19,12 +20,13 @@ public class MinAppWidgetProvider extends AppWidgetProvider {
   @Override
   public void onUpdate(Context ctx, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
+    Log.d(TAG, "onUpdate "+Arrays.asList(appWidgetIds));
     RemoteViews remoteViews = new RemoteViews(ctx.getPackageName(), R.layout.appwidgetlayout);
 
     remoteViews.setTextViewText(R.id.etTextView, "Klokken er:\n"+new Date());
 
     // en tilfældig farve!
-    int farve = (int) System.currentTimeMillis();
+    int farve = (int) System.currentTimeMillis() | 0xff0000ff;
     remoteViews.setInt(R.id.etTextView, "setTextColor", farve);
 
 
