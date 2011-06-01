@@ -6,25 +6,20 @@
   android:orientation="vertical"
   android:background="@drawable/logo">
 
-
-<TextView
+<TextView android:id="@+id/etTextView"
+ android:text="Min widget"
  android:paddingTop="5dp"
  android:paddingBottom="5dp"
  android:textSize="20px"
  android:layout_width="wrap_content"
- android:layout_height="wrap_content"
- android:text="Min widget"
- android:id="@+id/etTextView"
-/>
+ android:layout_height="wrap_content" />
 
-<ImageButton
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:adjustViewBounds="true"
-  android:id="@+id/enKnap"
+<ImageButton android:id="@+id/enKnap"
   android:src="@drawable/bil"
+  android:adjustViewBounds="true"
   android:scaleType= "fitCenter"
-  android:background = "@null"/>
-
+  android:background = "@null"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content" />
 
 </LinearLayout>
