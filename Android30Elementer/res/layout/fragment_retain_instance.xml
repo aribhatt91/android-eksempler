@@ -4,9 +4,9 @@
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
-  
+
           http://www.apache.org/licenses/LICENSE-2.0
-  
+
      Unless required by applicable law or agreed to in writing, software
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +16,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
 
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/fragment_retain_instance_msg" />
+        android:text="RetainedFragment er et skjult fragment der huskes fra instans til instans af aktiviteten (fordi vi har kaldt setRetainInstance(true) på den).\nProgressbarens værdi nedenfor styres af RetainedFragment. Prøv at vende skærmen (Ctrl-F11) og se at .\nDu kan nulstille fragmentets arbejde arbejde ved at klikke på knappen." />
 
     <ProgressBar android:id="@+id/progress_horizontal"
         style="?android:attr/progressBarStyleHorizontal"
@@ -39,8 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/restart">
+        android:text="Genstart">
         <requestFocus />
     </Button>
-    
+
 </LinearLayout>
