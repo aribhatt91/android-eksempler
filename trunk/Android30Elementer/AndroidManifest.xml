@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dk.nordfalk.android30.elementer"
-    android:installLocation="preferExternal" c="installér på SD-kort"
     android:versionCode="5"
     android:versionName="1.05">
 
@@ -9,15 +8,20 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application android:debuggable="true" android:icon="@drawable/logo">
-        <!--  android:label="Android30Elementer"
-			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
-			internt i programmet
-		-->
-        <activity android:name="com.example.android.apis.app.FragmentDialog"/>
-        <activity android:name="com.example.android.apis.app.FragmentLayout"/>
-        <activity android:name="com.example.android.apis.app.FragmentLayout$DetailsActivity"/>
-        <activity android:name="com.example.android.apis.app.FragmentListArray"/>
-        <activity android:name="com.example.android.apis.app.FragmentRetainInstance"/>
+
+        <activity android:name="eks.fragmenter.dialoger.BenytDialogFragment"/>
+
+        <activity android:name="eks.fragmenter.backstack.FragmentStakAktivitet"/>
+
+        <activity android:name="eks.fragmenter.layout.LayoutAktivitet"/>
+        <activity android:name="eks.fragmenter.layout.DetaljerAktivitet"/>
+        <activity android:name="eks.fragmenter.layout.ArrayListAktivitet"/>
+
+        <activity android:name="eks.fragmenter.retain_instance.HuskFragmentInstansAktivitet"/>
+
+        <activity android:name="eks.loaders.LoaderThrottle"/>
+        <provider android:name="eks.loaders.SimpleProvider"
+                  android:authorities="eks.loaders.LoaderThrottle" />
 
         <activity android:name="eks.livscyklus.LogFragmentActivity"/>
 
@@ -28,23 +32,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!--  Kommenter følgende ind hvis du er kommet til at autostarte noget der crasher med det samme
-        <activity android:name="dk.nordfalk.aktivitetsliste.AktivitetslisteUdenAuto" android:label="AE (fejlsikker)">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name="dk.nordfalk.aktivitetsliste.AktivitetslisteHierakisk" android:label="AElem hierakisk">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        -->
+
         <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekode">
           <meta-data android:name="web_url" android:value="http://code.google.com/p/android-eksempler/source/browse/trunk/Android30Elementer/" />
         </activity>
+
         <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekodeIWebView"/>
     </application>
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="9"/>
