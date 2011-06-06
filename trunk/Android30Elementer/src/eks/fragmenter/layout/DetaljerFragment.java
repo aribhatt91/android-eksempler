@@ -41,7 +41,8 @@ public class DetaljerFragment extends LogFragment {
     int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getActivity().getResources().getDisplayMetrics());
     text.setPadding(padding, padding, padding, padding);
     scroller.addView(text);
-    text.setText(ShakespeareData.DIALOGUE[getArguments().getInt("index", 0)]);
+    if (getArguments()==null) text.setText("Mangler argumenter - start "+LayoutAktivitet.class.getSimpleName()+" i stedet.");
+    else text.setText(ShakespeareData.DIALOGUE[getArguments().getInt("index", 0)]);
     return scroller;
   }
 
