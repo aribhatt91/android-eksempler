@@ -95,12 +95,13 @@ public class Asynkron2AsyncTask extends Activity implements OnClickListener {
         }
         @Override
         protected void onProgressUpdate(Object... progress) {
-          knap2.setText("i = "+progress[0]);
-          progressBar.setProgress((Integer) progress[0]);
+          int i = (Integer) progress[0];
+          knap2.setText("i = "+i);
+          progressBar.setProgress(i);
         }
         @Override
         protected void onPostExecute(Object result) {
-          knap2.setText( ""+result );
+          knap2.setText( "resultat: "+result );
         }
       }.execute();
 

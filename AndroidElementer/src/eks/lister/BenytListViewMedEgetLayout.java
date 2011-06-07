@@ -19,7 +19,6 @@ public class BenytListViewMedEgetLayout extends Activity implements OnItemClickL
     super.onCreate(savedInstanceState);
 
     String[] lande = { "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal" };
-
     listView= new ListView(this);
     listView.setOnItemClickListener(this);
     listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement,  R.id.listeelem_overskrift, lande ));

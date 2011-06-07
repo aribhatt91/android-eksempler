@@ -20,8 +20,8 @@ public class Liv4_bundle extends LogAktivitet {
     if (savedInstanceState == null) {
       data.liste.add("første element");
     } else {
-      data.etTal = savedInstanceState.getInt("etTal");
-      data.etAndetTal = savedInstanceState.getInt("etAndetTal");
+      data.alder = savedInstanceState.getInt("alder");
+      data.navn = savedInstanceState.getString("navn");
       data.liste = savedInstanceState.getStringArrayList("liste");
       //data = (Programdata) savedInstanceState.getSerializable("data");
       data.liste.add("dataFraForrigeAkrivitet "+data.liste.size());
@@ -54,8 +54,8 @@ public class Liv4_bundle extends LogAktivitet {
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState); // gem indhold for alle views med id
-    outState.putInt("etTal", data.etTal++);
-    outState.putInt("etAndetTal", data.etAndetTal);
+    outState.putInt("alder", data.alder++);
+    outState.putString("navn", data.navn);
     outState.putStringArrayList("liste", data.liste);
     outState.putSerializable("data", data);
   }

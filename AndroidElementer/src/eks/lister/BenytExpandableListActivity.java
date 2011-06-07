@@ -47,7 +47,7 @@ public class BenytExpandableListActivity extends ExpandableListActivity {
     TextView textView=new TextView(this);
 
     // Layout parameters for the ExpandableListView
-    AbsListView.LayoutParams lp=new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 64);
+    AbsListView.LayoutParams lp=new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 64);
 
     textView.setLayoutParams(lp);
     // Center the text vertically
@@ -66,7 +66,7 @@ public class BenytExpandableListActivity extends ExpandableListActivity {
     };
 
   /**
-   * A simple adapter which maintains an ArrayList of photo resource Ids. 
+   * A simple adapter which maintains an ArrayList of photo resource Ids.
    * Each photo is displayed as an image. This adapter supports clearing the
    * list of photos and adding a new photo.
    *
@@ -119,16 +119,16 @@ public class BenytExpandableListActivity extends ExpandableListActivity {
     }
   }
 
-  
- 
-  
+
+
+
   @Override
   public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
       String tekst = children[groupPosition][childPosition];
       Toast.makeText(this, "Klik på gruppe " +groupPosition+" nummer "+childPosition+": "+ tekst, Toast.LENGTH_SHORT).show();
       return true;
   }
-  
+
   @Override
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
     menu.setHeaderTitle("Sample menu");
@@ -155,6 +155,6 @@ public class BenytExpandableListActivity extends ExpandableListActivity {
 
     return false;
   }
-  
-   
+
+
 }

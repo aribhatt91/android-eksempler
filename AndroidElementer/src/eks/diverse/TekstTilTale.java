@@ -19,7 +19,14 @@ public class TekstTilTale extends Activity implements OnClickListener, TextToSpe
   EditText udtaleTekst;
   Button udtalKnap;
   TextToSpeech tts;
+/*
 
+Saluton, mi estas via amiko.
+Kion vi volas fari hodiaŭ?
+
+Tio estas pomo. Kion vi volas fari per la pomo?
+
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
