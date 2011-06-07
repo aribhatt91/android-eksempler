@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package eks.fragmenter.layout.simpel;
+package eks.fragmenter.simpel;
 
 import android.os.Bundle;
 import android.util.Log;
