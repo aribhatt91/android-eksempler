@@ -27,7 +27,7 @@ public class LogFragment extends Fragment {
 
   public LogFragment() {
     instansNummer++;  // tæl nummeret op
-    logNavn = "Fragment "+this.getClass().getSimpleName()+"#"+instansNummer;
+    logNavn = "F "+this.getClass().getSimpleName()+"#"+instansNummer;
   }
 
 
@@ -37,10 +37,10 @@ public class LogFragment extends Fragment {
   @Override
   public void onAttach(Activity activity) {
     super.onAttach(activity);
-    Log.d(logNavn,"onAttach("+activity);    
+    Log.d(logNavn,"onAttach("+activity);
   }
-  
-  
+
+
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     Log.d(logNavn,"onCreate("+savedInstanceState);
@@ -49,14 +49,14 @@ public class LogFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
           Bundle savedInstanceState) {
     Log.d(logNavn,"onCreateView("+savedInstanceState);
-    return super.onCreateView(inflater, container, savedInstanceState);      
+    return super.onCreateView(inflater, container, savedInstanceState);
   }
 
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
     Log.d(logNavn,"onActivityCreated("+savedInstanceState);
   }
-    
+
     /**
    * Når fragmentet er synligty
    */
