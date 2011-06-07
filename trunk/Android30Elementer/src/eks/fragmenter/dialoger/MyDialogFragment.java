@@ -13,12 +13,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import dk.nordfalk.android30.elementer.R;
+import eks.livscyklus.LogDialogFragment;
 
 /**
  *
  * @author j
  */
-public class MyDialogFragment extends DialogFragment {
+public class MyDialogFragment extends LogDialogFragment {
 
   int mNum;
 

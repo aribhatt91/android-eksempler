@@ -90,9 +90,12 @@ public class TitlesFragment extends LogListFragment {
         // with this one inside the frame.
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.details, df);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+        if (index % 3 == 0) ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if (index % 3 == 1) ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        if (index % 3 == 2) ft.setTransition(FragmentTransaction.TRANSIT_NONE);
         // NB! Sæt ind hvis tilbage-knappen skal vise forrige detaljefragment!
-        // ft.addToBackStack(null);
+        ft.addToBackStack(null);
         ft.commit();
         mShownCheckPosition = index;
       }

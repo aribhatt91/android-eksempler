@@ -3,9 +3,6 @@ package eks.livscyklus;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
 /**
  *
@@ -26,7 +23,7 @@ public class LogFragmentActivity extends FragmentActivity {
 
   public LogFragmentActivity() {
     instansNummer++;  // tæl nummeret op
-    logNavn = "Aktivitet "+this.getClass().getSimpleName()+"#"+instansNummer;
+    logNavn = "A "+this.getClass().getSimpleName()+"#"+instansNummer;
   }
 
 

@@ -28,7 +28,7 @@ public class LogDialogFragment extends DialogFragment {
 
   public LogDialogFragment() {
     instansNummer++;  // tæl nummeret op
-    logNavn = "Fragment "+this.getClass().getSimpleName()+"#"+instansNummer;
+    logNavn = "F "+this.getClass().getSimpleName()+"#"+instansNummer;
   }
 
 
