@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package eks.fragmenter.layout.simpel;
+package eks.fragmenter.simpel;
 
 import android.os.Bundle;
 import android.util.Log;
