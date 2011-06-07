@@ -34,7 +34,7 @@ public class AktivitetslisteHierakisk extends Activity implements ExpandableList
       {"Fluffy", "Snuggles"},
       {"Goldy", "Bubbles"}
     };
-    
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -74,14 +74,14 @@ public class AktivitetslisteHierakisk extends Activity implements ExpandableList
 
     //boolean startetFraLauncher = getIntent().getCategories().contains(Intent.CATEGORY_LAUNCHER);
     boolean startetFraLauncher = Intent.ACTION_MAIN.equals(getIntent().getAction());
-    
+
     autostart=new CheckBox(this);
     autostart.setText("Start automatisk aktivitet næste gang");
     autostart.setChecked(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("autostart", false));
     if (autostart.isChecked() && startetFraLauncher) {
       onItemClick(listView, null, position, 0); // hack - 'klik' på listen!
     }
-    
+
     TableLayout linearLayout=new TableLayout(this);
     linearLayout.addView(autostart);
     linearLayout.addView(listView);
@@ -89,13 +89,13 @@ public class AktivitetslisteHierakisk extends Activity implements ExpandableList
     setContentView(linearLayout);
   }
 
-  
+
   @Override
   public void onStart() {
     super.onStart();
     if (onStartTæller++ == 2) Toast.makeText(this, "Vink: Tryk længe på et punkt for at se kildekoden", Toast.LENGTH_LONG).show();
   }
-  
+
   public void onItemClick(AdapterView<?> listView, View v, int position, long id) {
     ActivityInfo aktivitetsinfo=aktiviteter[position];
     Toast.makeText(this, "Starter "+aktivitetsinfo.name, Toast.LENGTH_SHORT).show();
@@ -115,7 +115,7 @@ public class AktivitetslisteHierakisk extends Activity implements ExpandableList
     TextView textView=new TextView(this);
 
     // Layout parameters for the ExpandableListView
-    AbsListView.LayoutParams lp=new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 64);
+    AbsListView.LayoutParams lp=new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 64);
 
     textView.setLayoutParams(lp);
     // Center the text vertically
@@ -127,7 +127,7 @@ public class AktivitetslisteHierakisk extends Activity implements ExpandableList
 
 
   /**
-   * A simple adapter which maintains an ArrayList of photo resource Ids. 
+   * A simple adapter which maintains an ArrayList of photo resource Ids.
    * Each photo is displayed as an image. This adapter supports clearing the
    * list of photos and adding a new photo.
    *
@@ -180,9 +180,9 @@ public class AktivitetslisteHierakisk extends Activity implements ExpandableList
     }
   }
 
-  
- 
-  
+
+
+
   @Override
   public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
       String tekst = klasser[groupPosition][childPosition];

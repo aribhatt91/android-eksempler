@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Programdata implements Serializable
 {
-	public int etTal;
-	public int etAndetTal;
+	public int alder;
+	public String navn;
 
   public ArrayList<String> liste = new ArrayList<String>();
 
@@ -14,6 +14,6 @@ public class Programdata implements Serializable
 
 	public String toString()
 	{
-		return "Data: etTal="+etTal+" liste="+liste;
+		return "Data: etTal="+alder+" liste="+liste;
 	}
 }

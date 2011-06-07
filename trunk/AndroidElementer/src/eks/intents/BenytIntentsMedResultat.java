@@ -103,7 +103,7 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent resultat) {
-    resultatTextView.setText(requestCode + " gav resultat " + resultCode + " og data:\n" + resultat);
+    resultatTextView.append("\n\n"+requestCode + " gav resultat " + resultCode + " og data:\n" + resultat);
     System.out.println(requestCode + " gav resultat " + resultCode + " med data=" + resultat);
 
     resultatHolder.removeAllViews();

@@ -13,10 +13,10 @@ import android.widget.EditText;
  *             android:configChanges="orientation|keyboardHidden"
  *
  * Men det er normalt bedre at huske data_liste når skærmen vendes.
- * 
+ *
  * Det gøres ved at definere onRetainNonConfigurationInstance(),
  * som systemet vil kalde på den gamle aktivitet når telefonen vendes.
- * 
+ *
  * Derefter kan man i onCreate() i den nye aktivitet kalde
  * getLastNonConfigurationInstance() som vil give objektet tilbage
  *
@@ -48,19 +48,5 @@ public class Liv3_nonConfigurationInstance extends LogAktivitet {
   @Override
   public Object onRetainNonConfigurationInstance() {
     return data;
-  }
-
-  @Override
-  protected void onRestoreInstanceState (Bundle savedInstanceState) {
-     // her genskabes indhold for alle views med id
-    super.onRestoreInstanceState(savedInstanceState);
-  }
-
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState); // gem indhold for alle views med id
-    outState.putInt("etTal", data.etTal++);
-    outState.putInt("etAndetTal", data.etAndetTal);
-    outState.putStringArrayList("liste", data.liste);
   }
 }
