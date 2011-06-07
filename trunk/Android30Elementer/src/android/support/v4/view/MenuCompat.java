@@ -40,11 +40,26 @@ public class MenuCompat {
     }
 
     /**
+     * Interface implementation for devices with at least v11 APIs.
+     */
+    static class HoneycombMenuVersionImpl implements MenuVersionImpl {
+        @Override
+        public boolean setShowAsAction(MenuItem item, int actionEnum) {
+            MenuCompatHoneycomb.setShowAsAction(item, actionEnum);
+            return true;
+        }
+    }
+
+    /**
      * Select the correct implementation to use for the current platform.
      */
     static final MenuVersionImpl IMPL;
     static {
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+            IMPL = new HoneycombMenuVersionImpl();
+        } else {
             IMPL = new BaseMenuVersionImpl();
+        }
     }
 
     // -------------------------------------------------------------------
