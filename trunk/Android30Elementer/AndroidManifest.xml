@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dk.nordfalk.android30.elementer"
-    android:versionCode="5"
-    android:versionName="1.05">
+    android:versionCode="6"
+    android:versionName="1.06">
 
     <!-- tilladelser -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application android:debuggable="true" android:icon="@drawable/logo">
+        <activity android:name="eks.fragmenter.simpel.ArrayListAktivitet"/>
 
         <activity android:name="eks.fragmenter.dialoger.BenytDialogFragment"/>
 
@@ -15,7 +16,6 @@
 
         <activity android:name="eks.fragmenter.layout.LayoutAktivitet"/>
         <activity android:name="eks.fragmenter.layout.DetaljerAktivitet"/>
-        <activity android:name="eks.fragmenter.layout.ArrayListAktivitet"/>
 
         <activity android:name="eks.fragmenter.retain_instance.HuskFragmentInstansAktivitet"/>
 
