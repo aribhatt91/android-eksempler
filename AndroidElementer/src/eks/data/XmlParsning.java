@@ -12,7 +12,7 @@ import org.xmlpull.v1.XmlPullParser;
  * @author Jacob Nordfalk
  */
 public class XmlParsning extends Activity {
-
+//Ku også parse f.eks http://www.dmi.dk/dmi/rss-nyheder.xml ?
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
