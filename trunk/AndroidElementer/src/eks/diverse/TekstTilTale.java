@@ -20,7 +20,10 @@ public class TekstTilTale extends Activity implements OnClickListener, TextToSpe
   Button udtalKnap;
   TextToSpeech tts;
 /*
-
+http://stackoverflow.com/questions/3058919/text-to-speechtts-android
+http://developer.android.com/resources/samples/ApiDemos/src/com/example/android/apis/app/TextToSpeechActivity.html
+http://developer.android.com/resources/articles/tts.html
+http://android-coding.blogspot.com/2011/05/voice-recognizer-text-to-speech.html
 Saluton, mi estas via amiko.
 Kion vi volas fari hodiaŭ?
 

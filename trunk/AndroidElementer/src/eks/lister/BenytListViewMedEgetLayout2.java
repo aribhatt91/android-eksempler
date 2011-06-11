@@ -1,9 +1,7 @@
 package eks.lister;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,8 +29,8 @@ public class BenytListViewMedEgetLayout2 extends Activity implements OnItemClick
     listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement,  R.id.listeelem_overskrift, lande )
     {
       @Override
-      public View getView(int position, View convertView, ViewGroup parent) {
-        View view = super.getView(position, convertView, parent);
+      public View getView(int position, View cachedView, ViewGroup parent) {
+        View view = super.getView(position, cachedView, parent);
         TextView listeelem_beskrivelse = (TextView) view.findViewById(R.id.listeelem_beskrivelse);
         listeelem_beskrivelse.setText("Land nummer "+position);
         ImageView listeelem_billede = (ImageView) view.findViewById(R.id.listeelem_billede);

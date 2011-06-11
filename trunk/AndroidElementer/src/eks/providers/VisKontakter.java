@@ -45,8 +45,7 @@ public class VisKontakter extends Activity {
       String id=cursor.getString(0);
       String navn=cursor.getString(1);
       String epost=cursor.getString(2);
-      String tlf=cursor.getString(2);
-      textView.append(navn+"  "+epost+" "+tlf+"\n");
+      textView.append(id+" "+navn+"  "+epost+"\n");
     }
     cursor.close();
 

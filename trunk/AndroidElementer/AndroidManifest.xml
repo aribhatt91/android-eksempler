@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="dk.nordfalk.android.elementer"
   android:installLocation="preferExternal" c="installér på SD-kort"
-  android:versionCode="11"
-  android:versionName="1.11">
+  android:versionCode="12"
+  android:versionName="1.12">
 <!--
 Mangler eksempler på
 - services
@@ -66,6 +66,7 @@ Motorolas multitouch-eksempel?
 
     <activity android:name="eks.data.JsonParsning"/>
     <activity android:name="eks.data.XmlParsning"/>
+    <activity android:name="eks.data.BenytSQLite"/>
     <activity android:name="eks.vejret.ByvejrAktivitet"/>
     <activity android:name="eks.vejret.Indstillinger"/>
     <activity android:name="eks.asynkron.Asynkron1Thread"/>
@@ -138,6 +139,8 @@ Motorolas multitouch-eksempel?
                    android:resource="@xml/min_appwidget_provider" />
     </receiver>
 
+    <activity android:name="eks.youtube.YoutubeRssVisning"/>
+    <activity android:name="eks.youtube.BenytVideoView"/>
   </application>
 
 
