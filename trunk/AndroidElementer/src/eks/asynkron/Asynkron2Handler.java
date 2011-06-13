@@ -10,12 +10,12 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
 public class Asynkron2Handler extends Activity implements OnClickListener{
 
-  Handler handler = new Handler(); // brug i stedet for runOnUiThread();
+  Handler handler = new Handler(); // brug handler i stedet for runOnUiThread();
   Runnable opgave;
   Button knap1, knap2, knapAnnuller;
 

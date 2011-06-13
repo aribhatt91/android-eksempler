@@ -3,6 +3,7 @@ package eks.livscyklus;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 /**
  *
@@ -27,20 +28,27 @@ public class Liv4_bundle extends LogAktivitet {
       data.liste.add("dataFraForrigeAkrivitet "+data.liste.size());
     }
 
-    EditText tv1 = new EditText(this);
-    tv1.setText( data.toString() );
+    // Koden herunder er overflødig i nedarvinger, men forstørrer ikke,
+    // så længe nedarvingerne også kalder setContentView()
+    TextView tv = new TextView(this);
+    tv.setText( "Redigér i de to tekstfelter. "
+      +"Det med id vil få genskabt sine data når telefonen vendes (i emulatoren tryk Ctrl-F11)\n"
+      + data.toString() );
 
-    EditText tv2 = new EditText(this);
-    tv2.setText("Et view uden id");
+    EditText et1 = new EditText(this);
+    et1.setText("Et view uden id");
 
-    EditText tv3 = new EditText(this);
-    tv3.setText("Et view med id");
-    tv3.setId(1000042); // bare et eller andet
+    EditText et2 = new EditText(this);
+    et2.setText("Et view med id");
+    // De Views der har et ID bliver gemt i onSaveInstanceState()
+    // og genskabt i onRestoreInstanceState().
+    // I XML-layout-filer sættes attributten ID med f.eks. android:id="@+id/navn"
+    et2.setId(1000042); // bare et eller andet
 
     TableLayout tl = new TableLayout(this);
-    tl.addView(tv1);
-    tl.addView(tv2);
-    tl.addView(tv3);
+    tl.addView(tv);
+    tl.addView(et1);
+    tl.addView(et2);
     setContentView(tl);
   }
 

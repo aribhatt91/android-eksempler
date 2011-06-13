@@ -7,5 +7,5 @@
     <TextView android:textSize="12sp" android:layout_height="wrap_content" android:id="@+id/youtube_beskrivelse" android:text="beskrivelse" android:layout_width="fill_parent" android:layout_weight="1"></TextView>
     <ImageButton android:layout_height="wrap_content" android:id="@+id/youtube_infoknap" android:layout_width="wrap_content" android:src="@android:drawable/ic_media_next"></ImageButton>
   </TableRow>
-  <VideoView android:id="@+id/youtube_videoView" android:layout_width="fill_parent" android:layout_height="wrap_content"></VideoView>
+  <VideoView android:id="@+id/youtube_videoView" android:layout_gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content"></VideoView>
 </TableLayout>

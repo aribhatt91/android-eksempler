@@ -3,9 +3,6 @@ package eks.livscyklus;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TextView;
 
 /**
  *
@@ -37,29 +34,7 @@ public class LogAktivitet extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     Log.d(logNavn,"onCreate("+savedInstanceState);
-
-    // Koden herunder er overflødig i nedarvinger, men forstørrer ikke,
-    // så længe nedarvingerne også kalder setContentView()
-    TextView tv1 = new TextView(this);
-    tv1.setText( "Redigér i de to tekstfelter. Det med id vil få genskabt sine data når telefonen vendes (i emulatoren tryk Ctrl-F11)" );
-
-    EditText tv2 = new EditText(this);
-    tv2.setText("Et view uden id");
-
-    EditText tv3 = new EditText(this);
-    tv3.setText("Et view med id");
-    // De Views der har et ID bliver gemt i onSaveInstanceState()
-    // og genskabt i onRestoreInstanceState().
-    // I layout-XML-filer sættes ID med attributten android:id="@+id/navn"
-    tv3.setId(1000042); // bare et eller andet
-
-    TableLayout tl = new TableLayout(this);
-    tl.addView(tv1);
-    tl.addView(tv2);
-    tl.addView(tv3);
-    setContentView(tl);
   }
 
   /**
@@ -109,7 +84,7 @@ public class LogAktivitet extends Activity {
     Log.d(logNavn,"onRetainNonConfigurationInstance()");
     return super.onRetainNonConfigurationInstance();
   }
- 
+
   /**
    * Når aktiviteten skal gemme sin tilstand, fordi den måske bliver dræbt herefter.
    * Kaldes ikke hvis aktiviteten afslutter normalt (bruger trykker tilbage-knap eller
@@ -117,7 +92,7 @@ public class LogAktivitet extends Activity {
    */
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    Log.d(logNavn,"onSaveInstanceState("+outState);
+    Log.d(logNavn,"onSaveInstanceState(outState="+outState);
   }
 
   /**
@@ -130,5 +105,4 @@ public class LogAktivitet extends Activity {
      // her genskabes indhold for alle views med id
     super.onRestoreInstanceState(savedInstanceState);
   }
-
 }
