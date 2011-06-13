@@ -40,9 +40,9 @@ public class Liv3_nonConfigurationInstance extends LogAktivitet {
       data.liste.add("dataFraForrigeAkrivitet "+data.liste.size());
     }
 
-    EditText tv = new EditText(this);
-    tv.setText( data.toString() );
-    setContentView(tv);
+    EditText et = new EditText(this);
+    et.setText( data.toString() );
+    setContentView(et);
   }
 
   @Override

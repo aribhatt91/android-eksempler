@@ -2,10 +2,14 @@ package eks.youtube;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -49,7 +53,24 @@ public class BenytVideoView extends Activity implements OnClickListener {
     videoView.start();
 
     findViewById(R.id.youtube_infoknap).setOnClickListener(this);
+  }
 
+  /**
+   * For at få videoen til at spille jævnt håndterer vi selv vending af skærmen
+   * Se evt http://stackoverflow.com/questions/4434027/android-videoview-orientation-change-with-buffered-video
+   * @param newConfig
+   */
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+
+    System.out.println("newConfig = " + newConfig);
+    boolean fuldskærm = (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
+
+    beskrivelse.setVisibility(fuldskærm ? View.GONE : View.VISIBLE);
+    overskrift.setVisibility(fuldskærm ? View.GONE : View.VISIBLE);
+    findViewById(R.id.youtube_infoknap).setVisibility(fuldskærm ? View.GONE : View.VISIBLE);
+    videoView.getParent().requestLayout();
   }
 
   public void onClick(View arg0) {

@@ -30,9 +30,9 @@ public class Liv2_gemIFil extends LogAktivitet {
       System.out.println("programdata oprettet fra ny: "+ex);
     }
 
-    EditText tv = new EditText(this);
-    tv.setText( data.toString() );
-    setContentView(tv);
+    EditText et = new EditText(this);
+    et.setText( data.toString() );
+    setContentView(et);
   }
 
   @Override

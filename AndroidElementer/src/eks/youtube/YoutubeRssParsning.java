@@ -24,6 +24,11 @@ import java.util.HashSet;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+
+/**
+ * Hjælpeklasse til at holde info om et klip
+ * @author Jacob Nordfalk
+ */
 class Klip {
 
   String id;
@@ -45,98 +50,75 @@ class Klip {
 /**
  * Parser youtubes RSS-feed v.hj.a. XMLPull
  * Se også http://code.google.com/intl/da/apis/youtube/2.0/developers_guide_protocol_api_query_parameters.html#keysp
+ *
+ * Inspiration til eksemplet er fundet på
+ * http://www.ibm.com/developerworks/opensource/library/x-android/index.html
+ * http://code.google.com/p/feedgoal/
+ * http://stackoverflow.com/questions/5162088/video-view-not-playing-youtube-video
+ *
  * @author Jacob Nordfalk
  */
-public class YoutubeRssVisning extends Activity implements OnItemClickListener {
+public class YoutubeRssParsning extends Activity implements OnItemClickListener {
 
-  ListView listView;
+  /** Listen over videoklip - en klassevariabel der kun indlæses én gang */
   static ArrayList<Klip> videoklip = new ArrayList<Klip>();
-  KlipAdapter adapter = new KlipAdapter();
-
-  public class KlipAdapter extends BaseAdapter {
-    public int getCount() { return videoklip.size(); }
-
-    public Object getItem(int position) { return position; } // bruges ikke
-    public long getItemId(int position) { return position; } // bruges ikke
-
-    public View getView(int position, View view, ViewGroup parent) {
-      if (view==null) view = getLayoutInflater().inflate(R.layout.listeelement, null);
-      TextView listeelem_overskrift = (TextView) view.findViewById(R.id.listeelem_overskrift);
-      TextView listeelem_beskrivelse = (TextView) view.findViewById(R.id.listeelem_beskrivelse);
-      ImageView listeelem_billede = (ImageView) view.findViewById(R.id.listeelem_billede);
-
-      Klip k = videoklip.get(position);
-      listeelem_overskrift.setText( k.titel );
-      listeelem_beskrivelse.setText( k.egenskaber.toString() );
-      listeelem_billede.setImageBitmap(k.thumb);
-
-      return view;
-    }
-  }
-
-  public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-    Klip k = videoklip.get(position);
-    Intent i = new Intent(this, BenytVideoView.class);
-    i.putExtra("titel", k.titel);
-    i.putExtra("beskrivelse", k.egenskaber.get("content"));
-    i.putExtra("videourl", k.videourl);
-    i.putExtra("link", k.link);
-    startActivity(i);
-  }
+  KlipAsyncTask klipAsyncTask = new KlipAsyncTask();
+  ListView listView;
+  KlipAdapter klipadapter = new KlipAdapter();
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    listView = new ListView(this);
-    listView.setAdapter(adapter);
-    listView.setOnItemClickListener(this);
-    setContentView(listView);
-
     Cache.init(getCacheDir().getPath());
-    new AsyncTask() {
-      @Override
-      protected Object doInBackground(Object... arg0) {
-        try {
+    if (videoklip.isEmpty()) klipAsyncTask.execute();
 
-          //InputStream is = new URL("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads").openStream();
-          //InputStream is = getResources().openRawResource(R.raw.youtubefeed_eksempel);
-          InputStream is = new FileInputStream(Cache.hentFil("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads", false));
-          ArrayList<Klip> klip = parseRss(is);
-          is.close();
-          videoklip.addAll(klip);
+    listView = new ListView(this);
+    listView.setAdapter(klipadapter);
+    listView.setOnItemClickListener(this);
+    listView.setId(117); // sæt ID så tilstand blir gemt ved skærmvending
+    setContentView(listView);
+  }
+
+
+
+  public class KlipAsyncTask extends AsyncTask {
+    @Override
+    protected Object doInBackground(Object... arg0) {
+      try {
+
+        //InputStream is = new URL("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads").openStream();
+        //InputStream is = getResources().openRawResource(R.raw.youtubefeed_eksempel);
+        InputStream is = new FileInputStream(Cache.hentFil("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads", false));
+        ArrayList<Klip> klip = parseRss(is);
+        is.close();
+        videoklip.addAll(klip);
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+      publishProgress();
+      for (Klip k : videoklip) {
+        try {
+          System.out.println(k.titel + " "+k.videourl);
+          System.out.println("k.thumburl = "+k.thumburl);
+          if (k.thumburl!=null)
+            k.thumb = BitmapFactory.decodeFile(Cache.hentFil(k.thumburl, true));
+          publishProgress();
         } catch (Exception ex) {
           ex.printStackTrace();
         }
-        publishProgress();
-        for (Klip k : videoklip) {
-          try {
-            System.out.println(k.titel + " "+k.videourl);
-            System.out.println("k.thumburl = "+k.thumburl);
-            if (k.thumburl!=null)
-              k.thumb = BitmapFactory.decodeFile(Cache.hentFil(k.thumburl, true));
-            publishProgress();
-          } catch (Exception ex) {
-            ex.printStackTrace();
-          }
-        }
-        return "ok";
       }
+      return "ok";
+    }
 
-      @Override
-      protected void onProgressUpdate(Object... values) {
-        System.out.println("onProgressUpdate()");
-        adapter.notifyDataSetChanged();
-      }
-    }.execute();
+    @Override
+    protected void onProgressUpdate(Object... values) {
+      //System.out.println("onProgressUpdate()");
+      klipadapter.notifyDataSetChanged();
+    }
   }
 
-  /*
-  http://www.ibm.com/developerworks/opensource/library/x-android/index.html
-  http://code.google.com/p/feedgoal/
-  http://gdata.youtube.com/feeds/api/users/jn0101/uploads
-  http://stackoverflow.com/questions/5162088/video-view-not-playing-youtube-video
-   */
+  /** Parser et youtube RSS feed og returnerer det som en liste at Klip-objekter */
   private static ArrayList<Klip> parseRss(InputStream is) throws Exception {
     XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
     XmlPullParser p = factory.newPullParser();
@@ -153,9 +135,9 @@ public class YoutubeRssVisning extends Activity implements OnItemClickListener {
       if (eventType != XmlPullParser.START_TAG) {
         continue;
       }
-      String ns = p.getPrefix();
+      String ns = p.getPrefix(); // namespace
       String tag = p.getName();
-      System.err.println("<" + ns + ":" + tag + ">");
+      //System.err.println("<" + ns + ":" + tag + ">");
 
       if (ns == null) { // normalt tag, uden namespace
         if ("entry".equals(tag)) {
@@ -198,11 +180,44 @@ public class YoutubeRssVisning extends Activity implements OnItemClickListener {
           //if ("240".equals(p.getAttributeValue(null, "width"))) {
           //}
             k.thumburl = p.getAttributeValue(null, "url");
-            System.err.println("XX k.thumburl = "+k.thumburl);
+            //System.err.println("XX k.thumburl = "+k.thumburl);
         }
 
       }
     }
     return film;
+  }
+
+
+
+  public class KlipAdapter extends BaseAdapter {
+    public int getCount() { return videoklip.size(); }
+
+    public Object getItem(int position) { return position; } // bruges ikke
+    public long getItemId(int position) { return position; } // bruges ikke
+
+    public View getView(int position, View view, ViewGroup parent) {
+      if (view==null) view = getLayoutInflater().inflate(R.layout.listeelement, null);
+      TextView listeelem_overskrift = (TextView) view.findViewById(R.id.listeelem_overskrift);
+      TextView listeelem_beskrivelse = (TextView) view.findViewById(R.id.listeelem_beskrivelse);
+      ImageView listeelem_billede = (ImageView) view.findViewById(R.id.listeelem_billede);
+
+      Klip k = videoklip.get(position);
+      listeelem_overskrift.setText( k.titel );
+      listeelem_beskrivelse.setText( k.egenskaber.toString() );
+      listeelem_billede.setImageBitmap(k.thumb);
+
+      return view;
+    }
+  }
+
+  public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+    Klip k = videoklip.get(position);
+    Intent i = new Intent(this, BenytVideoView.class);
+    i.putExtra("titel", k.titel);
+    i.putExtra("beskrivelse", k.egenskaber.get("content"));
+    i.putExtra("videourl", k.videourl);
+    i.putExtra("link", k.link);
+    startActivity(i);
   }
 }
