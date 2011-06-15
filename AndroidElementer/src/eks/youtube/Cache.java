@@ -55,15 +55,15 @@ public class Cache {
     } else {
       log("Kontakter " + url);
 
-      HttpURLConnection forb = (HttpURLConnection) new URL(url).openConnection();
+      HttpURLConnection httpForb = (HttpURLConnection) new URL(url).openConnection();
 
       if (cacheFil.exists()) {
-        forb.setIfModifiedSince(cacheFil.lastModified());
+        httpForb.setIfModifiedSince(cacheFil.lastModified());
       }
 
-      forb.setConnectTimeout(10000); // 10 sekunder
+      httpForb.setConnectTimeout(10000); // 10 sekunder
       try {
-        forb.connect();
+        httpForb.connect();
       } catch (IOException e) {
         if (!cacheFil.exists()) {
           throw e; // netværksfejl - og vi har ikke en lokal kopi
@@ -71,25 +71,25 @@ public class Cache {
         log("Netværksfejl, men der er cachet kopi i " + cacheFilnavn);
         return cacheFilnavn;
       }
-      int responseCode = forb.getResponseCode();
+      int responseCode = httpForb.getResponseCode();
       if (responseCode == 400 && cacheFil.exists()) {
-        forb.disconnect();
+        httpForb.disconnect();
         log("Netværksfejl, men der er cachet kopi i " + cacheFilnavn);
         return cacheFilnavn;
       }
       if (responseCode == 304) {
-        forb.disconnect();
+        httpForb.disconnect();
         log("Der er cachet kopi i " + cacheFilnavn);
         return cacheFilnavn;
       }
       if (responseCode != 200) {
-        throw new IOException(responseCode + " " + forb.getResponseMessage() + " for " + url);
+        throw new IOException(responseCode + " " + httpForb.getResponseMessage() + " for " + url);
       }
 
       log("Henter " + url + " og gemmer i " + cacheFilnavn);
       boolean ok = false;
       try {
-        InputStream is = forb.getInputStream();
+        InputStream is = httpForb.getInputStream();
         FileOutputStream fos = new FileOutputStream(cacheFilnavn);
         kopierOgLuk(is, fos);
         ok = true;
@@ -97,7 +97,7 @@ public class Cache {
         if (!ok) cacheFil.delete(); // gem ikke halve filer!
       }
 
-      long lastModified = forb.getHeaderFieldDate("last-modified", nu);
+      long lastModified = httpForb.getHeaderFieldDate("last-modified", nu);
       log("last-modified" + new Date(lastModified));
       cacheFil.setLastModified(lastModified);
 

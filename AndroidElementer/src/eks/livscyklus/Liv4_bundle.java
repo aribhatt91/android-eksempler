@@ -57,6 +57,7 @@ public class Liv4_bundle extends LogAktivitet {
   protected void onRestoreInstanceState (Bundle savedInstanceState) {
      // her genskabes indhold for alle views med id
     super.onRestoreInstanceState(savedInstanceState);
+    // data.navn = savedInstanceState.getString("navn");
   }
 
   @Override

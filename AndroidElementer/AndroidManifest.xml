@@ -11,6 +11,10 @@ Mangler eksempler på
 - animationer
 Motorolas multitouch-eksempel?
 
+
+Aktivitetsliste:
+ - Sorter efter pakkenavn
+ - Sorter efter klassenavn
  -->
 
   <!-- tilladelser -->
@@ -107,6 +111,8 @@ Motorolas multitouch-eksempel?
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+
+
     <!--  Kommenter følgende ind hvis du er kommet til at autostarte noget der crasher med det samme
     <activity android:name="dk.nordfalk.aktivitetsliste.AktivitetslisteUdenAuto" android:label="AE (fejlsikker)">
         <intent-filter>

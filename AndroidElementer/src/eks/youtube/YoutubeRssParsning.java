@@ -17,6 +17,7 @@ import android.widget.TextView;
 import dk.nordfalk.android.elementer.R;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -70,6 +71,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+    // Burde bruge SD-kortet
     Cache.init(getCacheDir().getPath());
     if (videoklip.isEmpty()) klipAsyncTask.execute();
 
@@ -125,7 +127,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
     p.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
     p.setInput(is, null);
     HashSet egenskaber = new HashSet(Arrays.asList("published", "updated", "content"));
-    ArrayList<Klip> film = new ArrayList<Klip>();
+    ArrayList<Klip> liste = new ArrayList<Klip>();
     Klip k = new Klip();
     while (true) {
       int eventType = p.next();
@@ -142,7 +144,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
       if (ns == null) { // normalt tag, uden namespace
         if ("entry".equals(tag)) {
           k = new Klip();
-          film.add(k);
+          liste.add(k);
         } else if ("id".equals(tag)) {
           k.id = p.nextText();
         } else if ("title".equals(tag)) {
@@ -185,7 +187,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
 
       }
     }
-    return film;
+    return liste;
   }
 
 
