@@ -14,6 +14,7 @@ import android.text.util.Linkify;
 import android.text.util.Linkify.TransformFilter;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
@@ -42,17 +43,21 @@ public class VisKildekode extends Activity {
       Toast.makeText(ctx, "Kunne ikke læse web_url fra manifestet. Eksterne henvisninger er muligvis forkerte", Toast.LENGTH_LONG).show();
     }
   }
-  
- 
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     findWebUrl(this);
-    
-    
+
+
     TextView tv = new TextView(this);
-    setContentView(tv);
-    
+    ScrollView sv = new ScrollView(this);
+    sv.addView(tv);
+    setContentView(sv);
+    tv.setId(1006); // Sæt views ID så scrollposition gemmes ved skærmvending
+    sv.setId(1007); // Sæt views ID så scrollposition gemmes ved skærmvending
+
     Intent kaldtMedIntent=getIntent();
     if (kaldtMedIntent.getExtras()!=null) filnavn=kaldtMedIntent.getExtras().getString(KILDEKODE_FILNAVN);
 
@@ -75,10 +80,10 @@ public class VisKildekode extends Activity {
             }
         };
 
-        Linkify.addLinks(tv, Pattern.compile("import (android.*?);"), null, null, filter);          
+        Linkify.addLinks(tv, Pattern.compile("import (android.*?);"), null, null, filter);
         Linkify.addLinks(tv, Pattern.compile("import (java.*?);"), null, null, filter);
       }
-/*        
+/*
       {
         TransformFilter filter = new TransformFilter() {
             public final String transformUrl(final Matcher match, String url) {
@@ -86,7 +91,7 @@ public class VisKildekode extends Activity {
             }
         };
 
-        Linkify.addLinks(tv, Pattern.compile("android.R.layout.([a-z0-9_]+)"), null, null, filter);          
+        Linkify.addLinks(tv, Pattern.compile("android.R.layout.([a-z0-9_]+)"), null, null, filter);
       }*/
 
       {
@@ -97,7 +102,7 @@ public class VisKildekode extends Activity {
             }
         };
 
-        Linkify.addLinks(tv, Pattern.compile("import (android.*?);"), null, null, filter);          
+        Linkify.addLinks(tv, Pattern.compile("import (android.*?);"), null, null, filter);
         Linkify.addLinks(tv, Pattern.compile("import (java.*?);"), null, null, filter);
       }
 
@@ -108,9 +113,9 @@ public class VisKildekode extends Activity {
             }
         };
 
-        Linkify.addLinks(tv, Pattern.compile("android.R.(layout.[a-z0-9_]+)"), null, null, filter);          
-        Linkify.addLinks(tv, Pattern.compile("android.R.(xml.[a-z0-9_]+)"), null, null, filter);          
-        Linkify.addLinks(tv, Pattern.compile("android.R.(anim.[a-z0-9_]+)"), null, null, filter);          
+        Linkify.addLinks(tv, Pattern.compile("android.R.(layout.[a-z0-9_]+)"), null, null, filter);
+        Linkify.addLinks(tv, Pattern.compile("android.R.(xml.[a-z0-9_]+)"), null, null, filter);
+        Linkify.addLinks(tv, Pattern.compile("android.R.(anim.[a-z0-9_]+)"), null, null, filter);
       }
 
       TransformFilter filter = new TransformFilter() {
@@ -119,19 +124,18 @@ public class VisKildekode extends Activity {
               return HS_PRÆFIX+ "res/" + match.group(1).replace('.', '/')+".xml";
           }
       };
-      Linkify.addLinks(tv, Pattern.compile("R.(layout.[a-z0-9_]+)"), null, null, filter);          
-      Linkify.addLinks(tv, Pattern.compile("R.(xml.[a-z0-9_]+)"), null, null, filter);          
-      Linkify.addLinks(tv, Pattern.compile("R.(anim.[a-z0-9_]+)"), null, null, filter);          
+      Linkify.addLinks(tv, Pattern.compile("R.(layout.[a-z0-9_]+)"), null, null, filter);
+      Linkify.addLinks(tv, Pattern.compile("R.(xml.[a-z0-9_]+)"), null, null, filter);
+      Linkify.addLinks(tv, Pattern.compile("R.(anim.[a-z0-9_]+)"), null, null, filter);
 
-      setContentView(tv);
     } catch (IOException ex) {
       Logger.getLogger(VisKildekode.class.getName()).log(Level.SEVERE, null, ex);
       tv.setText("Kunne ikke åbne "+filnavn+":\n" +ex);
     }
 
-    
+
     if (onCreateTæller++ == 2) Toast.makeText(this, "Tryk MENU for andre visninger", Toast.LENGTH_LONG).show();
-    
+
   }
 
   @Override
@@ -167,6 +171,6 @@ public class VisKildekode extends Activity {
     } catch (IOException ex) {
       Logger.getLogger(VisKildekode.class.getName()).log(Level.SEVERE, null, ex);
     }
-    
+
   }
 }

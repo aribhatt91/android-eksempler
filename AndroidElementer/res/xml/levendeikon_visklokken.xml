@@ -4,5 +4,5 @@
   android:minWidth="146dp"
   android:minHeight="146dp"
   android:updatePeriodMillis="1800000"
-  android:initialLayout="@layout/appwidgetlayout">
+  android:initialLayout="@layout/levendeikon_visklokken">
 </appwidget-provider>

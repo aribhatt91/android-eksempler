@@ -104,12 +104,48 @@ Aktivitetsliste:
     <activity android:name="eks.youtube.YoutubeRssParsning"/>
     <activity android:name="eks.youtube.BenytVideoView" android:configChanges="orientation"/>
 
+
+
+    <!-- Levende baggrund på hjemmeskærmen der viser en esperanto-stjerne -->
+    <service android:name="eks.levendebaggrund.Esperantotapet"
+        android:permission="android.permission.BIND_WALLPAPER">
+      <intent-filter>
+        <action android:name="android.service.wallpaper.WallpaperService" />
+      </intent-filter>
+      <meta-data android:name="android.service.wallpaper"
+                 android:resource="@xml/levendebaggrund_esperanto" />
+    </service>
+
+
+    <!-- Levende ikon på hjemmeskærmen der viser hvad klokken er -->
+    <receiver android:name="eks.levendeikon.VisKlokkenIkon" >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider"
+                 android:resource="@xml/levendeikon_visklokken" />
+    </receiver>
+
+    <activity android:name="eks.ufaerdigt.GestureDetectorDemo"/>
+
+
+
+
+
+
+
     <!-- aktivitet som kan ses fra startskærmen -->
     <activity android:name="dk.nordfalk.aktivitetsliste.Aktivitetsliste" android:label="AndroidElementer">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
+    </activity>
+
+    <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekodeIWebView"/>
+    <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekode">
+      <!-- bruges af metoden VisKildekode.findWebUrl() -->
+      <meta-data android:name="web_url" android:value="http://code.google.com/p/android-eksempler/source/browse/trunk/AndroidElementer/" />
     </activity>
 
 
@@ -128,29 +164,6 @@ Aktivitetsliste:
     </activity>
     -->
 
-    <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekode">
-      <!-- bruges af metoden VisKildekode.findWebUrl() -->
-      <meta-data android:name="web_url" android:value="http://code.google.com/p/android-eksempler/source/browse/trunk/AndroidElementer/" />
-    </activity>
-
-    <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekodeIWebView"/>
-
-
-    <service android:name="eks.levendetapet.Esperantotapet"
-        android:permission="android.permission.BIND_WALLPAPER">
-        <intent-filter>
-            <action android:name="android.service.wallpaper.WallpaperService" />
-        </intent-filter>
-        <meta-data android:name="android.service.wallpaper" android:resource="@xml/levendetapet" />
-    </service>
-
-    <receiver android:name="eks.widget.MinAppWidgetProvider" >
-        <intent-filter>
-            <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-        </intent-filter>
-        <meta-data android:name="android.appwidget.provider"
-                   android:resource="@xml/min_appwidget_provider" />
-    </receiver>
 
   </application>
 
