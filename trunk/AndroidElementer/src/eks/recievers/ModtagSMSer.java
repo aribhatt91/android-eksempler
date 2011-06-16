@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import eks.grafik.Tegneprogram;
 
 
 
@@ -29,6 +30,10 @@ class SMSReciever extends BroadcastReceiver {
         SmsMessage part=SmsMessage.createFromPdu((byte[]) pdu);
         Toast.makeText(ctx, "SMS fra "+part.getDisplayOriginatingAddress(), Toast.LENGTH_SHORT).show();
         Toast.makeText(ctx, part.getDisplayMessageBody(), Toast.LENGTH_LONG).show();
+
+        Intent i = new Intent(ctx,ModtagSMSer.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(i);
       }
     }
   }
@@ -42,7 +47,7 @@ class SMSReciever extends BroadcastReceiver {
 public class ModtagSMSer extends Activity implements OnClickListener {
 
   Button registrer, afregistrer;
-  static SMSReciever reciever=new SMSReciever();
+  static SMSReciever reciever;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,7 @@ public class ModtagSMSer extends Activity implements OnClickListener {
 
     TableLayout tl=new TableLayout(this);
     TextView tv=new TextView(this);
-    tv.setText("Broadcastreciever der opdager når der modages SMSer");
+    tv.setText("Broadcastreciever der opdager når der modages SMSer.\nDu kan evt I emulatoren kan du starte DDMS");
     tl.addView(tv);
 
     registrer=new Button(this);
@@ -68,13 +73,17 @@ public class ModtagSMSer extends Activity implements OnClickListener {
   }
 
   public void onClick(View hvadBlevDerKlikketPå) {
-    if (hvadBlevDerKlikketPå==registrer) {
+    if (hvadBlevDerKlikketPå==registrer && reciever==null) {
+      reciever = new SMSReciever();
       IntentFilter filter=new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-      registerReceiver(reciever, filter);
+      getApplicationContext().registerReceiver(reciever, filter);
       Toast.makeText(this, "Send nu en SMS til telefonen", Toast.LENGTH_LONG).show();
-    } else if (hvadBlevDerKlikketPå==afregistrer) {
-      unregisterReceiver(reciever);
+    } else if (hvadBlevDerKlikketPå==afregistrer && reciever != null) {
+      getApplicationContext().unregisterReceiver(reciever);
+      reciever = null;
       Toast.makeText(this, "Afregistreret", Toast.LENGTH_LONG).show();
+    } else {
+      Toast.makeText(this, "Recieveren er allerede "+(reciever==null?"afregistreret":"registreret"), Toast.LENGTH_LONG).show();
     }
   }
 }

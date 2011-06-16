@@ -14,7 +14,7 @@ import dk.nordfalk.android.elementer.R;
 
 public class BenytVideoView extends Activity implements OnClickListener {
 
-  //private String url = "rtsp://v3.cache3.c.youtube.com/CigLENy73wIaHwnMkA0Ndzke5BMYESARFEgGUgx1c2VyX3VwbG9hZHMM/0/0/0/video.3gp";
+  //private String url = "rtsp://v3.cache3.c.youtube_videoview.com/CigLENy73wIaHwnMkA0Ndzke5BMYESARFEgGUgx1c2VyX3VwbG9hZHMM/0/0/0/video.3gp";
   //private String videoUrl = "file:///sdcard/DCIM/100MEDIA/VIDEO0025.3gp";
 
   private String videoUrl = "http://javabog.dk/billeder/AK2008/15022008012.mp4";
@@ -26,7 +26,7 @@ public class BenytVideoView extends Activity implements OnClickListener {
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
-    setContentView(R.layout.youtube);
+    setContentView(R.layout.youtube_videoview);
 
     videoView = (VideoView) findViewById(R.id.youtube_videoView);
     overskrift = (TextView) findViewById(R.id.youtube_overskrift);

@@ -55,7 +55,7 @@ class Klip {
  * Inspiration til eksemplet er fundet på
  * http://www.ibm.com/developerworks/opensource/library/x-android/index.html
  * http://code.google.com/p/feedgoal/
- * http://stackoverflow.com/questions/5162088/video-view-not-playing-youtube-video
+ * http://stackoverflow.com/questions/5162088/video-view-not-playing-youtube_videoview-video
  *
  * @author Jacob Nordfalk
  */
@@ -89,7 +89,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
     protected Object doInBackground(Object... arg0) {
       try {
 
-        //InputStream is = new URL("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads").openStream();
+        //InputStream is = new URL("http://gdata.youtube_videoview.com/feeds/api/users/Esperantoestas/uploads").openStream();
         //InputStream is = getResources().openRawResource(R.raw.youtubefeed_eksempel);
         InputStream is = new FileInputStream(Cache.hentFil("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads", false));
         ArrayList<Klip> klip = parseRss(is);
@@ -120,7 +120,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
     }
   }
 
-  /** Parser et youtube RSS feed og returnerer det som en liste at Klip-objekter */
+  /** Parser et youtube_videoview RSS feed og returnerer det som en liste at Klip-objekter */
   private static ArrayList<Klip> parseRss(InputStream is) throws Exception {
     XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
     XmlPullParser p = factory.newPullParser();
