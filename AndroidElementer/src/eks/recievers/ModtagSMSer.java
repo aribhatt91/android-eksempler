@@ -55,7 +55,7 @@ public class ModtagSMSer extends Activity implements OnClickListener {
 
     TableLayout tl=new TableLayout(this);
     TextView tv=new TextView(this);
-    tv.setText("Broadcastreciever der opdager når der modages SMSer.\nDu kan evt I emulatoren kan du starte DDMS");
+    tv.setText("Broadcastreciever der opdager når der modages SMSer.\nDu kan sende SMSer til emulatoren ved at starte DDMS og vælge fanen 'Emulator Control'.");
     tl.addView(tv);
 
     registrer=new Button(this);
@@ -77,13 +77,13 @@ public class ModtagSMSer extends Activity implements OnClickListener {
       reciever = new SMSReciever();
       IntentFilter filter=new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
       getApplicationContext().registerReceiver(reciever, filter);
-      Toast.makeText(this, "Send nu en SMS til telefonen", Toast.LENGTH_LONG).show();
+      Toast.makeText(this, "Send nu en SMS til telefonen", Toast.LENGTH_SHORT).show();
     } else if (hvadBlevDerKlikketPå==afregistrer && reciever != null) {
       getApplicationContext().unregisterReceiver(reciever);
       reciever = null;
-      Toast.makeText(this, "Afregistreret", Toast.LENGTH_LONG).show();
+      Toast.makeText(this, "Afregistreret", Toast.LENGTH_SHORT).show();
     } else {
-      Toast.makeText(this, "Recieveren er allerede "+(reciever==null?"afregistreret":"registreret"), Toast.LENGTH_LONG).show();
+      Toast.makeText(this, "Recieveren er allerede "+(reciever==null?"afregistreret":"registreret"), Toast.LENGTH_SHORT).show();
     }
   }
 }
