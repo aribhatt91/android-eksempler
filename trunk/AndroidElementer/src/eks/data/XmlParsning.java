@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 import dk.nordfalk.android.elementer.R;
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import org.xmlpull.v1.XmlPullParser;
 
@@ -29,7 +30,14 @@ public class XmlParsning extends Activity {
 
       InputStream is=getResources().openRawResource(R.raw.data_xmleksempel);
       // Det kan være nødvendigt at hoppe over BOM mark - se http://android.forums.wordpress.org/topic/xml-pull-error?replies=2
-      //is.read(); is.read(); is.read();
+      //is.read(); //is.read(); //is.read();  - dette virker kun hvis der ALTID er en BOM
+
+      // Hop over BOM - hvis den er der!
+      is = new BufferedInputStream(is);  // bl.a. FileInputStream understøtter ikke mark, så brug BufferedInputStream
+      is.mark(1); // vi har faktisk kun brug for at søge én byte tilbage
+      if (is.read() == 0xef) { is.read(); is.read(); } // Der var en BOM! Læs de sidste 2 byte
+      else is.reset(); // Der var ingen BOM - hop tilbage til start
+
       xpp.setInput(is, "UTF-8"); // evt "ISO-8859-1"
       String kundenavn=null;
       double totalKredit=0;
