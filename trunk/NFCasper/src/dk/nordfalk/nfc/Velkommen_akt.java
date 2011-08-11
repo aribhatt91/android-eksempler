@@ -33,7 +33,7 @@ public class Velkommen_akt extends Activity
         setContentView(sv);
 
         tv.setText("Velkommen til Caspers fanTAGstiske program!\n");
-        tv.append("Få nu knoglen hen til et tag.\n");
+        tv.append("Få nu knoglen hen til et tag...\n");
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
 
