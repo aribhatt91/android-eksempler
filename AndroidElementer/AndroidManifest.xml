@@ -38,7 +38,7 @@ Aktivitetsliste:
     <activity android:name="eks.intents.BenytIntents"/>
     <activity android:name="eks.intents.BenytIntentsFraGoogle"/>
     <activity android:name="eks.intents.BenytIntentsMedResultat" android:screenOrientation="portrait"/>
-    <!-- Fanger URLer der starter med http://javabog.dk/OOP/ og viser dem -->
+    <!-- Denne aktivitet fanger browsning af URLer der starter med http://javabog.dk/OOP/ -->
     <activity android:name="eks.intents.FangBrowseIntent">
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>
@@ -127,9 +127,6 @@ Aktivitetsliste:
     </receiver>
 
     <activity android:name="eks.ufaerdigt.GestureDetectorDemo"/>
-
-
-
 
 
 

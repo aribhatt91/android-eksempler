@@ -97,9 +97,11 @@ public class BenytIntents extends Activity implements OnClickListener {
     Intent dialIntent = new Intent(Intent.ACTION_DIAL, nummerUri);
     startActivity(dialIntent);
 
+    // fade til den næste aktivitet for sjov
+    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
     // eller blot:
     //     startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+nummer)));
-
   }
 
   /**

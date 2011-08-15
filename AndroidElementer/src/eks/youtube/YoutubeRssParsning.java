@@ -26,6 +26,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 
+
 /**
  * Hjælpeklasse til at holde info om et klip
  * @author Jacob Nordfalk
@@ -55,7 +56,7 @@ class Klip {
  * Inspiration til eksemplet er fundet på
  * http://www.ibm.com/developerworks/opensource/library/x-android/index.html
  * http://code.google.com/p/feedgoal/
- * http://stackoverflow.com/questions/5162088/video-view-not-playing-youtube_videoview-video
+ * http://stackoverflow.com/questions/5162088/video-view-not-playing-youtube-video
  *
  * @author Jacob Nordfalk
  */
@@ -89,7 +90,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
     protected Object doInBackground(Object... arg0) {
       try {
 
-        //InputStream is = new URL("http://gdata.youtube_videoview.com/feeds/api/users/Esperantoestas/uploads").openStream();
+        //InputStream is = new URL("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads").openStream();
         //InputStream is = getResources().openRawResource(R.raw.youtubefeed_eksempel);
         InputStream is = new FileInputStream(Cache.hentFil("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads", false));
         ArrayList<Klip> klip = parseRss(is);
@@ -120,7 +121,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
     }
   }
 
-  /** Parser et youtube_videoview RSS feed og returnerer det som en liste at Klip-objekter */
+  /** Parser et youtube RSS feed og returnerer det som en liste at Klip-objekter */
   private static ArrayList<Klip> parseRss(InputStream is) throws Exception {
     XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
     XmlPullParser p = factory.newPullParser();
@@ -149,20 +150,29 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
           k.id = p.nextText();
         } else if ("title".equals(tag)) {
           k.titel = p.nextText();
+          System.out.println("=============== "+k.titel+" ================");
         } else if ("link".equals(tag)) {
           if ("text/html".equals(p.getAttributeValue(null, "type"))) {
-            k.link = p.getAttributeValue(null, "href");
+            if (k.link==null)  // Den første plejer at være bedst
+              k.link = p.getAttributeValue(null, "href");
           }
         } else if (egenskaber.contains(tag)) {
           k.egenskaber.put(tag, p.nextText());
         }
       } else if ("media".equals(ns)) {// namespace media:
         if ("content".equals(tag)) {
+
+          for (int i=0; i<p.getAttributeCount(); i++) System.out.print(p.getAttributeName(i)+":"+p.getAttributePrefix(i)+"="+p.getAttributeValue(i)+" ");
+          System.out.println();
+
           String type = p.getAttributeValue(null, "type");
           if ("application/x-shockwave-flash".equals(type)) {
             continue; // drop flash
           }
-          k.videourl = p.getAttributeValue(null, "url");
+
+          //System.out.println(type  + " "+p.getAttributeValue(null, "url"));
+          if (k.videourl ==null) // Den første plejer at være bedst
+            k.videourl = p.getAttributeValue(null, "url");
 
           /*
           String format = xpp.getAttributeValue(null,"format");
@@ -206,7 +216,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
 
       Klip k = videoklip.get(position);
       listeelem_overskrift.setText( k.titel );
-      listeelem_beskrivelse.setText( k.egenskaber.toString() );
+      listeelem_beskrivelse.setText( k.egenskaber.get("content") );
       listeelem_billede.setImageBitmap(k.thumb);
 
       return view;
