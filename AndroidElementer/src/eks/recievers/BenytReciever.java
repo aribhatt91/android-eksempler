@@ -78,12 +78,12 @@ public class BenytReciever extends Activity implements OnClickListener {
    */
   public IntentFilter lavIntentFilter() {
     IntentFilter i=new IntentFilter();
-    i.addCategory("android.intent.category.DEFAULT");
-    i.addAction("android.intent.action.PACKAGE_CHANGED");
-    i.addAction("android.intent.action.PACKAGE_REMOVED");
-    i.addAction("android.intent.action.PACKAGE_ADDED");
-    i.addAction("android.intent.action.PACKAGE_INSTALL");
-    i.addAction("android.intent.action.PACKAGE_REPLACED");
+    i.addCategory(Intent.CATEGORY_DEFAULT);
+    i.addAction(Intent.ACTION_PACKAGE_CHANGED);
+    i.addAction(Intent.ACTION_PACKAGE_REMOVED);
+    i.addAction(Intent.ACTION_PACKAGE_ADDED);
+    i.addAction(Intent.ACTION_PACKAGE_INSTALL);
+    i.addAction(Intent.ACTION_PACKAGE_REPLACED);
     i.addDataScheme("package");
     return i;
   }
