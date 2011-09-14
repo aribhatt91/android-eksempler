@@ -91,8 +91,8 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
       try {
 
         //InputStream is = new URL("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads").openStream();
-        //InputStream is = getResources().openRawResource(R.raw.youtubefeed_eksempel);
-        InputStream is = new FileInputStream(Cache.hentFil("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads", false));
+        //InputStream is = new FileInputStream(Cache.hentFil("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads", false));
+        InputStream is = getResources().openRawResource(R.raw.youtubefeed_eksempel);
         ArrayList<Klip> klip = parseRss(is);
         is.close();
         videoklip.addAll(klip);

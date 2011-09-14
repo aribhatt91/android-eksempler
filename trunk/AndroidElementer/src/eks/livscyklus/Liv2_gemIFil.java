@@ -3,6 +3,7 @@ package eks.livscyklus;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
+import dk.nordfalk.android.elementer.R;
 import java.io.IOException;
 
 /**
@@ -16,6 +17,10 @@ public class Liv2_gemIFil extends LogAktivitet {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+
+//    getAssets().open("benytwebview.html");
+//    getResources().openRawResource(R.raw.jeg_bremser_haardt);
 
     try {
       data=(Programdata) Serialisering.hent(getCacheDir()+"/programdata.ser");

@@ -25,6 +25,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -169,6 +170,9 @@ public class ByvejrAktivitet extends Activity {
     Log.d(TAG, "locationManager.getBestProvider() gav " + stedProvider);
 
     hentBilleder(false, Integer.MAX_VALUE);  // vis gamle billeder hvis de findes
+
+
+
 
     if (Indstillinger.brugPosVedStart(this)) {
       if (Indstillinger.ventPåPos(this)) {

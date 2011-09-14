@@ -28,6 +28,10 @@ public class Cache {
   private static String lagerDir;
   public static int byteHentetOverNetværk = 0;
 
+  private static void log(String tekst) {
+    Log.d("Cache",tekst);
+  }
+
   public static void init(String dir) {
     if (lagerDir != null) {
       return; // vi skifter ikke lager midt i det hele
@@ -153,8 +157,4 @@ public class Cache {
     return sb.toString();
   }
 */
-
-  private static void log(String tekst) {
-    Log.d("Cache",tekst);
-  }
 }

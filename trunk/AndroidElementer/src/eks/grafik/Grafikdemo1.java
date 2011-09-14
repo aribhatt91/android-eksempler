@@ -56,6 +56,7 @@ public class Grafikdemo1 extends Activity {
         enBil.draw(c);
         c.drawText("t="+t, x, y-20, tekststreg);
         if (t < 10000) this.postInvalidateDelayed(10); // tegn igen om 1/100 sekund
+        else finish(); // afslut aktiviteten hvis der er gået 10 sekunder
       }
     };
     setContentView(minGrafik);
