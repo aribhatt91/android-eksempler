@@ -168,7 +168,9 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     String filnavn=aktiviteter[position].name.replace('.', '/')+".java";
     Toast.makeText(this, "Viser "+filnavn, Toast.LENGTH_LONG).show();
 
-    startActivity(new Intent(this, VisKildekode.class).putExtra(VisKildekode.KILDEKODE_FILNAVN, "src/"+filnavn));
+    Intent i = new Intent(this, VisKildekode.class);
+    i.putExtra(VisKildekode.KILDEKODE_FILNAVN, "src/"+filnavn);
+    startActivity(i);
 
     return true;
   }

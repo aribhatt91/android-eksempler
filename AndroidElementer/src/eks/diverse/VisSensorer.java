@@ -19,12 +19,12 @@ import dk.nordfalk.android.elementer.R;
  *
  * @author Jacob Nordfalk
  */
-public class VisSensorer extends Activity {
+public class VisSensorer extends Activity implements SensorEventListener {
 
   TextView textView;
   String[] senesteMålinger=new String[12];
   SensorManager sensorManager;
-  Sensorlytter sensorlytter=new Sensorlytter();
+  //Sensorlytter sensorlytter=new Sensorlytter();
   MediaPlayer enLyd;
 
   @Override
@@ -34,37 +34,39 @@ public class VisSensorer extends Activity {
     ScrollView scrollView=new ScrollView(this);
     scrollView.addView(textView);
     setContentView(scrollView);
-    enLyd=MediaPlayer.create(this, R.raw.jeg_bremser_haardt);
     sensorManager=(SensorManager) getSystemService(SENSOR_SERVICE);
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    /*
+
     Sensor orienteringsSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
     if (orienteringsSensor != null) {
-    sensorManager.registerListener(sensorlytter, orienteringsSensor, SensorManager.SENSOR_DELAY_GAME);
+      sensorManager.registerListener(this, orienteringsSensor, SensorManager.SENSOR_DELAY_UI);
     } else {
-    textView.setText("Fejl. Din telefon har ikke en orienteringssensor");
+      textView.setText("Fejl. Din telefon har ikke en orienteringssensor");
     }
-     */
+
     for (Sensor sensor : sensorManager.getSensorList(Sensor.TYPE_ALL)) {
       System.out.println("sensor="+sensor);
-      sensorManager.registerListener(sensorlytter, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+      sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
     }
+
+    enLyd=MediaPlayer.create(this, R.raw.jeg_bremser_haardt);
   }
 
   @Override
   protected void onPause() {
     super.onPause();
     System.out.println("nu blev onPause() kaldt");
-    sensorManager.unregisterListener(sensorlytter);
+    sensorManager.unregisterListener(this);
     enLyd.release();
   }
 
 // indre klasse
-class Sensorlytter implements SensorEventListener {
+//class Sensorlytter implements SensorEventListener {
 
   public void onSensorChanged(SensorEvent e) {
     int sensortype=e.sensor.getType();
@@ -104,5 +106,5 @@ class Sensorlytter implements SensorEventListener {
   public void onAccuracyChanged(Sensor sensor, int præcision) {
     // ignorér - men vi er nødt til at have metoden for at implementere interfacet
   }
-  }; // Sensorlytter slut
+ // }; // Sensorlytter slut
 }

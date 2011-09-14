@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +30,7 @@ import java.io.IOException;
  */
 public class BenytIntentsMedResultat extends Activity implements OnClickListener {
 
-  Button vælgKontakt, vælgFlereKontakter, vælgBillede, tagBillede, dokumentation;
+  Button vælgKontakt, vælgKontaktFraBillede, vælgFlereKontakter, vælgBillede, tagBillede, dokumentation;
   TextView resultatTextView;
   LinearLayout resultatHolder;
   private int VÆLG_KONTAKT = 1111;
@@ -45,22 +46,34 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
 
     vælgKontakt = new Button(this);
     vælgKontakt.setText("Vælg kontakt");
+    vælgKontakt.setOnClickListener(this);
     tl.addView(vælgKontakt);
+
+
+    vælgKontaktFraBillede = new Button(this);
+    vælgKontaktFraBillede.setText("Vælg kontakt fra billede");
+    vælgKontaktFraBillede.setOnClickListener(this);
+    tl.addView(vælgKontaktFraBillede);
+
 
     vælgFlereKontakter = new Button(this);
     vælgFlereKontakter.setText("Vælg flere kontakter\nVirker KUN PÅ HTC");
+    vælgFlereKontakter.setOnClickListener(this);
     tl.addView(vælgFlereKontakter);
 
     vælgBillede = new Button(this);
     vælgBillede.setText("Vælg billede fra galleri");
+    vælgBillede.setOnClickListener(this);
     tl.addView(vælgBillede);
 
     tagBillede = new Button(this);
     tagBillede.setText("Tag billede med kameraet");
+    tagBillede.setOnClickListener(this);
     tl.addView(tagBillede);
 
     dokumentation = new Button(this);
     dokumentation.setText("Dokumentation om intents");
+    dokumentation.setOnClickListener(this);
     tl.addView(dokumentation);
 
     resultatTextView = new TextView(this);
@@ -69,25 +82,23 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
     resultatHolder = new LinearLayout(this);
     tl.addView(resultatHolder);
 
-    vælgKontakt.setOnClickListener(this);
-    vælgBillede.setOnClickListener(this);
-    tagBillede.setOnClickListener(this);
-    dokumentation.setOnClickListener(this);
-
-    setContentView(tl);
+    ScrollView sv = new ScrollView(this);
+    sv.addView(tl);
+    setContentView(sv);
   }
 
   public void onClick(View hvadBlevDerKlikketPå) {
     try {
       if (hvadBlevDerKlikketPå == vælgKontakt) {
         // Se også http://stackoverflow.com/questions/2507898/how-to-pick-a-image-from-gallery-sd-card-for-my-app-in-android
-        //Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-
         Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
         startActivityForResult(i, VÆLG_KONTAKT);
 
-      } else if (hvadBlevDerKlikketPå == vælgFlereKontakter) {
+      } else if (hvadBlevDerKlikketPå == vælgKontaktFraBillede) {
+        Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(i, VÆLG_KONTAKT);
 
+      } else if (hvadBlevDerKlikketPå == vælgFlereKontakter) {
         // Dette intent virker kun på HTC-telefoner og bør derfor undgås
         // med mindre man laver noget til en specifik enhed
         // http://stackoverflow.com/questions/3146377/selecting-multiple-contacts-in-android/6450200#6450200
@@ -118,40 +129,40 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
   }
 
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent resultat) {
-    resultatTextView.setText(requestCode + " gav resultat " + resultCode + " og data:\n" + resultat);
-    System.out.println(requestCode + " gav resultat " + resultCode + " med data=" + resultat);
+  protected void onActivityResult(int requestCode, int resultCode, Intent res) {
+    resultatTextView.setText(requestCode + " gav resultat " + resultCode + " og data:\n" + res);
+    System.out.println(requestCode + " gav resultat " + resultCode + " med data=" + res);
 
     resultatHolder.removeAllViews();
 
     if (resultCode == Activity.RESULT_OK) {
       try {
         if (requestCode == VÆLG_KONTAKT) {
-          resultatTextView.append("\n\nresultat.getData()="+resultat.getData());
-          resultatTextView.append("\n\nresultat.getExtras()="+resultat.getExtras());
-          Uri contactData = resultat.getData();
+          resultatTextView.append("\n\nres.getData()="+res.getData());
+          resultatTextView.append("\n\nres.getExtras()="+res.getExtras());
+          Uri contactData = res.getData();
           Cursor c = managedQuery(contactData, null, null, null, null);
           if (c.moveToFirst()) {
             resultatTextView.append("\n\nNAVN:"+
                     c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
           }
         } else if (requestCode == VÆLG_FLERE_KONTAKTER) {
-          resultatTextView.append("\n\nresultat.getData()="+resultat.getData());
-          resultatTextView.append("\n\nresultat.getExtras()="+resultat.getExtras());
-          Uri contactData = resultat.getData();
-          Cursor c = managedQuery(contactData, null, null, null, null);
+          resultatTextView.append("\n\nres.getData()="+res.getData());
+          resultatTextView.append("\n\nres.getExtras()="+res.getExtras());
+          Uri kontaktData = res.getData();
+          Cursor c = managedQuery(kontaktData, null, null, null, null);
           while (c.moveToFirst()) {
             resultatTextView.append("\n\nNAVN:"+
                     c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
           }
         } else if (requestCode == VÆLG_BILLEDE) {
-          AssetFileDescriptor videoAsset = getContentResolver().openAssetFileDescriptor(resultat.getData(), "r");
-          Bitmap bmp = BitmapFactory.decodeStream(videoAsset.createInputStream());
+          AssetFileDescriptor filDS = getContentResolver().openAssetFileDescriptor(res.getData(), "r");
+          Bitmap bmp = BitmapFactory.decodeStream(filDS.createInputStream());
           ImageView iv = new ImageView(this);
           iv.setImageBitmap(bmp);
           resultatHolder.addView(iv);
         } else if (requestCode == TAG_BILLEDE) {
-          Bitmap bmp = (Bitmap) resultat.getExtras().get("data");
+          Bitmap bmp = (Bitmap) res.getExtras().get("data");
           ImageView iv = new ImageView(this);
           iv.setImageBitmap(bmp);
           resultatHolder.addView(iv);
