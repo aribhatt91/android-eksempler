@@ -67,9 +67,9 @@ public class Asynkron2Handler extends Activity implements OnClickListener{
 
       knap2.setText("arbejder");
       opgave = new Runnable() {
-        int antalSekunderGået = 0;
+        int antalMillisekunderGået = 0;
         public void run() {
-          if (antalSekunderGået++<10) {
+          if (antalMillisekunderGået++<10) {
             knap2.append(".");
             handler.postDelayed(this, 1000); // udfør denne Runnable igen om 1 sekund
           } else {

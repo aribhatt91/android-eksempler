@@ -98,6 +98,10 @@ Aktivitetsliste:
     <activity android:name="eks.livscyklus.Liv3_nonConfigurationInstance"/>
     <activity android:name="eks.livscyklus.Liv4_bundle"/>
 
+
+    <activity android:name="eks.livscyklus.DialogDerBliverVedVending"/>
+
+
     <activity android:name="eks.kort.KortAktivitet"/>
     <uses-library android:name="com.google.android.maps" android:required="false" />
 

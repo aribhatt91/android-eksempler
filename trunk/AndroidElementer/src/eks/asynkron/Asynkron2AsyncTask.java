@@ -86,7 +86,7 @@ public class Asynkron2AsyncTask extends Activity implements OnClickListener {
 
       new AsyncTask() {
         @Override
-        protected Object doInBackground(Object... arg0) {
+        protected Object doInBackground(Object... executeParametre) {
           for (int i=0; i<100; i++) {
             try { Thread.sleep(100); } catch (InterruptedException ex) {}
             this.publishProgress(i);

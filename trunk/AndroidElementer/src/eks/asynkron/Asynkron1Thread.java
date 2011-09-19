@@ -10,7 +10,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 /**
- * 
+ *
  * @author Jacob Nordfalk
  */
 public class Asynkron1Thread extends Activity implements OnClickListener {
@@ -74,9 +74,11 @@ public class Asynkron1Thread extends Activity implements OnClickListener {
     {
 
       knap3.setText("arbejder");
+      System.out.println("arbejder");
       Runnable r=new Runnable() {
         public void run() {
           try { Thread.sleep(10000); } catch (InterruptedException ex) {}
+          System.out.println("færdig!");
           Runnable r2=new Runnable() {
             public void run() {
               knap3.setText("færdig!");

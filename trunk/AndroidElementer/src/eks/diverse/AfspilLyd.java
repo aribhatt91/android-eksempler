@@ -26,6 +26,7 @@ public class AfspilLyd extends Activity implements OnClickListener {
     spilKnap.setOnClickListener(this);
     setContentView(spilKnap);
 
+    // Volumen op/ned skal styre lydstyrken af medieafspilleren, uanset som noget spilles lige nu eller ej
     setVolumeControlStream(AudioManager.STREAM_MUSIC);
     enLyd = MediaPlayer.create(this, R.raw.jeg_bremser_haardt);
     enLyd.setVolume(1, 1);

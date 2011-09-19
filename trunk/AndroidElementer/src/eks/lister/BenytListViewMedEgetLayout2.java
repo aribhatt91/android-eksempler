@@ -50,5 +50,7 @@ public class BenytListViewMedEgetLayout2 extends Activity implements OnItemClick
 
   public void onItemClick(AdapterView<?> l, View v, int position, long id) {
     Toast.makeText(this, "Klik på "+ position, Toast.LENGTH_SHORT).show();
+    //setResult(113, new Intent(position  eller noget andet der skan tilbage til kalderen));
+    //finish();
   }
 }
