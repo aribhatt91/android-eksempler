@@ -6,8 +6,10 @@ import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +29,7 @@ import dk.nordfalk.android.elementer.R;
  */
 public class BenytDialogerOgToasts extends Activity implements OnClickListener {
 
-  Button standardToast, toastMedBillede, visAlertDialog, visAlertDialog1, visAlertDialog2, visNoitification;
+  Button visStandardToast, visToastMedBillede, visAlertDialog, visAlertDialog1, visAlertDialog2, visProgressDialog, visProgressDialog1, visNoitification;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +37,13 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
 
     TableLayout tl=new TableLayout(this);
 
-    standardToast=new Button(this);
-    standardToast.setText("standardToast");
-    tl.addView(standardToast);
+    visStandardToast=new Button(this);
+    visStandardToast.setText("visStandardToast");
+    tl.addView(visStandardToast);
 
-    toastMedBillede=new Button(this);
-    toastMedBillede.setText("toastMedBillede");
-    tl.addView(toastMedBillede);
+    visToastMedBillede=new Button(this);
+    visToastMedBillede.setText("visToastMedBillede");
+    tl.addView(visToastMedBillede);
 
     visAlertDialog=new Button(this);
     visAlertDialog.setText("visAlertDialog");
@@ -55,12 +57,22 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
     visAlertDialog2.setText("visAlertDialog med 2 knapper");
     tl.addView(visAlertDialog2);
 
+    visProgressDialog=new Button(this);
+    visProgressDialog.setText("visProgressDialog");
+    tl.addView(visProgressDialog);
+
+    visProgressDialog1=new Button(this);
+    visProgressDialog1.setText("visProgressDialog1");
+    tl.addView(visProgressDialog1);
+
     visNoitification=new Button(this);
     visNoitification.setText("visNoitification");
     tl.addView(visNoitification);
 
-    standardToast.setOnClickListener(this);
-    toastMedBillede.setOnClickListener(this);
+    visStandardToast.setOnClickListener(this);
+    visToastMedBillede.setOnClickListener(this);
+    visProgressDialog.setOnClickListener(this);
+    visProgressDialog1.setOnClickListener(this);
     visAlertDialog.setOnClickListener(this);
     visAlertDialog1.setOnClickListener(this);
     visAlertDialog2.setOnClickListener(this);
@@ -72,9 +84,9 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
   }
 
   public void onClick(View hvadBlevDerKlikketPå) {
-    if (hvadBlevDerKlikketPå==standardToast) {
+    if (hvadBlevDerKlikketPå==visStandardToast) {
       Toast.makeText(this, "Standard-toast", Toast.LENGTH_LONG).show();
-    } else if (hvadBlevDerKlikketPå==toastMedBillede) {
+    } else if (hvadBlevDerKlikketPå==visToastMedBillede) {
       Toast t=new Toast(this);
       ImageView im=new ImageView(this);
       im.setImageResource(R.drawable.logo);
@@ -106,10 +118,24 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
       dialog.setView(et);
       dialog.setPositiveButton("Vis endnu en toast", new AlertDialog.OnClickListener() {
         public void onClick(DialogInterface arg0, int arg1) {
-          Toast.makeText(BenytDialogerOgToasts.this, "Standard-toast", Toast.LENGTH_LONG).show();
+          Toast.makeText(BenytDialogerOgToasts.this, "Endnu en standard-toast", Toast.LENGTH_LONG).show();
         }
       });
       dialog.setNegativeButton("Nej tak", null);
+      dialog.show();
+    } else if (hvadBlevDerKlikketPå==visProgressDialog) {
+      ProgressDialog.show(this, "", "En ProgressDialog", true).setCancelable(true);
+    } else if (hvadBlevDerKlikketPå==visProgressDialog1) {
+      ProgressDialog dialog = new ProgressDialog(this);
+      dialog.setIndeterminate(true); // drejende hjul
+      dialog.setTitle("En ProgressDialog");
+      dialog.setIcon(R.drawable.logo);
+      dialog.setMessage("hej herfra");
+      dialog.setOnCancelListener(new OnCancelListener() {
+        public void onCancel(DialogInterface dialog) {
+          Toast.makeText(BenytDialogerOgToasts.this, "Annulleret", Toast.LENGTH_LONG).show();
+        }
+      });
       dialog.show();
     } else if (hvadBlevDerKlikketPå==visNoitification) {
       Context ctx=getApplicationContext(); // Undgå this for ikke at lække hukommelse
