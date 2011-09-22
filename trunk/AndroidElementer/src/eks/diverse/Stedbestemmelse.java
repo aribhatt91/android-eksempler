@@ -15,6 +15,7 @@ import android.location.LocationProvider;
 import android.os.Bundle;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -63,13 +64,18 @@ public class Stedbestemmelse extends Activity {
     kriterium.setAccuracy(Criteria.ACCURACY_FINE);
     String bedsteUdbyder = locationManager.getBestProvider(kriterium, true);
 
+    textView.append("========= Lytter til udbyder: " + bedsteUdbyder + "\n\n");
+
+    if (bedsteUdbyder == null) {
+      textView.append("\n\nUps, der var ikke tændt for nogen udbyder. Tænd for GPS eller netværksbaseret stedplacering og prøv igen.");
+      return;
+    }
+
     //  Bed om opdateringer hvert 60. sekunder eller 20. meter
     locationManager.requestLocationUpdates(bedsteUdbyder, 60000, 20, locationlytter);
 
-    textView.append("========= Lytter til udbyder: " + bedsteUdbyder + "\n\n");
-
-
     Location sidsteSted = locationManager.getLastKnownLocation(bedsteUdbyder);
+
     if (sidsteSted!=null) try { // forsøg at finde nærmeste adresse
       Geocoder geocoder = new Geocoder(this);
       List<Address> adresser = geocoder.getFromLocation(sidsteSted.getLatitude(), sidsteSted.getLongitude(), 1);

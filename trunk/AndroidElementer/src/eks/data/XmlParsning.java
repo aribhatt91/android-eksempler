@@ -6,26 +6,41 @@ import android.widget.TextView;
 import dk.nordfalk.android.elementer.R;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import org.xmlpull.v1.XmlPullParser;
+
+
+/** Simpel dataklasse til at geme XML-værdier i */
+class Kunde {
+  String navn;
+  double kredit;
+}
+
+/** Simpel dataklasse til at geme XML-værdier i */
+class Bank {
+  String navn;
+  ArrayList<Kunde> kunder = new ArrayList<Kunde>();
+}
+
 
 /**
  *
  * @author Jacob Nordfalk
  */
 public class XmlParsning extends Activity {
-//Ku også parse f.eks http://www.dmi.dk/dmi/rss-nyheder.xml ?
+  //Ku også parse f.eks http://www.dmi.dk/dmi/rss-nyheder.xml ?
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     TextView tv=new TextView(this);
 
+    ArrayList<Bank> banker = new ArrayList<Bank>();
 
     try {
-
       InputStream is=getResources().openRawResource(R.raw.data_xmleksempel);
       // Det kan være nødvendigt at hoppe over BOM mark - se http://android.forums.wordpress.org/topic/xml-pull-error?replies=2
       //is.read(); is.read(); is.read(); // - dette virker kun hvis der ALTID er en BOM
-
       // Hop over BOM - hvis den er der!
       is = new BufferedInputStream(is);  // bl.a. FileInputStream understøtter ikke mark, så brug BufferedInputStream
       is.mark(1); // vi har faktisk kun brug for at søge én byte tilbage
@@ -36,35 +51,45 @@ public class XmlParsning extends Activity {
       XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
       XmlPullParser xpp=factory.newPullParser();
        */
-XmlPullParser xpp=android.util.Xml.newPullParser();
-xpp.setInput(is, "UTF-8"); // evt "ISO-8859-1"
+      XmlPullParser xpp=android.util.Xml.newPullParser();  // Android-kald til at oprette parser
+      xpp.setInput(is, "UTF-8"); // evt "ISO-8859-1"
 
-String kundenavn=null;
-double totalKredit=0;
+      Bank bank = null; // Husker den aktuelle bank
+      Kunde kunde = null; // Husker den aktuelle kunde
 
-int eventType=xpp.getEventType();
-while (eventType!=XmlPullParser.END_DOCUMENT)
-{
-  if (eventType==XmlPullParser.START_TAG) {
-    String tag=xpp.getName();
-    if ("bank".equals(tag)) {
-      String banknavn=xpp.getAttributeValue(null, "navn");
-      tv.append("\n=== Oversigt over "+banknavn+"s kunder ===\n");
-    } else if ("kunde".equals(tag)) {
-      kundenavn=xpp.getAttributeValue(null, "navn");
-    } else if ("kredit".equals(tag)) {
-      double kredit=Double.parseDouble(xpp.nextText());
-      tv.append(kundenavn+" med "+kredit+" kr.\n");
-      totalKredit=totalKredit+kredit;
-    }
-  }
-  eventType=xpp.next();
-}
-is.close();
-      tv.append("\n\nTotal kredit er "+totalKredit+" kr.");
+      int eventType=xpp.getEventType();
+      while (eventType!=XmlPullParser.END_DOCUMENT)
+      {
+        if (eventType==XmlPullParser.START_TAG) {
+          String tag=xpp.getName();
+          if ("bank".equals(tag)) {
+            bank = new Bank();
+            banker.add(bank);
+            bank.navn=xpp.getAttributeValue(null, "navn");
+          } else if ("kunde".equals(tag)) {
+            kunde = new Kunde();
+            bank.kunder.add(kunde);
+            kunde.navn=xpp.getAttributeValue(null, "navn");
+          } else if ("kredit".equals(tag)) {
+            kunde.kredit=Double.parseDouble(xpp.nextText());
+          }
+        }
+        eventType=xpp.next();
+      }
+      is.close();
     } catch (Exception ex) {
       ex.printStackTrace();
       tv.append("FEJL:"+ex.toString());
+    }
+
+    for (Bank bank : banker) {
+      tv.append("\n=== Oversigt over "+bank.navn+"s kunder ===\n");
+      double totalKredit=0;
+      for (Kunde kunde : bank.kunder) {
+        tv.append(kunde.navn+" med "+kunde.kredit+" kr.\n");
+        totalKredit=totalKredit+kunde.kredit;
+      }
+      tv.append("\n\nTotal kredit er "+totalKredit+" kr.");
     }
 
     setContentView(tv);
