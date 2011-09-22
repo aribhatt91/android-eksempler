@@ -126,11 +126,11 @@ public class KortAktivitet extends MapActivity {
     // Overlejr kortet med brugerens placering
     myLocationOverlay=new MyLocationOverlay(this, mapView);
     myLocationOverlay.runOnFirstFix(new Runnable() {
-
       public void run() { // Flyt overlejretKort til aktuelt sted når første stedbestemmelse er foretaget
         mapView.getController().animateTo(myLocationOverlay.getMyLocation());
       }
     });
+    mapView.getOverlays().add(myLocationOverlay);
 
     // Vis liste af overlejrede ikoner
     Drawable ikon=getResources().getDrawable(android.R.drawable.star_big_on);
@@ -140,13 +140,11 @@ public class KortAktivitet extends MapActivity {
     itemizedoverlay.tilføj(new OverlayItem(valby, "Her bor Jacob", "Valby"), getResources().getDrawable(R.drawable.logo));
     itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(54714330, 11664910), "Døllefjælde-Musse", "Naturpark"), null);
     itemizedoverlay.tilføjFærdig();
+    mapView.getOverlays().add(itemizedoverlay);
 
 
     wMSOverlay=new WMSOverlay();
-
     mapView.getOverlays().add(wMSOverlay);
-    mapView.getOverlays().add(itemizedoverlay);
-    mapView.getOverlays().add(myLocationOverlay);
 
     setContentView(mapView);
   }
