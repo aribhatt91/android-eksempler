@@ -5,7 +5,6 @@
 package eks.data;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,35 +28,35 @@ public class BenytSQLite extends Activity {
     setContentView(scrollView);
 
 
-// Oprettelse af database
-SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(getFilesDir()+ "/database.db", null);
+    // Oprettelse af database
+    SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(getFilesDir()+ "/database.db", null);
 
-// Oprette tabel - foregår via SQL
-db.execSQL("DROP TABLE IF EXISTS kunder;");
-db.execSQL("CREATE TABLE kunder (_id INTEGER PRIMARY KEY AUTOINCREMENT, navn TEXT NOT NULL, kredit INTEGER);");
+    // Oprette tabel - foregår via SQL
+    db.execSQL("DROP TABLE IF EXISTS kunder;");
+    db.execSQL("CREATE TABLE kunder (_id INTEGER PRIMARY KEY AUTOINCREMENT, navn TEXT NOT NULL, kredit INTEGER);");
 
-// Oprette en række
-ContentValues række = new ContentValues();
-række.put("navn", "Jacob Nordfalk");
-række.put("kredit", 500);
-db.insert("kunder", null, række);
+    // Oprette en række
+    ContentValues række = new ContentValues();
+    række.put("navn", "Jacob Nordfalk");
+    række.put("kredit", 500);
+    db.insert("kunder", null, række);
 
-db.execSQL("INSERT INTO kunder (navn, kredit) VALUES ('Troels Nordfalk', 400);");
+    db.execSQL("INSERT INTO kunder (navn, kredit) VALUES ('Troels Nordfalk', 400);");
 
-// Søgning
-//Cursor cursor = db.rawQuery("SELECT * from kunder WHERE kredit > 100 ORDER BY kredit ASC;", null);
-String[] kolonner = { "_id", "navn", "kredit" };
-String valg = "kredit > 100"; // WHERE
-String sortering = "kredit ASC"; // ORDER BY
-Cursor cursor = db.query("kunder", kolonner, valg, null, null, null, sortering);
+    // Søgning
+    //Cursor cursor = db.rawQuery("SELECT * from kunder WHERE kredit > 100 ORDER BY kredit ASC;", null);
+    String[] kolonner = { "_id", "navn", "kredit" };
+    String valg = "kredit > 100"; // WHERE
+    String sortering = "kredit ASC"; // ORDER BY
+    Cursor cursor = db.query("kunder", kolonner, valg, null, null, null, sortering);
 
-while (cursor.moveToNext()) {
-  long id = cursor.getLong(0);
-  String navn = cursor.getString(1);
-  int kredit = cursor.getInt(2);
-  textView.append(id+"  "+navn+" "+kredit+"\n");
-}
-cursor.close();
+    while (cursor.moveToNext()) {
+      long id = cursor.getLong(0);
+      String navn = cursor.getString(1);
+      int kredit = cursor.getInt(2);
+      textView.append(id+"  "+navn+" "+kredit+"\n");
+    }
+    cursor.close();
 
   }
 }
