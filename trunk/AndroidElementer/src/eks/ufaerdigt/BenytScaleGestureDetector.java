@@ -34,7 +34,7 @@ public class BenytScaleGestureDetector extends Activity {
     tv = new TextView(this);
     //tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
     //tv.setTextSize(16);
-    tv.setText("Lav nogle gestusser");
+    tv.setText("Spred eller knib sammen på skærmen");
     setContentView(tv);
   }
 
@@ -55,17 +55,17 @@ public class BenytScaleGestureDetector extends Activity {
   class GestusLytter implements OnScaleGestureListener {
 
     public boolean onScale(ScaleGestureDetector sgd) {
-      log("onScale()\n"+sgd);
+      log("onScale()\n"+sgd.getScaleFactor());
       return false;
     }
 
     public boolean onScaleBegin(ScaleGestureDetector sgd) {
-      log("onScaleBegin()\n"+sgd);
-      return false;
+      log("onScaleBegin()\n"+sgd.getScaleFactor());
+      return true;
     }
 
     public void onScaleEnd(ScaleGestureDetector sgd) {
-      log("onScaleEnd()\n"+sgd);
+      log("onScaleEnd()\n"+sgd.getScaleFactor());
     }
 
   }

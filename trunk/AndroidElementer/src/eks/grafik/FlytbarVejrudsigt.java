@@ -20,55 +20,23 @@ import eks.vejret.ByvejrAktivitet;
 public class FlytbarVejrudsigt extends Activity {
 
   Bitmap vejrudsigt;
-
-  public class MinGrafik extends View {
-    float x, y;
-    float xFingerSidst, yFingerSidst;
-    public MinGrafik(Context context) {
-      super(context);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-      Paint stregtype=new Paint();
-      canvas.drawBitmap(vejrudsigt, x, y, stregtype);
-      canvas.drawText("Dagens vejrudsigt:", 10, 5, stregtype);
-    }
-
-    @Override
-    public boolean onTrackballEvent(MotionEvent event) {
-      x = x + event.getX();
-      y = y + event.getY();
-      postInvalidate();
-      return true;
-    }
-
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-      System.out.println(event);
-      System.out.println(event.getAction());
-
-      if (event.getAction() == MotionEvent.ACTION_MOVE) {
-        // husk startpunkt
-        float dx = event.getX() - xFingerSidst;
-        float dy = event.getY() - yFingerSidst;
-        x = x + dx;
-        y = y + dy;
-        postInvalidate();
-      }
-      xFingerSidst = event.getX();
-      yFingerSidst = event.getY();
-      return true;
-    }
-  }
+  float x, y;
+  float xFingerSidst, yFingerSidst;
+  View minGrafik;
 
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    final MinGrafik minGrafik = new MinGrafik(this);
+    minGrafik = new View(this) {
+      @Override
+      protected void onDraw(Canvas canvas) {
+        Paint stregtype=new Paint();
+        canvas.drawBitmap(vejrudsigt, x, y, stregtype);
+        canvas.drawText("Dagens vejrudsigt:", 10, 5, stregtype);
+      }
+    };
 
     final TextView intro = new TextView(this);
     intro.setTextSize(36);
@@ -76,7 +44,6 @@ public class FlytbarVejrudsigt extends Activity {
     setContentView(intro);
 
     new AsyncTask() {
-
       @Override
       protected Object doInBackground(Object... arg) {
         try {
@@ -93,10 +60,37 @@ public class FlytbarVejrudsigt extends Activity {
         if ("OK".equals(resultat)) {
           setContentView(minGrafik);
         } else {
-          intro.append("\n\nBeklager, den ku ikke hentes\n\n" + resultat);
+          intro.append("\n\nBeklager, vejrudsigten ku' ikke hentes\n\n" + resultat);
         }
       }
     }.execute();
+  }
 
+
+  @Override
+  public boolean onTrackballEvent(MotionEvent event) {
+    x = x + event.getX();
+    y = y + event.getY();
+    minGrafik.invalidate();
+    return true;
+  }
+
+
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    System.out.println(event);
+    System.out.println(event.getAction());
+
+    if (event.getAction() == MotionEvent.ACTION_MOVE) {
+      // husk startpunkt
+      float dx = event.getX() - xFingerSidst;
+      float dy = event.getY() - yFingerSidst;
+      x = x + dx;
+      y = y + dy;
+      minGrafik.invalidate();
+    }
+    xFingerSidst = event.getX();
+    yFingerSidst = event.getY();
+    return true;
   }
 }

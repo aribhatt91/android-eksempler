@@ -83,7 +83,6 @@ public class BenytBilledeknapper extends Activity implements OnClickListener {
       ImageView ib = (ImageView) view;
       if (me.getAction() == MotionEvent.ACTION_DOWN) {
         //log("farve "+me);
-        //log(++xxx);
         ib.setColorFilter(0xFFA0A0A0, PorterDuff.Mode.MULTIPLY);
       } else if (me.getAction() == MotionEvent.ACTION_MOVE) {
       } else {

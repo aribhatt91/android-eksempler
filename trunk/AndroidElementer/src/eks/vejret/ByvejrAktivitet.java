@@ -15,6 +15,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -171,12 +172,10 @@ public class ByvejrAktivitet extends Activity {
 
     hentBilleder(false, Integer.MAX_VALUE);  // vis gamle billeder hvis de findes
 
+    SharedPreferences indst = PreferenceManager.getDefaultSharedPreferences(this);
 
-
-
-    if (Indstillinger.brugPosVedStart(this)) {
-      if (Indstillinger.ventPåPos(this)) {
-      } else {
+    if (indst.getBoolean("brugPosVedStart", true)) {
+      if (!indst.getBoolean("ventPåPos", false)) {
         Location sidstePos = locationManager.getLastKnownLocation(stedProvider);
         textView = new TextView(this);
         textView.append("\n\nSted: bedst = " + stedProvider + " med sidstePos = " + sidstePos);
@@ -188,41 +187,7 @@ public class ByvejrAktivitet extends Activity {
     }
   }
 
-  @Override
-  protected void onStart() {
-    Log.d(TAG, "onStart()");
-    super.onStart();
-  }
 
-  @Override
-  protected void onRestart() {
-    Log.d(TAG, "onRestart()");
-    super.onRestart();
-  }
-
-  @Override
-  protected void onResume() {
-    Log.d(TAG, "onResume()");
-    super.onResume();
-  }
-
-  @Override
-  protected void onPause() {
-    Log.d(TAG, "onPause()");
-    super.onPause();
-  }
-
-  @Override
-  protected void onStop() {
-    Log.d(TAG, "onStop()");
-    super.onStop();
-  }
-
-  @Override
-  protected void onDestroy() {
-    Log.d(TAG, "onDestroy()");
-    super.onDestroy();
-  }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {

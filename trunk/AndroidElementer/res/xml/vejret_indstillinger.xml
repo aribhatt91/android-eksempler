@@ -10,7 +10,8 @@
   <CheckBoxPreference
       android:key="ventPåPos"
       android:title="Vent på stedbestemmelse"
-      android:summary="Vent på en frisk positionsbestemmelse (ellers bruges sidst seneste position til vejrudsigt)"
+      android:summaryOn="Vent på en frisk positionsbestemmelse"
+      android:summaryOff="Bruge seneste position til vejrudsigt"
       android:defaultValue="false" />
   <EditTextPreference
       android:key="foretrukkenPostNr"

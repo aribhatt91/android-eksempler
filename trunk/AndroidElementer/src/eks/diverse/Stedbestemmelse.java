@@ -5,6 +5,8 @@
 package eks.diverse;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -40,6 +42,13 @@ public class Stedbestemmelse extends Activity {
     scrollView.addView(textView);
     setContentView(scrollView);
     locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+    /*
+    // Start denne aktivitet igen hvis vi nærmer os eller forlader Valby!
+    Intent intent = new Intent(this, Stedbestemmelse.class);
+    PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
+    locationManager.addProximityAlert(55.654074f, 12.493775f, 5000, 60*60*24*1000, pi);
+     */
 
 
     // Løb igennem alle udbyderne (typisk "gps", "network" og "passive")
