@@ -64,7 +64,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
 
   /** Listen over videoklip - en klassevariabel der kun indlæses én gang */
   static ArrayList<Klip> videoklip = new ArrayList<Klip>();
-  KlipAsyncTask klipAsyncTask = new KlipAsyncTask();
+  ParseKlipAsyncTask klipAsyncTask = new ParseKlipAsyncTask();
   ListView listView;
   KlipAdapter klipadapter = new KlipAdapter();
 
@@ -85,7 +85,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
 
 
 
-  public class KlipAsyncTask extends AsyncTask {
+  public class ParseKlipAsyncTask extends AsyncTask {
     @Override
     protected Object doInBackground(Object... arg0) {
       try {

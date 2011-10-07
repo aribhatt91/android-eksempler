@@ -7,14 +7,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
 
 
-public class BenytListViewMedEgetLayout2 extends Activity implements OnItemClickListener {
+public class BenytGallery extends Activity implements OnItemClickListener {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -22,34 +24,17 @@ public class BenytListViewMedEgetLayout2 extends Activity implements OnItemClick
 
     String[] lande = { "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal",  };
 
-    ListView listView= new ListView(this);
+    Gallery listView= new Gallery(this);
     listView.setOnItemClickListener(this);
+    listView.setSpacing(25); // 25 punkter
 
-    listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement,  R.id.listeelem_overskrift, lande )
-    {
-      @Override
-      public View getView(int position, View cachedView, ViewGroup parent) {
-        View view = super.getView(position, cachedView, parent);
-        TextView listeelem_beskrivelse = (TextView) view.findViewById(R.id.listeelem_beskrivelse);
-        listeelem_beskrivelse.setText("Land nummer "+position);
-        ImageView listeelem_billede = (ImageView) view.findViewById(R.id.listeelem_billede);
-        if (position % 3 == 2) listeelem_billede.setImageResource(android.R.drawable.sym_action_call);
-        else  listeelem_billede.setImageResource(android.R.drawable.sym_action_email);
-        return view;
-    }
-    });
-
-    //listView.setDivider(getResources().getDrawable(android.R.drawable.divider_horizontal_dark));
-    // Rød kasse omkring det valgte element
-    listView.setSelector(android.R.drawable.ic_notification_overlay);
-
+    listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement,  R.id.listeelem_overskrift, lande ));
     setContentView(listView);
+
   }
 
 
   public void onItemClick(AdapterView<?> l, View v, int position, long id) {
     Toast.makeText(this, "Klik på "+ position, Toast.LENGTH_SHORT).show();
-    //setResult(113, new Intent(position  eller noget andet der skan tilbage til kalderen));
-    //finish();
   }
 }

@@ -2,13 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="dk.nordfalk.android.elementer"
   android:installLocation="preferExternal" c="installér på SD-kort"
-  android:versionCode="12"
-  android:versionName="1.12">
+  android:versionCode="13"
+  android:versionName="1.13">
 <!--
 Mangler eksempler på
 - services
 - notifikationer
-- animationer
+
 Motorolas multitouch-eksempel?
 
 
@@ -26,6 +26,13 @@ Aktivitetsliste:
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
   <uses-permission android:name="android.permission.CALL_PHONE" />
+
+   <!-- Only this application can receive the messages and registration result -->
+   <permission android:name="dk.nordfalk.android.elementer.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+   <uses-permission android:name="dk.nordfalk.android.elementer.permission.C2D_MESSAGE" />
+
+   <!-- This app has permission to register and receive message -->
+   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
   <application android:debuggable="true" android:icon="@drawable/logo">
   <!--
@@ -81,9 +88,12 @@ Aktivitetsliste:
     <activity android:name="eks.lister.BenytListView"/>
     <activity android:name="eks.lister.BenytListActivity"/>
     <activity android:name="eks.lister.BenytListViewMedEgetLayout"/>
+    <activity android:name="eks.lister.BenytGallery"/>
+    <activity android:name="eks.lister.BenytGridView"/>
     <activity android:name="eks.lister.BenytListViewMedEgetLayout2"/>
-    <activity android:name="eks.lister.BenytExpandableListActivity"/>
     <activity android:name="eks.lister.VisAndroidDrawables"/>
+
+    <activity android:name="eks.lister.BenytExpandableListActivity"/>
 
     <activity android:name="eks.providers.VisKontakter"/>
     <activity android:name="eks.providers.VisOpkald"/>
@@ -132,9 +142,27 @@ Aktivitetsliste:
                  android:resource="@xml/levendeikon_visklokken" />
     </receiver>
 
-    <activity android:name="eks.ufaerdigt.GestureDetectorDemo"/>
+    <activity android:name="eks.ufaerdigt.BenytGestureDetector"/>
+    <activity android:name="eks.ufaerdigt.BenytScaleGestureDetector"/>
 
 
+
+
+    <activity android:name="eks.c2dm.PushMeddelelser"/>
+
+    <!-- Only C2DM servers can send messages for the app. If permission is not set - any other app can generate it -->
+    <receiver android:name="eks.c2dm.C2DMReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+        <!-- Receive the actual message -->
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            <category android:name="dk.nordfalk.android.elementer" />
+        </intent-filter>
+        <!-- Receive the registration id -->
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+            <category android:name="dk.nordfalk.android.elementer" />
+        </intent-filter>
+    </receiver>
 
 
     <!-- aktivitet som kan ses fra startskærmen -->

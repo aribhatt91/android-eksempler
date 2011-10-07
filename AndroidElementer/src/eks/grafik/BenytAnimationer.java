@@ -79,30 +79,28 @@ public class BenytAnimationer extends Activity implements OnClickListener {
       knap1.startAnimation(AnimationUtils.loadAnimation(this,R.anim.egen_anim));
       knap2.startAnimation(AnimationUtils.makeInChildBottomAnimation(this));
     } else if (hvadBlevDerKlikketPå==knap4) {
-      TranslateAnimation anim = new TranslateAnimation(-100.0f, 10f, 0, 0);
-      anim.setDuration(5000); // 5 sekunder
-      anim.setInterpolator(AnimationUtils.loadInterpolator(this, android.R.anim.bounce_interpolator));
-      knap3.startAnimation(anim);
+      TranslateAnimation translationsanim = new TranslateAnimation(-100.0f, 10f, 0, 0);
+      translationsanim.setDuration(5000); // 5 sekunder
+      translationsanim.setInterpolator(AnimationUtils.loadInterpolator(this, android.R.anim.bounce_interpolator));
+      knap3.startAnimation(translationsanim);
       AlphaAnimation alfaanim = new AlphaAnimation(0.0f, 1.0f);
       alfaanim.setDuration(2000); // 2 sekunder
       alfaanim.setRepeatCount(2); //evt Animation.INFINITE);
       alfaanim.setInterpolator(AnimationUtils.loadInterpolator(this, android.R.anim.decelerate_interpolator));
       knap4.startAnimation(alfaanim);
       AnimationSet sæt = new AnimationSet(true);
-      sæt.addAnimation(anim);
+      sæt.addAnimation(translationsanim);
       sæt.addAnimation(alfaanim);
       knap5.startAnimation(sæt);
       sæt.setAnimationListener(new AnimationListener() {
         public void onAnimationStart(Animation animation) {
-          knap4.setText("onAnimationStart(\n"+animation);
+          knap1.setText("onAnimationStart(\n"+animation);
         }
-
         public void onAnimationEnd(Animation animation) {
-          knap4.setText("onAnimationEnd(\n"+animation);
+          knap1.setText("onAnimationEnd(\n"+animation);
         }
-
         public void onAnimationRepeat(Animation animation) {
-          knap4.setText("onAnimationRepeat(\n"+animation);
+          knap1.setText("onAnimationRepeat(\n"+animation);
         }
       });
     } else if (hvadBlevDerKlikketPå==knap5) {

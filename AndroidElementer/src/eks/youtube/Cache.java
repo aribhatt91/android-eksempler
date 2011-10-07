@@ -38,7 +38,7 @@ public class Cache {
     }
     lagerDir = dir;
     new File(lagerDir).mkdirs();
-    try { // skjul lyden for MP3-afspillere o.lign.
+    try { // skjul lyd og billeder for MP3-afspillere o.lign.
       new File(dir, ".nomedia").createNewFile();
     } catch (IOException ex) {
       ex.printStackTrace();

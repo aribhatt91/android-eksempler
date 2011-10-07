@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class Aktivitetsliste extends Activity implements OnItemClickListener, OnItemLongClickListener {
 
@@ -40,6 +42,13 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
       ex.printStackTrace();
     }
 
+/*
+    Arrays.sort(aktiviteter, new Comparator<ActivityInfo>() {
+      public int compare(ActivityInfo a, ActivityInfo b) {
+        return a.name.compareTo(b.name);
+      }
+     });
+*/
 
      // Anonym nedarving af ArrayAdapter med omdefineret getView()
     ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, aktiviteter)

@@ -105,8 +105,7 @@ public class BenytIntents extends Activity implements OnClickListener {
   }
 
   /**
-   * Kræver  <uses-permission android:name="android.permission.CALL_PHONE" />
-   * @param nummerfelt
+   * Bemærk: Kræver <uses-permission android:name="android.permission.CALL_PHONE" /> i manifestet
    */
   private void ringOpDirekte(String nummer) {
     try {

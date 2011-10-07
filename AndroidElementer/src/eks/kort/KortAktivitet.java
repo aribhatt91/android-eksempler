@@ -255,20 +255,21 @@ public class KortAktivitet extends MapActivity {
     public void draw(Canvas c, MapView mapView, boolean shadow) {
       //super.draw(c, mapView, shadow);
 
-      if (!shadow) {
-        Rect canvasRekt = new Rect(0, 0, c.getWidth(), c.getHeight());
-        Rect kortRekt = geoTilSkærmRekt(øverstVenstre, nederstHøjre);
+      if (shadow) return; // tegner ikke skygger
 
-        if (!kortRekt.contains(canvasRekt.centerX(), canvasRekt.centerY())
-                && !iGangMedAtHenteNytKort) {
-          iGangMedAtHenteNytKort = true;
-          startHentNytKort(mapView.getProjection(), canvasRekt);
-          Toast.makeText(KortAktivitet.this, "Henter nyt overlejret kort...", Toast.LENGTH_SHORT).show();
-        }
-        //Log.d("WMSOverlay", "tegner "+øvVenPix+kortRekt);
-        if (overlejretKort!=null) c.drawBitmap(overlejretKort, canvasRekt, kortRekt, paint);
-        c.drawRect(kortRekt, paint);
+      Rect canvasRekt = new Rect(0, 0, c.getWidth(), c.getHeight());
+      Rect kortRekt = geoTilSkærmRekt(øverstVenstre, nederstHøjre);
+
+      if (!kortRekt.contains(canvasRekt.centerX(), canvasRekt.centerY())
+              && !iGangMedAtHenteNytKort) {
+        iGangMedAtHenteNytKort = true;
+        startHentNytKort(mapView.getProjection(), canvasRekt);
+        Toast.makeText(KortAktivitet.this, "Henter nyt overlejret kort...", Toast.LENGTH_SHORT).show();
       }
+      //Log.d("WMSOverlay", "tegner "+øvVenPix+kortRekt);
+      if (overlejretKort!=null)
+        c.drawBitmap(overlejretKort, canvasRekt, kortRekt, paint);
+      c.drawRect(kortRekt, paint);
     }
 
     @Override

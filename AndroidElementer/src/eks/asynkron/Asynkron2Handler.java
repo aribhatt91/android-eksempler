@@ -23,6 +23,7 @@ public class Asynkron2Handler extends Activity implements OnClickListener{
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
+
     TableLayout tl=new TableLayout(this);
     EditText editText=new EditText(this);
     editText.setText("Prøv at redigere her efter du har trykket på knapperne");
