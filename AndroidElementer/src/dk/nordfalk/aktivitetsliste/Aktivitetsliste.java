@@ -2,6 +2,8 @@ package dk.nordfalk.aktivitetsliste;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -10,25 +12,43 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Gallery;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+import dk.nordfalk.android.elementer.R;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
 
-public class Aktivitetsliste extends Activity implements OnItemClickListener, OnItemLongClickListener {
+public class Aktivitetsliste extends Activity implements OnItemClickListener, OnItemLongClickListener, OnItemSelectedListener {
 
-  private ActivityInfo[] aktiviteter;
+  TextView tv;
+  ArrayAdapter<ActivityInfo> listeadapter;
+  List<ActivityInfo> alleAktiviteter;
+  ArrayList<ActivityInfo> visAktiviteter;
   private CheckBox autostart;
   private int onStartTæller;
+  private ToggleButton seKildekode;
+  private Gallery kategorivalg;
+  //private EditText søgEditText;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -37,21 +57,41 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     ListView listView=new ListView(this);
 
     try {
-      aktiviteter=getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities;
+      alleAktiviteter=Arrays.asList(getPackageManager().
+              getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities);
+      visAktiviteter = new ArrayList<ActivityInfo>(alleAktiviteter);
     } catch (NameNotFoundException ex) {
       ex.printStackTrace();
     }
 
-/*
-    Arrays.sort(aktiviteter, new Comparator<ActivityInfo>() {
-      public int compare(ActivityInfo a, ActivityInfo b) {
-        return a.name.compareTo(b.name);
-      }
-     });
-*/
+    LinkedHashSet<String> kategorier = new LinkedHashSet<String>();
+
+    //kategorier.add("(søg)");
+    kategorier.add("- vis alle -");
+    for (ActivityInfo a : alleAktiviteter) {
+      String navn=a.name;
+      if (!navn.startsWith("eks")) continue;
+      navn=navn.split("\\.")[1]; // tag 'diverse' fra 'eks.diverse.AfspilLyd'
+      kategorier.add(navn);
+    }
+    //kategorier.add("(søg)");
+    /*
+    søgEditText = new EditText(this);
+    søgEditText.setHint("Søg");
+    søgEditText.setSingleLine();
+    søgEditText.setEnabled(true);
+    søgEditText.setOnKeyListener(this);
+     */
+    kategorivalg = new Gallery(this);
+    kategorivalg.setAdapter(new ArrayAdapter(this, android.R.layout.simple_gallery_item, android.R.id.text1, new ArrayList(kategorier)));
+    kategorivalg.setSpacing(10);
+    kategorivalg.setOnItemSelectedListener(this);
+    kategorivalg.setUnselectedAlpha(0.4f);
+    kategorivalg.startAnimation(AnimationUtils.loadAnimation(this, R.anim.egen_anim));
+
 
      // Anonym nedarving af ArrayAdapter med omdefineret getView()
-    ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, aktiviteter)
+    listeadapter = new ArrayAdapter<ActivityInfo>(this, android.R.layout.simple_list_item_2, android.R.id.text1, visAktiviteter)
     {
       @Override
       public View getView(int position, View convertView, ViewGroup parent) {
@@ -59,13 +99,67 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
         TextView listeelem_overskrift=(TextView) view.findViewById(android.R.id.text1);
         TextView listeelem_beskrivelse=(TextView) view.findViewById(android.R.id.text2);
 
-        String pakkeOgKlasse=aktiviteter[position].name;
+        String pakkeOgKlasse=visAktiviteter.get(position).name;
         String pakkenavn=pakkeOgKlasse.substring(0, pakkeOgKlasse.lastIndexOf("."));
         String klassenavn=pakkeOgKlasse.substring(pakkenavn.length()+1);
 
         listeelem_overskrift.setText(klassenavn);
         listeelem_beskrivelse.setText(pakkenavn);
 
+        return view;
+      }
+    };
+    listView.setAdapter(listeadapter);
+
+
+    listView.setOnItemClickListener(this);
+    listView.setOnItemLongClickListener(this);
+
+    //boolean startetFraLauncher = getIntent().getCategories().contains(Intent.CATEGORY_LAUNCHER);
+    boolean startetFraLauncher = Intent.ACTION_MAIN.equals(getIntent().getAction());
+
+    autostart=new CheckBox(this);
+    autostart.setText("Start automatisk aktivitet næste gang");
+
+    tv = new TextView(this);
+    tv.setText("Se kildekode med langt tryk");
+
+    seKildekode = new ToggleButton(this);
+    seKildekode.setTextOff("Se kilde");
+    seKildekode.setTextOn("Se kilde");
+    seKildekode.setChecked(false);
+
+
+    // Layout
+    TableLayout tl=new TableLayout(this);
+    tl.addView(tv);
+    tl.addView(listView);
+    ((LinearLayout.LayoutParams) listView.getLayoutParams()).weight = 1; // Stræk listen
+    TableRow tr = new TableRow(this);
+    tr.addView(seKildekode);
+    //tr.addView(søgEditText);
+    tr.addView(kategorivalg);
+    ((LinearLayout.LayoutParams) kategorivalg.getLayoutParams()).weight = 1; // Stræk listen
+    ((LinearLayout.LayoutParams) kategorivalg.getLayoutParams()).gravity = Gravity.BOTTOM;
+    tl.addView(tr);
+
+    setContentView(tl);
+
+
+    // Genskab valg fra sidst der blev startet en aktivitet
+    SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
+    int position=prefs.getInt("position", 0);
+    listView.setSelectionFromTop(position, 30);
+    autostart.setChecked(prefs.getBoolean("autostart", false));
+    if (autostart.isChecked() && startetFraLauncher) {
+      onItemClick(listView, null, position, 0); // hack - 'klik' på listen!
+    }
+
+    // Sæt ID'er så vi understøtter vending
+    listView.setId(117);
+    kategorivalg.setId(118);
+    seKildekode.setId(119);
+  }
         // Lad billedet på en eller anden måde afspejle pakkenavnet
         //listeelem_beskrivelse.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
         //listeelem_billede.setImageResource(17301855+Math.abs(pakkenavn.hashCode()%10));
@@ -75,67 +169,22 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
         //listeelem_billede.setBackgroundColor( Color.HSVToColor(new float[] {pakkenavn.hashCode()%360, 1, 0.8f}));
         //listeelem_billede.setColorFilter(pakkenavn.hashCode() | 0x3f000000, Mode.SRC_ATOP);
 
-        return view;
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if (keyCode ==  KeyEvent.KEYCODE_BACK) {
+      // nulstil først kategorivalg, afslut derefter
+      if (kategorivalg.getSelectedItemPosition() > 0) {
+        kategorivalg.setSelection(0, true);
+      } else {
+        finish();
       }
-    };
-
-/*
-     // Anonym nedarving af ArrayAdapter med omdefineret getView()
-    ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, aktiviteter)
-    {
-      @Override
-      public View getView(int position, View convertView, ViewGroup parent) {
-        View view=super.getView(position, convertView, parent);
-        TextView listeelem_overskrift=(TextView) view.findViewById(R.id.listeelem_overskrift);
-        TextView listeelem_beskrivelse=(TextView) view.findViewById(R.id.listeelem_beskrivelse);
-        ImageView listeelem_billede=(ImageView) view.findViewById(R.id.listeelem_billede);
-
-        String pakkeOgKlasse=aktiviteter[position].name;
-        String pakkenavn=pakkeOgKlasse.substring(0, pakkeOgKlasse.lastIndexOf("."));
-        String klassenavn=pakkeOgKlasse.substring(pakkenavn.length()+1);
-
-        listeelem_overskrift.setText(klassenavn);
-        listeelem_beskrivelse.setText(pakkenavn);
-
-        // Lad billedet på en eller anden måde afspejle pakkenavnet
-        //listeelem_billede.setImageResource(17301855+Math.abs(pakkenavn.hashCode()%10));
-        listeelem_billede.setImageResource(android.R.drawable.ic_media_ff + pakkenavn.hashCode()%30);
-        //listeelem_billede.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
-        //listeelem_billede.setBackgroundColor( pakkenavn.hashCode() | 0xff000000 );
-        //listeelem_billede.setBackgroundColor( Color.HSVToColor(new float[] {pakkenavn.hashCode()%360, 1, 0.8f}));
-        //listeelem_billede.setColorFilter(pakkenavn.hashCode() | 0x3f000000, Mode.SRC_ATOP);
-
-        return view;
-      }
-    };
-*/
-    listView.setAdapter(adapter);
-
-    SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
-    int position=prefs.getInt("position", 0);
-    listView.setSelectionFromTop(position, 30);
-    listView.setOnItemClickListener(this);
-    listView.setOnItemLongClickListener(this);
-
-    //boolean startetFraLauncher = getIntent().getCategories().contains(Intent.CATEGORY_LAUNCHER);
-    boolean startetFraLauncher = Intent.ACTION_MAIN.equals(getIntent().getAction());
-
-    autostart=new CheckBox(this);
-    autostart.setText("Start automatisk aktivitet næste gang");
-    autostart.setChecked(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("autostart", false));
-    if (autostart.isChecked() && startetFraLauncher) {
-      onItemClick(listView, null, position, 0); // hack - 'klik' på listen!
+      return true;
+    } else if (keyCode ==  KeyEvent.KEYCODE_SEARCH) {
+      // søgning her?
     }
-
-    TextView tv = new TextView(this);
-    tv.setText("Se kildekode med langt tryk");
-
-    TableLayout linearLayout=new TableLayout(this);
-    //linearLayout.addView(autostart);
-    linearLayout.addView(tv);
-    linearLayout.addView(listView);
-
-    setContentView(linearLayout);
+    tv.append("\nonKeyDown "+keyCode);
+    return super.onKeyDown(keyCode, event);
   }
 
 
@@ -145,15 +194,21 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     if (onStartTæller++ == 2) Toast.makeText(this, "Vink: Tryk længe på et punkt for at se kildekoden", Toast.LENGTH_LONG).show();
   }
 
+
   public void onItemClick(AdapterView<?> listView, View v, int position, long id) {
-    ActivityInfo aktivitetsinfo=aktiviteter[position];
+    ActivityInfo akt=visAktiviteter.get(position);
+
+    if (seKildekode.isChecked()) {
+      visKildekode(akt);
+      return;
+    }
 
     Intent intent=new Intent();
-    intent.setClassName(aktivitetsinfo.applicationInfo.packageName, aktivitetsinfo.name);
+    intent.setClassName(akt.applicationInfo.packageName, akt.name);
     try {
       // Tjek at klassen faktisk kan indlæses så prg ikke crasher hvis den ikke kan!
-      Class.forName(aktivitetsinfo.name);
-      Toast.makeText(this, "Starter "+aktivitetsinfo.name, Toast.LENGTH_SHORT).show();
+      Class.forName(akt.name);
+      Toast.makeText(this, "Starter "+akt.name, Toast.LENGTH_SHORT).show();
       startActivity(intent);
       overridePendingTransition(0, 0); // hurtigt skift
     } catch (Throwable e) {
@@ -162,7 +217,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
       AlertDialog.Builder dialog=new AlertDialog.Builder(this);
       dialog.setTitle("Kunne ikke starte");
       TextView tv = new TextView(this);
-      tv.setText(aktivitetsinfo.name+" gav fejlen:\n"+Log.getStackTraceString(e));
+      tv.setText(akt.name+" gav fejlen:\n"+Log.getStackTraceString(e));
       dialog.setView(tv);
       //dialog.setMessage(aktivitetsinfo.name+" gav fejlen:\n"+Log.getStackTraceString(e));
       dialog.show();
@@ -174,13 +229,36 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
   }
 
   public boolean onItemLongClick(AdapterView<?> listView, View v, int position, long id) {
-    String filnavn=aktiviteter[position].name.replace('.', '/')+".java";
+    visKildekode(visAktiviteter.get(position));
+    return true;
+  }
+
+  /**
+   *
+   * @param position
+   */
+  private void visKildekode(ActivityInfo akt) {
+    String filnavn=akt.name.replace('.', '/')+".java";
     Toast.makeText(this, "Viser "+filnavn, Toast.LENGTH_LONG).show();
 
     Intent i = new Intent(this, VisKildekode.class);
     i.putExtra(VisKildekode.KILDEKODE_FILNAVN, "src/"+filnavn);
     startActivity(i);
-
-    return true;
   }
+
+  public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    //tv.setText("onItemSelected "+position+" "+kategorivalg.getSelectedItemPosition());
+    String kategori = (String) kategorivalg.getSelectedItem();
+    visAktiviteter.clear();
+    if (position==0) visAktiviteter.addAll(alleAktiviteter); // Vis alle aktiviteter
+    //else if ("(søg)".equals(kategori)) visAktiviteter.addAll(alleAktiviteter);
+    else {
+      for (ActivityInfo a : alleAktiviteter)
+        if (a.name.toLowerCase().contains(kategori)) visAktiviteter.add(a);
+    }
+    listeadapter.notifyDataSetChanged();
+  }
+
+  public void onNothingSelected(AdapterView<?> parent) { }
+
 }
