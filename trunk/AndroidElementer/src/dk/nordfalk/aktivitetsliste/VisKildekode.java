@@ -55,6 +55,9 @@ public class VisKildekode extends Activity {
     sv.addView(tv);
     setContentView(sv);
 
+    tv.setId(117);
+    sv.setId(118);
+
     Intent kaldtMedIntent = getIntent();
     if (kaldtMedIntent.getExtras() != null) {
       filnavn = kaldtMedIntent.getExtras().getString(KILDEKODE_FILNAVN);
@@ -72,6 +75,7 @@ public class VisKildekode extends Activity {
         String str = new String(b, "UTF-8");
 
         tv.setText(str);
+
 
         TransformFilter filter = new TransformFilter() {
           public final String transformUrl(final Matcher match, String url) {
@@ -103,6 +107,26 @@ public class VisKildekode extends Activity {
         Linkify.addLinks(tv, Pattern.compile("R.(layout.[a-z0-9_]+)"), null, null, filter);
         Linkify.addLinks(tv, Pattern.compile("R.(xml.[a-z0-9_]+)"), null, null, filter);
         Linkify.addLinks(tv, Pattern.compile("R.(anim.[a-z0-9_]+)"), null, null, filter);
+
+        //
+        filter = new TransformFilter() {
+          public final String transformUrl(final Matcher match, String url) {
+            // LOKAL_PRÆFIX dur ikke her da vi starter et webbrowserintent
+            return HS_PRÆFIX + "src/" + match.group(1).replace('.', '/') + ".java";
+          }
+        };
+        Linkify.addLinks(tv, Pattern.compile("import ([a-zA-Z0-9_\\.]+)"), null, null, filter);
+        //
+
+
+
+        // Almindelig HTTP
+        filter = new TransformFilter() {
+          public final String transformUrl(final Matcher match, String url) {
+            return match.group(1);
+          }
+        };
+        Linkify.addLinks(tv, Pattern.compile("(http[a-z0-9_/:\\.]+)"), null, null, filter);
 
       } catch (FileNotFoundException ex) {
         Toast.makeText(this, "Filen mangler i assets/src.\nViser " + filnavn + " fra nettet i stedet.", Toast.LENGTH_LONG).show();

@@ -76,7 +76,7 @@ public class BenytAnimationer extends Activity implements OnClickListener {
       knap1.startAnimation(AnimationUtils.makeInAnimation(this, true));
       knap2.startAnimation(AnimationUtils.makeOutAnimation(this, false));
     } else if (hvadBlevDerKlikketPå==knap3) {
-      knap1.startAnimation(AnimationUtils.loadAnimation(this,R.anim.egen_anim));
+      knap1.startAnimation(AnimationUtils.loadAnimation(this, R.anim.egen_anim));
       knap2.startAnimation(AnimationUtils.makeInChildBottomAnimation(this));
     } else if (hvadBlevDerKlikketPå==knap4) {
       TranslateAnimation translationsanim = new TranslateAnimation(-100.0f, 10f, 0, 0);
