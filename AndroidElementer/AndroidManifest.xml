@@ -98,10 +98,12 @@ Aktivitetsliste:
     <activity android:name="eks.providers.VisKontakter"/>
     <activity android:name="eks.providers.VisOpkald"/>
 
-    <activity android:name="eks.recievers.BenytReciever"/>
+    <activity android:name="eks.recievers.OpdagAppInstallation"/>
     <activity android:name="eks.recievers.ModtagSMSer"/>
 
-    <activity android:name="eks.multitouch.MultitouchAktivitet"/>
+    <activity android:name="eks.touchinput.BenytGestureDetector"/>
+    <activity android:name="eks.touchinput.BenytScaleGestureDetector"/>
+    <activity android:name="eks.touchinput.BenytMultiTouchController"/>
 
     <activity android:name="eks.livscyklus.ManglendeKaldTilSuperklasse"/>
     <activity android:name="eks.livscyklus.LogAktivitet"/>
@@ -109,9 +111,7 @@ Aktivitetsliste:
     <activity android:name="eks.livscyklus.Liv2_gemIFil"/>
     <activity android:name="eks.livscyklus.Liv3_nonConfigurationInstance"/>
     <activity android:name="eks.livscyklus.Liv4_bundle"/>
-
-
-    <activity android:name="eks.livscyklus.DialogDerBliverVedVending"/>
+    <activity android:name="eks.livscyklus.DialogDerOverleverVending"/>
 
 
     <activity android:name="eks.kort.KortAktivitet"/>
@@ -142,13 +142,11 @@ Aktivitetsliste:
                  android:resource="@xml/levendeikon_visklokken" />
     </receiver>
 
-    <activity android:name="eks.ufaerdigt.BenytGestureDetector"/>
-    <activity android:name="eks.ufaerdigt.BenytScaleGestureDetector"/>
 
 
 
 
-    <activity android:name="eks.c2dm.PushMeddelelser"/>
+    <activity android:name="eks.c2dm.MeddelelserFraServer"/>
 
     <!-- Only C2DM servers can send messages for the app. If permission is not set - any other app can generate it -->
     <receiver android:name="eks.c2dm.C2DMReceiver" android:permission="com.google.android.c2dm.permission.SEND">

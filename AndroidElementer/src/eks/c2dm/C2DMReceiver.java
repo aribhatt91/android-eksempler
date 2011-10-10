@@ -15,40 +15,42 @@ public class C2DMReceiver extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context ctx, Intent intent) {
-    PushMeddelelser.log(this+" onReceive("+ intent);
+    Bundle data = intent.getExtras();
+    if (data != null) data.isEmpty(); // Forårsager extras bliver pakket ud så toString() virker
+    MeddelelserFraServer.log(this.getClass().getSimpleName()+" onReceive("+ intent+"\n"+data);
 
     if (intent.getAction().equals("com.google.android.c2dm.intent.REGISTRATION")) {
       String registration = intent.getStringExtra("registration_id");
       if (intent.getStringExtra("error") != null) {
-          // Registration failed, should try again later.
+        MeddelelserFraServer.log("Registrering fejlede, prøv igen senere (er Android Marked installeret?)");
       } else if (intent.getStringExtra("unregistered") != null) {
-          // unregistration done, new messages from the authorized sender will be rejected
+        MeddelelserFraServer.log("Enheden er afregistreret. Yderligere serverbeskedder bliver afvist");
       } else if (registration != null) {
          // Send the registration ID to the 3rd party site that is sending the messages.
          // This should be done in a separate thread.
          // When done, remember that all registration is done.
-        PushMeddelelser.log("Enheden er registreret:\nregistration_id="+registration);
+        MeddelelserFraServer.log("Enheden er registreret:\nregistration_id="+registration);
+        MeddelelserFraServer.log("Denne ID skal sendes til din server så serveren kan kontakte enheden");
       }
     } else if (intent.getAction().equals("com.google.android.c2dm.intent.RECEIVE")) {
-      //   handleMessage(ctx, intent);
-        Bundle data = intent.getExtras();
-        if (PushMeddelelser.logTv==null) {
-          // Start aktiviteten og send data meddelelsen med i extra!
-          Intent i = new Intent(ctx, PushMeddelelser.class);
+        if (MeddelelserFraServer.logTv!=null) {
+          MeddelelserFraServer.enMeddelelseErKommet(data);
+        } else {
+          // Aktiviteten kører ikke. Start den og send data meddelelsen med i extra
+          Intent i = new Intent(ctx, MeddelelserFraServer.class);
           i.putExtras(data);
 
           // Kode til at starte aktiviteten direkte - ikke så brugervenligt!
           //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
           //ctx.startActivity(i);
+
+          // Opret en notifikation i stedet
           PendingIntent pi = PendingIntent.getActivity(ctx, 0, i, 0);
           Notification n = new Notification(R.drawable.bil, "Meddelelse fra skyen", System.currentTimeMillis());
           n.setLatestEventInfo(ctx, "Meddelelse fra skyen", data.getString("hilsen"), pi);
 
           NotificationManager nm=(NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
           nm.notify(42, n);
-
-        } else {
-          PushMeddelelser.enMeddelelseErKommet(data);
         }
      }
 

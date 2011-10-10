@@ -1,21 +1,12 @@
-package eks.ufaerdigt;
+package eks.touchinput;
 
-import android.view.GestureDetector.OnGestureListener;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Display;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.OnScaleGestureListener;
-import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 /**

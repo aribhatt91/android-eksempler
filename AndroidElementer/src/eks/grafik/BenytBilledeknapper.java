@@ -3,83 +3,47 @@ package eks.grafik;
 import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
 
 /**
  *
  * @author Jacob Nordfalk
  */
-public class BenytBilledeknapper extends Activity implements OnClickListener {
+public class BenytBilledeknapper extends Activity  {
 
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    TableLayout tl = new TableLayout(this);
-
+  /** Laver et TextView med en tekst */
+  private TextView tv(String s) {
     TextView tv = new TextView(this);
-    tv.setText("Dette eksempel viser billeder der skal fungere som knapper.\n"
-            +"Men hvis man vil slippe for knap-rammen så kan man ikke se at knapppen bliver trykket ned.\n"
-            +"Det kan løses ved at farve billedet når det berøres ('trykkes ned').\n"
-    );
+    tv.setText(s);
+    return tv;
+  }
 
-    ImageButton knap1 = new ImageButton(this);
-    knap1.setImageResource(R.drawable.logo);
-    tl.addView(knap1);
-
-    ImageButton knap2 = new ImageButton(this);
-    knap2.setImageResource(R.drawable.logo);
-    knap2.setOnTouchListener(farvKnapNårDenErTrykketNed);
-    tl.addView(knap2);
-
-    ImageButton knap3 = new ImageButton(this);
-    knap3.setImageResource(R.drawable.logo);
-    knap3.setBackgroundDrawable(null);
-    tl.addView(knap3);
-
-    ImageButton knap4 = new ImageButton(this);
-    knap4.setImageResource(R.drawable.logo);
-    knap4.setBackgroundDrawable(null);
-    knap4.setOnTouchListener(farvKnapNårDenErTrykketNed);
-    tl.addView(knap4);
-
-
-    ImageView knap5 = new ImageView(this);
-    knap5.setImageResource(R.drawable.logo);
-    tl.addView(knap5);
-
-    ImageView knap6 = new ImageView(this);
-    knap6.setImageResource(R.drawable.logo);
-    knap6.setOnTouchListener(farvKnapNårDenErTrykketNed);
-    tl.addView(knap6);
-
-
-    knap1.setOnClickListener(this);
-    knap2.setOnClickListener(this);
-    knap3.setOnClickListener(this);
-    knap4.setOnClickListener(this);
-    knap5.setOnClickListener(this);
-    knap6.setOnClickListener(this);
-
-    ScrollView sv = new ScrollView(this);
-    sv.addView(tl);
-    setContentView(sv);
+  /** Laver en TableRow */
+  private TableRow tr(View knap1, View knap2) {
+    TableRow tr = new TableRow(this);
+    tr.setPadding(5, 2, 5, 2);
+    tr.addView(knap1);
+    //knap1.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+    tr.addView(knap2);
+    return tr;
   }
 
   private static OnTouchListener farvKnapNårDenErTrykketNed = new OnTouchListener() {
 
     public boolean onTouch(View view, MotionEvent me) {
+      Log.d("onTouch(", me.toString());
       ImageView ib = (ImageView) view;
       if (me.getAction() == MotionEvent.ACTION_DOWN) {
         //log("farve "+me);
@@ -89,11 +53,96 @@ public class BenytBilledeknapper extends Activity implements OnClickListener {
         //log("ikke farve "+me);
         ib.setColorFilter(null);
       }
-      return false;
+      return true;
     }
   };
 
-  public void onClick(View hvadBlevDerKlikketPå) {
-    Toast.makeText(this, "Klik "+hvadBlevDerKlikketPå, Toast.LENGTH_SHORT).show();
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    TableLayout tl = new TableLayout(this);
+
+    tl.addView(tv("Dette eksempel viser billeder der kan fungere som knapper.\n"
+            +"Men hvis man vil slippe for knap-rammen så kan man ikke se at knapppen bliver trykket ned.\n"
+            +"Det kan løses ved at farve billedet når det berøres ('trykkes ned').\n"));
+
+
+    ImageButton knap1 = new ImageButton(this);
+    knap1.setImageResource(R.drawable.logo);
+
+    ImageButton knap2 = new ImageButton(this);
+    knap2.setImageResource(R.drawable.logo);
+    knap2.setOnTouchListener(farvKnapNårDenErTrykketNed);
+
+    tl.addView(tr(tv("ImageButton"), tv("Med farvefilter")));
+    tl.addView(tr(knap1, knap2));
+
+
+    ImageButton knap3 = new ImageButton(this);
+    knap3.setImageResource(R.drawable.logo);
+    knap3.setBackgroundDrawable(null);
+
+    ImageButton knap4 = new ImageButton(this);
+    knap4.setImageResource(R.drawable.logo);
+    knap4.setBackgroundDrawable(null);
+    knap4.setOnTouchListener(farvKnapNårDenErTrykketNed);
+
+    tl.addView(tr(tv("IB uden baggrund"), tv("Med farvefilter")));
+    tl.addView(tr(knap3, knap4));
+
+
+    ImageView knap5 = new ImageView(this);
+    knap5.setImageResource(R.drawable.logo);
+
+    ImageView knap6 = new ImageView(this);
+    knap6.setImageResource(R.drawable.logo);
+    knap6.setOnTouchListener(farvKnapNårDenErTrykketNed);
+
+    tl.addView(tr(tv("ImageView"), tv("Med farvefilter")));
+    tl.addView(tr(knap5, knap6));
+
+
+    tl.addView(tv("Almindelige knapper kan man også sætte til at vise en anden baggrund - men ikke med så heldige resultater:"));
+
+    Button knap7 = new Button(this);
+    knap7.setText("Med alm baggrund");
+
+    Button knap8 = new Button(this);
+    knap8.setBackgroundResource(R.drawable.logo);
+    knap8.setText("Med egen baggrund");
+    tl.addView(tr(knap7, knap8));
+
+
+    tl.addView(tv("Den 'rigtige' løsning er at lave knapgrafik til alle tilstande: normal, fokus, nedtrykket (og evt disablet) og kombinationerne, og så kombinere disse i en 'selector' drawable. Se nogle eksempler (fra Android) herunder:"));
+    Button b1, b2;
+
+    tl.addView(tr(tv("btn_star"), tv("btn_radio")));
+    tl.addView(tr(b1 = new Button(this), b2 = new Button(this)));
+    b1.setBackgroundResource(android.R.drawable.btn_star);
+    b2.setBackgroundResource(android.R.drawable.btn_radio);
+
+    tl.addView(tr(tv("btn_plus"), tv("btn_minus")));
+    tl.addView(tr(b1 = new Button(this), b2 = new Button(this)));
+    b1.setBackgroundResource(android.R.drawable.btn_plus);
+    b2.setBackgroundResource(android.R.drawable.btn_minus);
+
+    tl.addView(tr(tv("btn_default"), tv("btn_default_small")));
+    tl.addView(tr(b1 = new Button(this), b2 = new Button(this)));
+    b1.setBackgroundResource(android.R.drawable.btn_default);
+    b2.setBackgroundResource(android.R.drawable.btn_default_small);
+    b1.setText("btn_default");
+    b2.setText("btn_default_small");
+
+    tl.addView(tr(tv("btn_dialog"), tv("btn_dropdown")));
+    tl.addView(tr(b1 = new Button(this), b2 = new Button(this)));
+    b1.setBackgroundResource(android.R.drawable.btn_dialog);
+    b2.setBackgroundResource(android.R.drawable.btn_dropdown);
+
+
+    ScrollView sv = new ScrollView(this);
+    sv.addView(tl);
+    setContentView(sv);
   }
+
 }

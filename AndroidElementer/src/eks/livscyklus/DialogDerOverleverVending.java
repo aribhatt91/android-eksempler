@@ -1,23 +1,14 @@
 package eks.livscyklus;
 
 import android.app.Dialog;
-import eks.diverse.*;
-import eks.grafik.Tegneprogram;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.Toast;
@@ -27,7 +18,7 @@ import dk.nordfalk.android.elementer.R;
  *
  * @author Jacob Nordfalk
  */
-public class DialogDerBliverVedVending extends Activity implements OnClickListener {
+public class DialogDerOverleverVending extends Activity implements OnClickListener {
 
   Button visAlertDialog, visAlertDialog1, visAlertDialog2;
 
@@ -72,7 +63,7 @@ public class DialogDerBliverVedVending extends Activity implements OnClickListen
       dialog.setMessage("Denne her har én knap");
       dialog.setPositiveButton("Vis endnu en toast", new AlertDialog.OnClickListener() {
         public void onClick(DialogInterface arg0, int arg1) {
-          Toast.makeText(DialogDerBliverVedVending.this, "Standard-toast", Toast.LENGTH_LONG).show();
+          Toast.makeText(DialogDerOverleverVending.this, "Standard-toast", Toast.LENGTH_LONG).show();
         }
       });
       return dialog.create();
@@ -85,7 +76,7 @@ public class DialogDerBliverVedVending extends Activity implements OnClickListen
       dialog.setView(et);
       dialog.setPositiveButton("Vis endnu en toast", new AlertDialog.OnClickListener() {
         public void onClick(DialogInterface arg0, int arg1) {
-          Toast.makeText(DialogDerBliverVedVending.this, "Standard-toast", Toast.LENGTH_LONG).show();
+          Toast.makeText(DialogDerOverleverVending.this, "Standard-toast", Toast.LENGTH_LONG).show();
         }
       });
       dialog.setNegativeButton("Nej tak", null);
