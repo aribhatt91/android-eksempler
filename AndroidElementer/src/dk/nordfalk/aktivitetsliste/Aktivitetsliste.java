@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -38,43 +39,56 @@ import java.util.LinkedHashSet;
 
 public class Aktivitetsliste extends Activity implements OnItemClickListener, OnItemLongClickListener, OnItemSelectedListener {
 
-  TextView textView;
-  ArrayAdapter<String> listeadapter;
-  ArrayList<String> alleAktiviteter = new ArrayList<String>();
+  /** Programdata - static da de ikke fylder det store og vi dermed slipper for reinitialisering */
+  static ArrayList<String> alleAktiviteter = new ArrayList<String>();
+  static ArrayList<String> kategorier;
+  static HashMap<Integer, ArrayList<String>> kategorivalgTilVisKlasserCache = new HashMap<Integer, ArrayList<String>>();
+
+
   ArrayList<String> visKlasser = new ArrayList<String>();
-  private CheckBox autostart;
-  private int onStartTæller;
-  private ToggleButton seKildekode;
-  private Gallery kategorivalg;
-  //private EditText søgEditText;
-  private ArrayList<String> kategorier;
+
+  TextView textView;
+  ArrayAdapter<String> visKlasserAdapter;
+  CheckBox autostart;
+  int onStartTæller;
+  ToggleButton seKildekode;
+  Gallery kategorivalg;
+  //EditText søgEditText;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    ListView listView=new ListView(this);
-
-    try {
-      for (ActivityInfo a : getPackageManager().
-              getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities) {
-        alleAktiviteter.add(a.name);
+    if (alleAktiviteter.isEmpty()) { // Førstegangsinitialisering af programdata
+      try {
+        for (ActivityInfo a : getPackageManager().
+                getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities) {
+          alleAktiviteter.add(a.name);
+        }
+      } catch (NameNotFoundException ex) {
+        ex.printStackTrace();
       }
-      visKlasser.addAll(alleAktiviteter);
-    } catch (NameNotFoundException ex) {
-      ex.printStackTrace();
+
+      LinkedHashSet<String> kategorisæt = new LinkedHashSet<String>();
+      //kategorier.add("(søg)");
+      kategorisæt.add(" = vis alle = ");
+      for (String pnavn : alleAktiviteter) {
+        pnavn = pnavn.substring(0, pnavn.lastIndexOf(".")); // Fjern klassenavnet
+        if (pnavn.startsWith("eks"))
+          pnavn=pnavn.substring(4); // tag 'diverse' fra 'eks.diverse'
+        kategorisæt.add(pnavn);
+      }
+      kategorier = new ArrayList(kategorisæt);
+
+      // Start asynkron indlæsning af kategorivalgTilVisKlasserCache
+      new Thread() {
+        public void run() {
+          for (int i=0; i<kategorier.size(); i++) findKlasserIKategori(i);
+        }
+      }.start();
     }
 
-    LinkedHashSet<String> kategorisæt = new LinkedHashSet<String>();
 
-    //kategorier.add("(søg)");
-    kategorisæt.add(" = vis alle = ");
-    for (String pnavn : alleAktiviteter) {
-      pnavn = pnavn.substring(0, pnavn.lastIndexOf(".")); // Fjern klassenavnet
-      if (pnavn.startsWith("eks"))
-        pnavn=pnavn.substring(4); // tag 'diverse' fra 'eks.diverse'
-      kategorisæt.add(pnavn);
-    }
     //kategorier.add("(søg)");
     /*
     søgEditText = new EditText(this);
@@ -83,7 +97,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     søgEditText.setEnabled(true);
     søgEditText.setOnKeyListener(this);
      */
-    kategorier = new ArrayList(kategorisæt);
+
     kategorivalg = new Gallery(this);
     kategorivalg.setAdapter(new ArrayAdapter(this, android.R.layout.simple_gallery_item, android.R.id.text1, kategorier));
     kategorivalg.setSpacing(10);
@@ -94,8 +108,9 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
       kategorivalg.startAnimation(AnimationUtils.loadAnimation(this, R.anim.egen_anim2));
 
 
-     // Anonym nedarving af ArrayAdapter med omdefineret getView()
-    listeadapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, visKlasser)
+    visKlasser.addAll(alleAktiviteter);
+    // Anonym nedarving af ArrayAdapter med omdefineret getView()
+    visKlasserAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, visKlasser)
     {
       @Override
       public View getView(int position, View convertView, ViewGroup parent) {
@@ -119,16 +134,15 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
         return view;
       }
     };
-    listView.setAdapter(listeadapter);
+    ListView visKlasserListView=new ListView(this);
+    visKlasserListView.setAdapter(visKlasserAdapter);
 
+    visKlasserListView.setOnItemClickListener(this);
+    visKlasserListView.setOnItemLongClickListener(this);
 
-    listView.setOnItemClickListener(this);
-    listView.setOnItemLongClickListener(this);
-
-    //boolean startetFraLauncher = getIntent().getCategories().contains(Intent.CATEGORY_LAUNCHER);
     boolean startetFraLauncher = Intent.ACTION_MAIN.equals(getIntent().getAction());
 
-    autostart=new CheckBox(this);
+    autostart = new CheckBox(this);
     autostart.setText("Start automatisk aktivitet næste gang");
 
     textView = new TextView(this);
@@ -143,14 +157,14 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     // Layout
     TableLayout tl=new TableLayout(this);
     tl.addView(textView);
-    tl.addView(listView);
-    ((LinearLayout.LayoutParams) listView.getLayoutParams()).weight = 1; // Stræk listen
+    tl.addView(visKlasserListView);
+    ((LinearLayout.LayoutParams) visKlasserListView.getLayoutParams()).weight = 1; // Stræk listen
     TableRow tr = new TableRow(this);
     tr.addView(seKildekode);
     //tr.addView(søgEditText);
-    tr.addView(kategorivalg);
-    ((LinearLayout.LayoutParams) kategorivalg.getLayoutParams()).weight = 1; // Stræk listen
-    ((LinearLayout.LayoutParams) kategorivalg.getLayoutParams()).gravity = Gravity.BOTTOM;
+
+
+    tr.addView(kategorivalg, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1));
     tl.addView(tr);
 
     setContentView(tl);
@@ -159,32 +173,18 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     // Genskab valg fra sidst der blev startet en aktivitet
     SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
     int position=prefs.getInt("position", 0);
-    listView.setSelectionFromTop(position, 30);
+    visKlasserListView.setSelectionFromTop(position, 30);
     autostart.setChecked(prefs.getBoolean("autostart", false));
     if (autostart.isChecked() && startetFraLauncher) {
-      onItemClick(listView, null, position, 0); // hack - 'klik' på listen!
+      onItemClick(visKlasserListView, null, position, 0); // hack - 'klik' på listen!
     }
 
     // Sæt ID'er så vi understøtter vending
-    listView.setId(117);
+    visKlasserListView.setId(117);
     kategorivalg.setId(118);
     seKildekode.setId(119);
 
-    // Start asunkron indlæsning af kategorivalgTilVisKlasserCache
-    new Thread() {
-      public void run() {
-        for (int i=0; i<kategorier.size(); i++) findKlasserIKategori(i);
-      }
-    }.start();
   }
-        // Lad billedet på en eller anden måde afspejle pakkenavnet
-        //listeelem_beskrivelse.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
-        //listeelem_billede.setImageResource(17301855+Math.abs(pakkenavn.hashCode()%10));
-        //listeelem_billede.setImageResource(android.R.drawable.ic_media_ff + pakkenavn.hashCode()%30);
-        //listeelem_billede.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
-        //listeelem_billede.setBackgroundColor( pakkenavn.hashCode() | 0xff000000 );
-        //listeelem_billede.setBackgroundColor( Color.HSVToColor(new float[] {pakkenavn.hashCode()%360, 1, 0.8f}));
-        //listeelem_billede.setColorFilter(pakkenavn.hashCode() | 0x3f000000, Mode.SRC_ATOP);
 
 
   @Override
@@ -268,9 +268,8 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
   }
 
 
-  HashMap<Integer, ArrayList<String>> kategorivalgTilVisKlasserCache = new HashMap<Integer, ArrayList<String>>();
 
-  private ArrayList<String> findKlasserIKategori(int position) {
+  private synchronized ArrayList<String> findKlasserIKategori(int position) {
     if (position==0) return alleAktiviteter; // Vis alle aktiviteter
 
     // Tjek cache
@@ -282,8 +281,8 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     String pnavn = kategorier.get(position);
     if (!pnavn.contains(".")) pnavn = "eks."+pnavn; // put eks. foran i pakkkenavn
     for (String a : alleAktiviteter)
-//        if (a.toLowerCase().contains(kategori)) visKlasser.add(a); // kun nødvendig til søgning
       if (a.contains(pnavn)) klasser.add(a);
+    // if (a.toLowerCase().contains(kategori)) visKlasser.add(a); // kun nødvendig til søgning
     try { // Skan efter filer der ikke er aktiviteter og vis også dem
       //System.out.println(visKlasser);
       String mappe = pnavn.replace(".", "/");
@@ -307,7 +306,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     //tv.setText("onItemSelected "+position+" "+kategorivalg.getSelectedItemPosition());
     this.visKlasser.clear();
     this.visKlasser.addAll(findKlasserIKategori(position));
-    listeadapter.notifyDataSetChanged();
+    visKlasserAdapter.notifyDataSetChanged();
   }
 
   public void onNothingSelected(AdapterView<?> parent) { }
