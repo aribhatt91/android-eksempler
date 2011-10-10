@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -20,7 +22,7 @@ import android.widget.Toast;
  *
  * @author Jacob Nordfalk
  */
-public class PushMeddelelser extends Activity implements OnClickListener {
+public class MeddelelserFraServer extends Activity implements OnClickListener {
 
 /*
 Instrukser på Linux/Mac:
@@ -73,7 +75,15 @@ curl --header "Authorization: GoogleLogin auth=$Auth" "https://android.apis.goog
     tl.addView(afregistrér);
 
     logTv=new TextView(this);
-    logTv.setText("Et eksempel på Android Cloud to Device Messaging\nTryk først på registrér og følg instrukserne i loggen");
+    logTv.setText(Html.fromHtml("Eksempel på hvordan server kan kontakte en telefon<br />"+
+            "En sådan kontakt kan ske på mange måder:<br />\n"+
+            "<b>* Ved at sende SMS til telefonerne</b> - kræver SMS-gateway, potentielt dyrt<br />\n"+
+            "<b>* Ved at telefonen løbende kontakter din server for opdateringer</b> -tager strøm<br />\n"+
+            "<br />\n"+
+            "Google Cloud to Device Messaging (c2dm) lader fra Android 2.2 andre apps udnytte den "+
+            "eksisterende forbindelse som Google i forvejen har i kraft af Android Marked.<br />\n"+
+            "Tryk først på registrér og følg instrukserne i loggen<br />\n"));
+    Linkify.addLinks(logTv, Linkify.WEB_URLS);
     tl.addView(logTv);
 
     registrér.setOnClickListener(this);
@@ -94,12 +104,13 @@ curl --header "Authorization: GoogleLogin auth=$Auth" "https://android.apis.goog
       registrationIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0)); // boilerplate
       registrationIntent.putExtra("sender", "jacob.nordfalk@gmail.com");
       startService(registrationIntent);
-      logTv.append("Registreret");
+      log("Registrer...");
     }
     else /* if (hvadBlevDerKlikketPå==afregistrér) */ {
       Intent unregIntent = new Intent("com.google.android.c2dm.intent.UNREGISTER");
       unregIntent.putExtra("app", PendingIntent.getBroadcast(this, 0, new Intent(), 0));
       startService(unregIntent);
+      log("Afregistrerer...");
     }
   }
 

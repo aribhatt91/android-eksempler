@@ -49,7 +49,6 @@ public class VisKildekode extends Activity {
     super.onCreate(savedInstanceState);
     findWebUrl(this);
 
-
     TextView tv = new TextView(this);
     ScrollView sv = new ScrollView(this);
     sv.addView(tv);
@@ -95,6 +94,8 @@ public class VisKildekode extends Activity {
         };
         Linkify.addLinks(tv, Pattern.compile("android.R.(layout.[a-z0-9_]+)"), null, null, filter);
         Linkify.addLinks(tv, Pattern.compile("android.R.(xml.[a-z0-9_]+)"), null, null, filter);
+        Linkify.addLinks(tv, Pattern.compile("android.R.(raw.[a-z0-9_]+)"), null, null, filter);
+        Linkify.addLinks(tv, Pattern.compile("android.R.(drawable.[a-z0-9_]+)"), null, null, filter);
         Linkify.addLinks(tv, Pattern.compile("android.R.(anim.[a-z0-9_]+)"), null, null, filter);
 
 
@@ -126,7 +127,7 @@ public class VisKildekode extends Activity {
             return match.group(1);
           }
         };
-        Linkify.addLinks(tv, Pattern.compile("(http[a-z0-9_/:\\.]+)"), null, null, filter);
+        Linkify.addLinks(tv, Pattern.compile("(http[a-zA-Z0-9_/:\\.\\?\\&\\=\\-]+)"), null, null, filter);
 
       } catch (FileNotFoundException ex) {
         Toast.makeText(this, "Filen mangler i assets/src.\nViser " + filnavn + " fra nettet i stedet.", Toast.LENGTH_LONG).show();

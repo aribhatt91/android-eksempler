@@ -1,4 +1,4 @@
-package eks.ufaerdigt;
+package eks.touchinput;
 
 import android.view.GestureDetector.OnGestureListener;
 import android.app.Activity;

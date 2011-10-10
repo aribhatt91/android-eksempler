@@ -13,16 +13,13 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import eks.grafik.Tegneprogram;
-
-
 
 class SMSReciever extends BroadcastReceiver {
 
   @Override
   public void onReceive(Context ctx, Intent intent) {
-    Toast.makeText(ctx, intent.toURI(), Toast.LENGTH_LONG).show();
     System.out.println("intent.toURI() = "+intent.toURI());
+    Toast.makeText(ctx, intent.toURI(), Toast.LENGTH_LONG).show();
     Bundle data=intent.getExtras();
     if (data!=null) {
       Object pdus[]=((Object[]) data.get("pdus"));

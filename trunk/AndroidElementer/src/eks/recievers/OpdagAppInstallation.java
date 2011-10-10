@@ -30,7 +30,7 @@ class InstallationsReciever extends BroadcastReceiver {
     Toast.makeText(ctx, "onReceive"+ctx+":\n"+i, Toast.LENGTH_LONG).show();
 
     // Vi viser også en notifikation så man kan komme hen og slå det fra
-    Intent intent=new Intent(ctx, BenytReciever.class);
+    Intent intent=new Intent(ctx, OpdagAppInstallation.class);
     PendingIntent aktivitet=PendingIntent.getActivity(ctx, 0, intent, 0);
     Notification notification=new Notification(R.drawable.logo, "Installation", System.currentTimeMillis());
     notification.setLatestEventInfo(ctx, i.getAction(), ""+i.getExtras(), aktivitet);
@@ -45,7 +45,7 @@ class InstallationsReciever extends BroadcastReceiver {
  *
  * @author Jacob Nordfalk
  */
-public class BenytReciever extends Activity implements OnClickListener {
+public class OpdagAppInstallation extends Activity implements OnClickListener {
 
   Button registrer, afregistrer;
   static InstallationsReciever reciever=new InstallationsReciever();

@@ -2,13 +2,12 @@ package dk.nordfalk.aktivitetsliste;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -23,7 +22,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -33,22 +31,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import dk.nordfalk.android.elementer.R;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 
 public class Aktivitetsliste extends Activity implements OnItemClickListener, OnItemLongClickListener, OnItemSelectedListener {
 
-  TextView tv;
-  ArrayAdapter<ActivityInfo> listeadapter;
-  List<ActivityInfo> alleAktiviteter;
-  ArrayList<ActivityInfo> visAktiviteter;
+  TextView textView;
+  ArrayAdapter<String> listeadapter;
+  ArrayList<String> alleAktiviteter = new ArrayList<String>();
+  ArrayList<String> visKlasser = new ArrayList<String>();
   private CheckBox autostart;
   private int onStartTæller;
   private ToggleButton seKildekode;
   private Gallery kategorivalg;
   //private EditText søgEditText;
+  private ArrayList<String> kategorier;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -57,22 +56,24 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     ListView listView=new ListView(this);
 
     try {
-      alleAktiviteter=Arrays.asList(getPackageManager().
-              getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities);
-      visAktiviteter = new ArrayList<ActivityInfo>(alleAktiviteter);
+      for (ActivityInfo a : getPackageManager().
+              getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities) {
+        alleAktiviteter.add(a.name);
+      }
+      visKlasser.addAll(alleAktiviteter);
     } catch (NameNotFoundException ex) {
       ex.printStackTrace();
     }
 
-    LinkedHashSet<String> kategorier = new LinkedHashSet<String>();
+    LinkedHashSet<String> kategorisæt = new LinkedHashSet<String>();
 
     //kategorier.add("(søg)");
-    kategorier.add("- vis alle -");
-    for (ActivityInfo a : alleAktiviteter) {
-      String navn=a.name;
-      if (!navn.startsWith("eks")) continue;
-      navn=navn.split("\\.")[1]; // tag 'diverse' fra 'eks.diverse.AfspilLyd'
-      kategorier.add(navn);
+    kategorisæt.add(" = vis alle = ");
+    for (String pnavn : alleAktiviteter) {
+      pnavn = pnavn.substring(0, pnavn.lastIndexOf(".")); // Fjern klassenavnet
+      if (pnavn.startsWith("eks"))
+        pnavn=pnavn.substring(4); // tag 'diverse' fra 'eks.diverse'
+      kategorisæt.add(pnavn);
     }
     //kategorier.add("(søg)");
     /*
@@ -82,16 +83,19 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     søgEditText.setEnabled(true);
     søgEditText.setOnKeyListener(this);
      */
+    kategorier = new ArrayList(kategorisæt);
     kategorivalg = new Gallery(this);
-    kategorivalg.setAdapter(new ArrayAdapter(this, android.R.layout.simple_gallery_item, android.R.id.text1, new ArrayList(kategorier)));
+    kategorivalg.setAdapter(new ArrayAdapter(this, android.R.layout.simple_gallery_item, android.R.id.text1, kategorier));
     kategorivalg.setSpacing(10);
     kategorivalg.setOnItemSelectedListener(this);
     kategorivalg.setUnselectedAlpha(0.4f);
-    kategorivalg.startAnimation(AnimationUtils.loadAnimation(this, R.anim.egen_anim));
+    kategorivalg.setBackgroundColor(Color.DKGRAY);
+    if (savedInstanceState == null) // Frisk start - vis animation
+      kategorivalg.startAnimation(AnimationUtils.loadAnimation(this, R.anim.egen_anim2));
 
 
      // Anonym nedarving af ArrayAdapter med omdefineret getView()
-    listeadapter = new ArrayAdapter<ActivityInfo>(this, android.R.layout.simple_list_item_2, android.R.id.text1, visAktiviteter)
+    listeadapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, visKlasser)
     {
       @Override
       public View getView(int position, View convertView, ViewGroup parent) {
@@ -99,12 +103,18 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
         TextView listeelem_overskrift=(TextView) view.findViewById(android.R.id.text1);
         TextView listeelem_beskrivelse=(TextView) view.findViewById(android.R.id.text2);
 
-        String pakkeOgKlasse=visAktiviteter.get(position).name;
-        String pakkenavn=pakkeOgKlasse.substring(0, pakkeOgKlasse.lastIndexOf("."));
-        String klassenavn=pakkeOgKlasse.substring(pakkenavn.length()+1);
-
-        listeelem_overskrift.setText(klassenavn);
-        listeelem_beskrivelse.setText(pakkenavn);
+        String pakkeOgKlasse=visKlasser.get(position);
+        if (pakkeOgKlasse.endsWith(".java")) {
+          String pakkenavn=pakkeOgKlasse.substring(0, pakkeOgKlasse.lastIndexOf('/'));
+          String klassenavn=pakkeOgKlasse.substring(pakkenavn.length()+1);
+          listeelem_overskrift.setText(klassenavn);
+          listeelem_beskrivelse.setText(pakkeOgKlasse);
+        } else {
+          String pakkenavn=pakkeOgKlasse.substring(0, pakkeOgKlasse.lastIndexOf('.'));
+          String klassenavn=pakkeOgKlasse.substring(pakkenavn.length()+1);
+          listeelem_overskrift.setText(klassenavn);
+          listeelem_beskrivelse.setText(pakkenavn);
+        }
 
         return view;
       }
@@ -121,8 +131,8 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     autostart=new CheckBox(this);
     autostart.setText("Start automatisk aktivitet næste gang");
 
-    tv = new TextView(this);
-    tv.setText("Se kildekode med langt tryk");
+    textView = new TextView(this);
+    textView.setText("Se kildekode med langt tryk");
 
     seKildekode = new ToggleButton(this);
     seKildekode.setTextOff("Se kilde");
@@ -132,7 +142,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 
     // Layout
     TableLayout tl=new TableLayout(this);
-    tl.addView(tv);
+    tl.addView(textView);
     tl.addView(listView);
     ((LinearLayout.LayoutParams) listView.getLayoutParams()).weight = 1; // Stræk listen
     TableRow tr = new TableRow(this);
@@ -159,6 +169,13 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     listView.setId(117);
     kategorivalg.setId(118);
     seKildekode.setId(119);
+
+    // Start asunkron indlæsning af kategorivalgTilVisKlasserCache
+    new Thread() {
+      public void run() {
+        for (int i=0; i<kategorier.size(); i++) findKlasserIKategori(i);
+      }
+    }.start();
   }
         // Lad billedet på en eller anden måde afspejle pakkenavnet
         //listeelem_beskrivelse.setBackgroundColor( pakkenavn.hashCode() & 0x007f7f7f | 0xff000000 );
@@ -183,7 +200,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     } else if (keyCode ==  KeyEvent.KEYCODE_SEARCH) {
       // søgning her?
     }
-    tv.append("\nonKeyDown "+keyCode);
+    //tv.append("\nonKeyDown "+keyCode);
     return super.onKeyDown(keyCode, event);
   }
 
@@ -196,66 +213,100 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 
 
   public void onItemClick(AdapterView<?> listView, View v, int position, long id) {
-    ActivityInfo akt=visAktiviteter.get(position);
+    String akt=visKlasser.get(position);
 
-    if (seKildekode.isChecked()) {
+    if (seKildekode.isChecked() || akt.endsWith(".java")) {
       visKildekode(akt);
       return;
     }
 
-    Intent intent=new Intent();
-    intent.setClassName(akt.applicationInfo.packageName, akt.name);
     try {
-      // Tjek at klassen faktisk kan indlæses så prg ikke crasher hvis den ikke kan!
-      Class.forName(akt.name);
-      Toast.makeText(this, "Starter "+akt.name, Toast.LENGTH_SHORT).show();
-      startActivity(intent);
+      // Tjek at klassen faktisk kan indlæses (så prg ikke crasher hvis den ikke kan!)
+      Class klasse = Class.forName(akt);
+      startActivity(new Intent(this, klasse));
       overridePendingTransition(0, 0); // hurtigt skift
+      Toast.makeText(this, "Starter "+akt, Toast.LENGTH_SHORT).show();
     } catch (Throwable e) {
       e.printStackTrace();
       //while (e.getCause() != null) e = e.getCause(); // Hop hen til grunden
       AlertDialog.Builder dialog=new AlertDialog.Builder(this);
       dialog.setTitle("Kunne ikke starte");
       TextView tv = new TextView(this);
-      tv.setText(akt.name+" gav fejlen:\n"+Log.getStackTraceString(e));
+      tv.setText(akt+" gav fejlen:\n"+Log.getStackTraceString(e));
       dialog.setView(tv);
       //dialog.setMessage(aktivitetsinfo.name+" gav fejlen:\n"+Log.getStackTraceString(e));
       dialog.show();
     }
 
+    // Find position i fuld liste
+    position = alleAktiviteter.indexOf(akt);
     // Gem position og 'start aktivitet direkte' til næste gang
     PreferenceManager.getDefaultSharedPreferences(this).edit().
         putInt("position", position).putBoolean("autostart", autostart.isChecked()).commit();
   }
 
   public boolean onItemLongClick(AdapterView<?> listView, View v, int position, long id) {
-    visKildekode(visAktiviteter.get(position));
+    visKildekode(visKlasser.get(position));
     return true;
   }
+
 
   /**
    *
    * @param position
    */
-  private void visKildekode(ActivityInfo akt) {
-    String filnavn=akt.name.replace('.', '/')+".java";
-    Toast.makeText(this, "Viser "+filnavn, Toast.LENGTH_LONG).show();
+  private void visKildekode(String klasse) {
+    String filnavn=klasse;
+    if (!filnavn.endsWith(".java")) {
+      filnavn = filnavn.replace('.', '/')+".java";
+      Toast.makeText(this, "Viser "+filnavn, Toast.LENGTH_LONG).show();
+    }
 
     Intent i = new Intent(this, VisKildekode.class);
     i.putExtra(VisKildekode.KILDEKODE_FILNAVN, "src/"+filnavn);
     startActivity(i);
   }
 
+
+  HashMap<Integer, ArrayList<String>> kategorivalgTilVisKlasserCache = new HashMap<Integer, ArrayList<String>>();
+
+  private ArrayList<String> findKlasserIKategori(int position) {
+    if (position==0) return alleAktiviteter; // Vis alle aktiviteter
+
+    // Tjek cache
+    ArrayList<String> klasser = kategorivalgTilVisKlasserCache.get(position);
+    if (klasser != null) return klasser;
+
+    //else if ("(søg)".equals(kategori)) visKlasser.addAll(alleAktiviteter);
+    klasser = new ArrayList<String>();
+    String pnavn = kategorier.get(position);
+    if (!pnavn.contains(".")) pnavn = "eks."+pnavn; // put eks. foran i pakkkenavn
+    for (String a : alleAktiviteter)
+//        if (a.toLowerCase().contains(kategori)) visKlasser.add(a); // kun nødvendig til søgning
+      if (a.contains(pnavn)) klasser.add(a);
+    try { // Skan efter filer der ikke er aktiviteter og vis også dem
+      //System.out.println(visKlasser);
+      String mappe = pnavn.replace(".", "/");
+      ydre:
+      for (String fil : getAssets().list("src/"+mappe)) {
+        String klassenavn = fil.substring(0, fil.lastIndexOf(".")); // stryg filendelse
+        //System.out.println(klassenavn);
+        for (String n : klasser) if (n.endsWith(klassenavn)) continue ydre; // allerede listet
+        klasser.add(mappe+"/"+fil);
+      }
+    } catch (IOException ex) {
+     ex.printStackTrace();
+    }
+
+    kategorivalgTilVisKlasserCache.put(position, klasser);
+    return klasser;
+  }
+
+
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
     //tv.setText("onItemSelected "+position+" "+kategorivalg.getSelectedItemPosition());
-    String kategori = (String) kategorivalg.getSelectedItem();
-    visAktiviteter.clear();
-    if (position==0) visAktiviteter.addAll(alleAktiviteter); // Vis alle aktiviteter
-    //else if ("(søg)".equals(kategori)) visAktiviteter.addAll(alleAktiviteter);
-    else {
-      for (ActivityInfo a : alleAktiviteter)
-        if (a.name.toLowerCase().contains(kategori)) visAktiviteter.add(a);
-    }
+    this.visKlasser.clear();
+    this.visKlasser.addAll(findKlasserIKategori(position));
     listeadapter.notifyDataSetChanged();
   }
 
