@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -27,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -78,6 +78,8 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
           pnavn=pnavn.substring(4); // tag 'diverse' fra 'eks.diverse'
         kategorisæt.add(pnavn);
       }
+      kategorisæt.add("levendebaggrund");
+      kategorisæt.add("levendeikon");
       kategorier = new ArrayList(kategorisæt);
 
       // Start asynkron indlæsning af kategorivalgTilVisKlasserCache
@@ -101,6 +103,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     kategorivalg = new Gallery(this);
     kategorivalg.setAdapter(new ArrayAdapter(this, android.R.layout.simple_gallery_item, android.R.id.text1, kategorier));
     kategorivalg.setSpacing(10);
+    kategorivalg.setVerticalScrollBarEnabled(true);
     kategorivalg.setOnItemSelectedListener(this);
     kategorivalg.setUnselectedAlpha(0.4f);
     kategorivalg.setBackgroundColor(Color.DKGRAY);
@@ -156,15 +159,16 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 
     // Layout
     TableLayout tl=new TableLayout(this);
-    tl.addView(textView);
-    tl.addView(visKlasserListView);
-    ((LinearLayout.LayoutParams) visKlasserListView.getLayoutParams()).weight = 1; // Stræk listen
+    //tl.addView(textView);
+    tl.addView(visKlasserListView, new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+    //tl.addView(visKlasserListView);
+    //((LinearLayout.LayoutParams) visKlasserListView.getLayoutParams()).weight = 1; // Stræk listen
     TableRow tr = new TableRow(this);
     tr.addView(seKildekode);
     //tr.addView(søgEditText);
 
 
-    tr.addView(kategorivalg, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1));
+    tr.addView(kategorivalg, new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1));
     tl.addView(tr);
 
     setContentView(tl);
@@ -259,8 +263,8 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     String filnavn=klasse;
     if (!filnavn.endsWith(".java")) {
       filnavn = filnavn.replace('.', '/')+".java";
-      Toast.makeText(this, "Viser "+filnavn, Toast.LENGTH_LONG).show();
     }
+    Toast.makeText(this, "Viser "+filnavn, Toast.LENGTH_LONG).show();
 
     Intent i = new Intent(this, VisKildekode.class);
     i.putExtra(VisKildekode.KILDEKODE_FILNAVN, "src/"+filnavn);
