@@ -10,9 +10,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.Contacts;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import java.util.Arrays;
 
 /**
  *
@@ -31,21 +33,18 @@ public class VisKontakter extends Activity {
 
     ContentResolver cr=getContentResolver();
 
-    Uri uri=ContactsContract.CommonDataKinds.Email.CONTENT_URI;
-    String[] kolonnner = {
-      ContactsContract.Contacts._ID,
-      ContactsContract.Contacts.DISPLAY_NAME,
-      ContactsContract.CommonDataKinds.Email.DATA,
-    };
+    Uri uri = Email.CONTENT_URI;
+    String[] kolonnner = { Contacts._ID, Contacts.DISPLAY_NAME, Email.DATA };
     String where = Contacts.IN_VISIBLE_GROUP + " = '1'";
-    String orderBy=ContactsContract.Contacts.DISPLAY_NAME+" COLLATE LOCALIZED ASC";
-    Cursor cursor=cr.query(uri, kolonnner, where, null, orderBy);
+    String orderBy = Contacts.DISPLAY_NAME+" COLLATE LOCALIZED ASC";
+    textView.append("SELECT "+Arrays.asList(kolonnner)+" FROM "+uri+" WHERE "+where+" ORDER BY "+orderBy);
+    Cursor cursor = cr.query(uri, kolonnner, where, null, orderBy);
 
     while (cursor.moveToNext()) {
       String id=cursor.getString(0);
       String navn=cursor.getString(1);
       String epost=cursor.getString(2);
-      textView.append(id+" "+navn+"  "+epost+"\n");
+      textView.append("\n"+id+" "+navn+"  "+epost);
     }
     cursor.close();
 

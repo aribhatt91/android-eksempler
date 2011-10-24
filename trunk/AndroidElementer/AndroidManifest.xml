@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="dk.nordfalk.android.elementer"
   android:installLocation="preferExternal" c="installér på SD-kort"
-  android:versionCode="14"
-  android:versionName="1.14">
+  android:versionCode="15"
+  android:versionName="1.15">
 <!--
 Mangler eksempler på
 - services
@@ -95,8 +95,9 @@ Aktivitetsliste:
 
     <activity android:name="eks.lister.BenytExpandableListActivity"/>
 
-    <activity android:name="eks.providers.VisKontakter"/>
     <activity android:name="eks.providers.VisOpkald"/>
+    <activity android:name="eks.providers.VisKontakter"/>
+    <activity android:name="eks.providers.VisKontakterIListView"/>
 
     <activity android:name="eks.recievers.OpdagAppInstallation"/>
     <activity android:name="eks.recievers.ModtagSMSer"/>
