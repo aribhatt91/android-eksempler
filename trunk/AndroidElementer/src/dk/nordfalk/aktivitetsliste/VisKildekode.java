@@ -88,8 +88,11 @@ public class VisKildekode extends Activity {
 
         filter = new TransformFilter() {
           public final String transformUrl(final Matcher match, String url) {
-                 //"http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/layout/simple_list_item_1.xml"
-            return "http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/" + match.group(1).replace('.', '/') + ".xml";
+            // http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/layout/simple_list_item_1.xml"
+            // http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/" + match.group(1).replace('.', '/') + ".xml";
+            // https://github.com/android/platform_frameworks_base/blob/master/core/res/res/
+
+            return "https://github.com/android/platform_frameworks_base/blob/master/core/res/res/" + match.group(1).replace('.', '/') + ".xml";
           }
         };
         Linkify.addLinks(tv, Pattern.compile("android.R.(layout.[a-z0-9_]+)"), null, null, filter);
