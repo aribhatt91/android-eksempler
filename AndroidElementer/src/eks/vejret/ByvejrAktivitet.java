@@ -276,7 +276,7 @@ public class ByvejrAktivitet extends Activity {
     }
   }
 
-  private void advarBruger(final String advarsel) {
+  private void advarBruger(String advarsel) {
     Log.w(TAG, advarsel);
     Toast.makeText(ByvejrAktivitet.this, advarsel, Toast.LENGTH_LONG).show();
   }

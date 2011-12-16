@@ -34,7 +34,7 @@ read kode; curl https://www.google.com/accounts/ClientLogin -d Email=jacob.nordf
 2) Sæt Auth
 Auth=DQAAAMQAAABvZp3SKaAp6tDka6srXE9BARK4Ny7FEXfbPGv6kA9lYn6cuS6e1MJi-Fj1Aeit_hfbmAMTs7ogk5T2hQgQwvmtmFz-rdZB2VbW_ZDspaUszThAnb6bUMLwHEVoS1IbRIora_ake3anbNgrjiP_9_m1iH4rt8dRlMCPRVhOnP-ZegLs7_RUiME80WysaSMe2z04mamVtbND-pVzXzgYfw48Vl7psXnPtV8D7H-0EMpPc356zsQGVA-5fGxLcZhC0l8_Jar2MT9pvPejsGW11t5j
 
-3) Start app-en og tryk 'registrér'. Led i logcat efter registration_id ser skal sendes til server
+3) Start app-en og tryk 'registrér'. Led i logcat efter registration_id der skal sendes til server
 registration_id=APA91bEiTL01cThaAtkqJ9xM8WZARuzX4cD7GJ2NDK7ofSarh5veCfPMTGLWhR3uchuOxlI0_eYi7f3MNLPA6a9OgXN4Z-Gpcl31-i9nojdVQj--jkS1MO8u9EgtZeHC474dZF8RzmTC5Tskkaf5H7eiV6eubEXcpEDo_QW7ehbTfsdlMPbpjc8
 
 4) Fra server skal du nu sende Auth + registration_id + nøgle-værdipar
