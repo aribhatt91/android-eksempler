@@ -11,26 +11,24 @@ import android.widget.GridView;
 import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
 
-
 public class BenytGridView extends Activity implements OnItemClickListener {
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    String[] lande = { "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal",  };
+		String[] lande = {"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal",};
 
-    GridView listView= new GridView(this);
-    listView.setOnItemClickListener(this);
-    listView.setNumColumns(GridView.AUTO_FIT);
+		GridView listView = new GridView(this);
+		listView.setOnItemClickListener(this);
+		listView.setNumColumns(GridView.AUTO_FIT);
 
-    listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande ));
+		listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande));
 
-    setContentView(listView);
-  }
+		setContentView(listView);
+	}
 
-
-  public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-    Toast.makeText(this, "Klik på "+ position, Toast.LENGTH_SHORT).show();
-  }
+	public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+		Toast.makeText(this, "Klik på " + position, Toast.LENGTH_SHORT).show();
+	}
 }

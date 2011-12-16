@@ -24,29 +24,29 @@ import android.widget.EditText;
  */
 public class Liv3_nonConfigurationInstance extends LogAktivitet {
 
-  Programdata data;
+	Programdata data;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    Programdata dataFraForrigeAkrivitet = (Programdata) getLastNonConfigurationInstance();
+		Programdata dataFraForrigeAkrivitet = (Programdata) getLastNonConfigurationInstance();
 
-    if (dataFraForrigeAkrivitet == null) {
-      data = new Programdata();
-      data.liste.add("første element");
-    } else {
-      data = dataFraForrigeAkrivitet;
-      data.liste.add("dataFraForrigeAkrivitet "+data.liste.size());
-    }
+		if (dataFraForrigeAkrivitet == null) {
+			data = new Programdata();
+			data.liste.add("første element");
+		} else {
+			data = dataFraForrigeAkrivitet;
+			data.liste.add("dataFraForrigeAkrivitet " + data.liste.size());
+		}
 
-    EditText et = new EditText(this);
-    et.setText( data.toString() );
-    setContentView(et);
-  }
+		EditText et = new EditText(this);
+		et.setText(data.toString());
+		setContentView(et);
+	}
 
-  @Override
-  public Object onRetainNonConfigurationInstance() {
-    return data;
-  }
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		return data;
+	}
 }

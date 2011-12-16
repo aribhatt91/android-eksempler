@@ -23,16 +23,16 @@ import android.widget.VideoView;
 
 public class AfspilVideo extends Activity {
 
-  @Override
-  public void onCreate(Bundle icicle) {
-    super.onCreate(icicle);
-    VideoView videoView = new VideoView(this);
-    setContentView(videoView);
+	@Override
+	public void onCreate(Bundle icicle) {
+		super.onCreate(icicle);
+		VideoView videoView = new VideoView(this);
+		setContentView(videoView);
 
-    videoView.setVideoURI(Uri.parse("file:///sdcard/DCIM/100MEDIA/VIDEO0025.3gp"));
-    videoView.setMediaController(new MediaController(this));
-    videoView.requestFocus();
-    videoView.start();
+		videoView.setVideoURI(Uri.parse("file:///sdcard/DCIM/100MEDIA/VIDEO0025.3gp"));
+		videoView.setMediaController(new MediaController(this));
+		videoView.requestFocus();
+		videoView.start();
 
-  }
+	}
 }

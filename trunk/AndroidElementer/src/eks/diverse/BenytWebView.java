@@ -7,33 +7,33 @@ import android.widget.Toast;
 
 public class BenytWebView extends Activity {
 
-  public class MinKlasse {
+	public class MinKlasse {
 
-    public void visToast(String tekst) {
-      Toast.makeText(BenytWebView.this, tekst, Toast.LENGTH_LONG).show();
-    }
+		public void visToast(String tekst) {
+			Toast.makeText(BenytWebView.this, tekst, Toast.LENGTH_LONG).show();
+		}
 
-    public void afslut() {
-      finish();
-    }
-  }
+		public void afslut() {
+			finish();
+		}
+	}
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    WebView webView=new WebView(this);
-    //webView.loadUrl("http://javabog.dk");
-    webView.loadUrl("file:///android_asset/benytwebview.html");
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		WebView webView = new WebView(this);
+		//webView.loadUrl("http://javabog.dk");
+		webView.loadUrl("file:///android_asset/benytwebview.html");
 
-    webView.getSettings().setJavaScriptEnabled(true);
-    //webView.loadUrl("javascript:alert('Hej')");
+		webView.getSettings().setJavaScriptEnabled(true);
+		//webView.loadUrl("javascript:alert('Hej')");
 
-    MinKlasse mitObjekt=new MinKlasse();
-    mitObjekt.visToast("Dette er en toast fra Java");
+		MinKlasse mitObjekt = new MinKlasse();
+		mitObjekt.visToast("Dette er en toast fra Java");
 
-    webView.addJavascriptInterface(mitObjekt, "mitObjekt");
-    webView.addJavascriptInterface(this, "aktiviteten");
+		webView.addJavascriptInterface(mitObjekt, "mitObjekt");
+		webView.addJavascriptInterface(this, "aktiviteten");
 
-    setContentView(webView);
-  }
+		setContentView(webView);
+	}
 }

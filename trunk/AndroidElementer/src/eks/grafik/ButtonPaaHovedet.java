@@ -16,19 +16,18 @@ import android.widget.Button;
  */
 public class ButtonPaaHovedet extends Button {
 
-  public ButtonPaaHovedet(Context c) { super(c); }
+	public ButtonPaaHovedet(Context c) {
+		super(c);
+	}
+	Paint p = new Paint();
 
-  Paint p = new Paint();
-
-  @Override
-  protected void onDraw(Canvas c) {
-    c.save();
-    c.rotate(180, getWidth()/2, getHeight()/2);
-    c.scale(0.8f, 1);
-    super.onDraw(c);
-    c.restore();
-    c.drawText("på hovedet", 5, getHeight()/2, p);
-  }
-
-
+	@Override
+	protected void onDraw(Canvas c) {
+		c.save();
+		c.rotate(180, getWidth() / 2, getHeight() / 2);
+		c.scale(0.8f, 1);
+		super.onDraw(c);
+		c.restore();
+		c.drawText("på hovedet", 5, getHeight() / 2, p);
+	}
 }

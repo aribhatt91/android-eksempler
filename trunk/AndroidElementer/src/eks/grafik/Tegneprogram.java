@@ -16,43 +16,42 @@ import java.util.ArrayList;
  */
 public class Tegneprogram extends Activity {
 
-  View tegneflade;
-  ArrayList<Point> berøringspunkter = new ArrayList<Point>();
-  Paint tekstStregtype = new Paint();
+	View tegneflade;
+	ArrayList<Point> berøringspunkter = new ArrayList<Point>();
+	Paint tekstStregtype = new Paint();
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    tekstStregtype.setColor(Color.GREEN);
-    tekstStregtype.setTextSize(24);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		tekstStregtype.setColor(Color.GREEN);
+		tekstStregtype.setTextSize(24);
 
-    tegneflade = new View(this) { // anonym nedarving af View
-      @Override
-      protected void onDraw(Canvas c) {
-        super.onDraw(c);
-        tegnFladen(c);
-      }
-    };
+		tegneflade = new View(this) { // anonym nedarving af View
 
-    setContentView(tegneflade);
-  }
+			@Override
+			protected void onDraw(Canvas c) {
+				super.onDraw(c);
+				tegnFladen(c);
+			}
+		};
 
+		setContentView(tegneflade);
+	}
 
-  private void tegnFladen(Canvas c) {
-    c.drawText("Tryk og træk over skærmen", 0, 20, tekstStregtype);
-    for (Point p : berøringspunkter) {
-      c.drawCircle(p.x, p.y, 3, tekstStregtype);
-    }
-  }
+	private void tegnFladen(Canvas c) {
+		c.drawText("Tryk og træk over skærmen", 0, 20, tekstStregtype);
+		for (Point p : berøringspunkter) {
+			c.drawCircle(p.x, p.y, 3, tekstStregtype);
+		}
+	}
 
-  @Override
-  public boolean onTouchEvent(MotionEvent berøring) {
-    System.out.println(berøring);
-    Point punktet = new Point((int) berøring.getX(), (int) berøring.getY());
-    berøringspunkter.add(punktet);
-    //System.out.println(berøringspunkter);
-    tegneflade.invalidate();
-    return true;
-  }
-
+	@Override
+	public boolean onTouchEvent(MotionEvent berøring) {
+		System.out.println(berøring);
+		Point punktet = new Point((int) berøring.getX(), (int) berøring.getY());
+		berøringspunkter.add(punktet);
+		//System.out.println(berøringspunkter);
+		tegneflade.invalidate();
+		return true;
+	}
 }

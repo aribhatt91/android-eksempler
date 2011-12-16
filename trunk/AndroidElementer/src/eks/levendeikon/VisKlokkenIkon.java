@@ -13,70 +13,71 @@ import eks.grafik.Tegneprogram;
 import java.util.Arrays;
 import java.util.Date;
 
-
 public class VisKlokkenIkon extends AppWidgetProvider {
-  private static final String TAG = "MinAppwidgetProvider";
 
-  @Override
-  public void onUpdate(Context ctx, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
+	private static final String TAG = "MinAppwidgetProvider";
 
-    Log.d(TAG, "onUpdate "+Arrays.asList(appWidgetIds));
-    final RemoteViews remoteViews = new RemoteViews(ctx.getPackageName(), R.layout.levendeikon_visklokken);
+	@Override
+	public void onUpdate(Context ctx, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
 
-    remoteViews.setTextViewText(R.id.etTextView, "Klokken er:\n"+new Date());
+		Log.d(TAG, "onUpdate " + Arrays.asList(appWidgetIds));
+		final RemoteViews remoteViews = new RemoteViews(ctx.getPackageName(), R.layout.levendeikon_visklokken);
 
-    // Vis en tilfældig farve på TextViewet
-    int farve = (int) System.currentTimeMillis() | 0xff0000ff;
-    remoteViews.setTextColor(R.id.etTextView, farve);
+		remoteViews.setTextViewText(R.id.etTextView, "Klokken er:\n" + new Date());
 
-    // generisk måde at gøre det samme på
-    remoteViews.setInt(R.id.etTextView, "setTextColor", farve);
+		// Vis en tilfældig farve på TextViewet
+		int farve = (int) System.currentTimeMillis() | 0xff0000ff;
+		remoteViews.setTextColor(R.id.etTextView, farve);
 
-
-    // Lav et intent der skal affyres hvis knapppen trykkes
-    PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0,
-          new Intent(ctx, Tegneprogram.class), 0);
-
-    remoteViews.setOnClickPendingIntent(R.id.enKnap, pendingIntent);
+		// generisk måde at gøre det samme på
+		remoteViews.setInt(R.id.etTextView, "setTextColor", farve);
 
 
-    appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+		// Lav et intent der skal affyres hvis knapppen trykkes
+		PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 0,
+				new Intent(ctx, Tegneprogram.class), 0);
 
-    // Lad uret opdatere hvert sekund i det næste minut. Burde gøres fra en service!!!
-    new Thread() {
-      public void run() {
-        for (int i=0; i<60; i++) {
-          try {
-            Thread.sleep(1000);
-          } catch (InterruptedException ex) {
-          }
-          remoteViews.setTextViewText(R.id.etTextView, "KL er:\n"+new Date());
-          remoteViews.setTextColor(R.id.etTextView, i%2==0? Color.RED : Color.GREEN);
-          appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
-        }
-      }
-    }.start();
+		remoteViews.setOnClickPendingIntent(R.id.enKnap, pendingIntent);
 
-  }
 
-  @Override
-  public void onReceive(Context c, Intent intent) {
-    super.onReceive(c, intent);
-    Log.d(TAG, "onReceive:" + intent);
-  }
+		appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
 
-  @Override
-  public void onDeleted(Context context, int[] appWidgetIds) {
-    Log.d(TAG, "onDeleted");
-  }
+		// Lad uret opdatere hvert sekund i det næste minut. Burde gøres fra en service!!!
+		new Thread() {
 
-  @Override
-  public void onEnabled(Context context) {
-    Log.d(TAG, "onEnabled");
-  }
+			public void run() {
+				for (int i = 0; i < 60; i++) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException ex) {
+					}
+					remoteViews.setTextViewText(R.id.etTextView, "KL er:\n" + new Date());
+					remoteViews.setTextColor(R.id.etTextView, i % 2 == 0 ? Color.RED : Color.GREEN);
+					appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+				}
+			}
+		}.start();
 
-  @Override
-  public void onDisabled(Context context) {
-    Log.d(TAG, "onDisabled");
-  }
+	}
+
+	@Override
+	public void onReceive(Context c, Intent intent) {
+		super.onReceive(c, intent);
+		Log.d(TAG, "onReceive:" + intent);
+	}
+
+	@Override
+	public void onDeleted(Context context, int[] appWidgetIds) {
+		Log.d(TAG, "onDeleted");
+	}
+
+	@Override
+	public void onEnabled(Context context) {
+		Log.d(TAG, "onEnabled");
+	}
+
+	@Override
+	public void onDisabled(Context context) {
+		Log.d(TAG, "onDisabled");
+	}
 }

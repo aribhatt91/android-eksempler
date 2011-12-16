@@ -8,9 +8,9 @@ import dk.nordfalk.android.elementer.R;
 
 public class Indstillinger extends PreferenceActivity {
 
-   @Override
-   protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
-      addPreferencesFromResource(R.xml.vejret_indstillinger);
-   }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.vejret_indstillinger);
+	}
 }
