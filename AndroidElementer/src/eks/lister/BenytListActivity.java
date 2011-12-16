@@ -7,22 +7,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-
 public class BenytListActivity extends ListActivity {
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    String[] lande = { "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal" };
+		String[] lande = {"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal"};
 
-    setListAdapter(new ArrayAdapter(this,
-            android.R.layout.simple_list_item_1,  android.R.id.text1, lande ));
-  }
+		setListAdapter(new ArrayAdapter(this,
+				android.R.layout.simple_list_item_1, android.R.id.text1, lande));
+	}
 
-
-  @Override
-  protected void onListItemClick(ListView l, View v, int position, long id) {
-    Toast.makeText(this, "Klik på "+ position, Toast.LENGTH_SHORT).show();
-  }
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Toast.makeText(this, "Klik på " + position, Toast.LENGTH_SHORT).show();
+	}
 }

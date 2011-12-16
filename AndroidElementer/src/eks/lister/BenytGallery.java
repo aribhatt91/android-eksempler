@@ -15,26 +15,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
 
-
 public class BenytGallery extends Activity implements OnItemClickListener {
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    String[] lande = { "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal",  };
+		String[] lande = {"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal",};
 
-    Gallery listView= new Gallery(this);
-    listView.setOnItemClickListener(this);
-    listView.setSpacing(25); // 25 punkter
+		Gallery listView = new Gallery(this);
+		listView.setOnItemClickListener(this);
+		listView.setSpacing(25); // 25 punkter
 
-    listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement,  R.id.listeelem_overskrift, lande ));
-    setContentView(listView);
+		listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande));
+		setContentView(listView);
 
-  }
+	}
 
-
-  public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-    Toast.makeText(this, "Klik på "+ position, Toast.LENGTH_SHORT).show();
-  }
+	public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+		Toast.makeText(this, "Klik på " + position, Toast.LENGTH_SHORT).show();
+	}
 }

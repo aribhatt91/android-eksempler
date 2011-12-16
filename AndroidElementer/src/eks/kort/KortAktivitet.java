@@ -50,309 +50,317 @@ import java.util.Locale;
  */
 public class KortAktivitet extends MapActivity {
 
-  static float MIKRO=1.0f/1000000; // Google maps' koordinater er i mikrograder
-  MapView mapView;
-  // Overlejrede data
-  MyLocationOverlay myLocationOverlay;
-  WMSOverlay wMSOverlay;
-  MitItemizedOverlay itemizedoverlay;
-  // Geopunkter
-  GeoPoint valby=new GeoPoint(55654074, 12493775);
-  GeoPoint valgtPunkt=valby;
+	static float MIKRO = 1.0f / 1000000; // Google maps' koordinater er i mikrograder
+	MapView mapView;
+	// Overlejrede data
+	MyLocationOverlay myLocationOverlay;
+	WMSOverlay wMSOverlay;
+	MitItemizedOverlay itemizedoverlay;
+	// Geopunkter
+	GeoPoint valby = new GeoPoint(55654074, 12493775);
+	GeoPoint valgtPunkt = valby;
+
+	/** Finder korrekt API nøgle ud fra app'ens signatur. Se
+	http://stackoverflow.com/questions/3029819/android-automatically-choose-debug-release-maps-api-key  */
+	String findApiNøgle() {
+		String md5 = null;
+		try {
+			for (Signature sig : getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES).signatures) {
+				MessageDigest m = MessageDigest.getInstance("MD5");
+				m.update(sig.toByteArray());
+				md5 = new BigInteger(1, m.digest()).toString(16);
+
+				Log.d("findApiNøgle", "md5fingerprint: " + md5);
+
+				// Jacobs debug-nøgle
+				if (md5.equals("5fb3a9c4a1ebb853254fa1aebc37a89b")) {
+					return "0osb1BfVdrk1u8XJFAcAD0tA5hvcMFVbzInEgNQ";
+				}
+				// Jacobs officielle nøgle
+				if (md5.equals("d9a7385fd19107698149b7576fcb8b29")) {
+					return "0osb1BfVdrk3etct3WjSX-gUUayztcGvB51EMwg";
+				}
+
+				// indsæt din egen nøgle her:
+			}
+
+			// Ingen nøgle fundet. Vis hjælp til brugeren
+			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+			dialog.setTitle("Mangler API-nøgle");
+			String tekst = "Kør kortet kan vises skal du registrere dig og få en API-nøgle .\n"
+					+ "Dit MD5 certificat, som er: \n\n" + md5
+					+ "\n\nskal registreres på:\nhttp://code.google.com/android/maps-api-signup.html\n"
+					+ "Derefter skal begge dele skrives ind i kildekoden (" + this.getClass().getSimpleName() + ".java).\n"
+					+ "Denne meddelelse er også kommet i loggen så du kan gøre det fra din PC.\n"
+					+ "MD5-certifikatet er også glevet gemt i udklipsholderen på telefonen.";
+			Log.w("findApiNøgle", tekst);
+			ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+			clipboardManager.setText(md5);
+			EditText et = new EditText(this);
+			et.setText(tekst);
+			dialog.setView(et);
+			dialog.setPositiveButton("Regstér nu)", new AlertDialog.OnClickListener() {
+
+				public void onClick(DialogInterface arg0, int arg1) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://code.google.com/android/maps-api-signup.html")));
+				}
+			});
+			dialog.setNegativeButton("Senere", null);
+			dialog.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "ukendt";
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		mapView = new MapView(this, findApiNøgle());
+		mapView.getController().setZoom(7);
+		mapView.setClickable(true);
+		mapView.setEnabled(true);
+		mapView.setBuiltInZoomControls(true);
+		// Centrér omkring Valby
+		mapView.getController().setCenter(valby);
 
 
-  /** Finder korrekt API nøgle ud fra app'ens signatur. Se
-   http://stackoverflow.com/questions/3029819/android-automatically-choose-debug-release-maps-api-key  */
-  String findApiNøgle() {
-    String md5 = null;
-    try {
-      for (Signature sig : getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES).signatures) {
-        MessageDigest m = MessageDigest.getInstance("MD5");
-        m.update(sig.toByteArray());
-        md5 = new BigInteger(1, m.digest()).toString(16);
+		// Overlejr kortet med brugerens placering
+		myLocationOverlay = new MyLocationOverlay(this, mapView);
+		myLocationOverlay.runOnFirstFix(new Runnable() {
 
-        Log.d("findApiNøgle", "md5fingerprint: "+md5);
+			public void run() { // Flyt overlejretKort til aktuelt sted når første stedbestemmelse er foretaget
+				mapView.getController().animateTo(myLocationOverlay.getMyLocation());
+			}
+		});
+		mapView.getOverlays().add(myLocationOverlay);
 
-        // Jacobs debug-nøgle
-        if (md5.equals("5fb3a9c4a1ebb853254fa1aebc37a89b")) return "0osb1BfVdrk1u8XJFAcAD0tA5hvcMFVbzInEgNQ";
-        // Jacobs officielle nøgle
-        if (md5.equals("d9a7385fd19107698149b7576fcb8b29")) return "0osb1BfVdrk3etct3WjSX-gUUayztcGvB51EMwg";
-
-        // indsæt din egen nøgle her:
-      }
-
-      // Ingen nøgle fundet. Vis hjælp til brugeren
-      AlertDialog.Builder dialog=new AlertDialog.Builder(this);
-      dialog.setTitle("Mangler API-nøgle");
-      String tekst = "Kør kortet kan vises skal du registrere dig og få en API-nøgle .\n"
-          +"Dit MD5 certificat, som er: \n\n"+md5
-          +"\n\nskal registreres på:\nhttp://code.google.com/android/maps-api-signup.html\n"
-          + "Derefter skal begge dele skrives ind i kildekoden ("+this.getClass().getSimpleName()+".java).\n"
-          + "Denne meddelelse er også kommet i loggen så du kan gøre det fra din PC.\n"
-          + "MD5-certifikatet er også glevet gemt i udklipsholderen på telefonen.";
-      Log.w("findApiNøgle", tekst);
-      ClipboardManager clipboardManager= (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-      clipboardManager.setText(md5);
-      EditText et=new EditText(this);
-      et.setText(tekst);
-      dialog.setView(et);
-      dialog.setPositiveButton("Regstér nu)", new AlertDialog.OnClickListener() {
-        public void onClick(DialogInterface arg0, int arg1) {
-          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://code.google.com/android/maps-api-signup.html")));
-        }
-      });
-      dialog.setNegativeButton("Senere", null);
-      dialog.show();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
-    return "ukendt";
-  }
-
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-
-    mapView=new MapView(this, findApiNøgle());
-    mapView.getController().setZoom(7);
-    mapView.setClickable(true);
-    mapView.setEnabled(true);
-    mapView.setBuiltInZoomControls(true);
-    // Centrér omkring Valby
-    mapView.getController().setCenter(valby);
+		// Vis liste af overlejrede ikoner
+		Drawable ikon = getResources().getDrawable(android.R.drawable.star_big_on);
+		itemizedoverlay = new MitItemizedOverlay(ikon);
+		itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(57607065, 10249187), "Tversted Plantage", "Osterklit"), ikon);
+		itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(55756630, 9133909), "Legoland", "Billund"), getResources().getDrawable(android.R.drawable.ic_dialog_email));
+		itemizedoverlay.tilføj(new OverlayItem(valby, "Her bor Jacob", "Valby"), getResources().getDrawable(R.drawable.logo));
+		itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(54714330, 11664910), "Døllefjælde-Musse", "Naturpark"), null);
+		itemizedoverlay.tilføjFærdig();
+		mapView.getOverlays().add(itemizedoverlay);
 
 
-    // Overlejr kortet med brugerens placering
-    myLocationOverlay=new MyLocationOverlay(this, mapView);
-    myLocationOverlay.runOnFirstFix(new Runnable() {
-      public void run() { // Flyt overlejretKort til aktuelt sted når første stedbestemmelse er foretaget
-        mapView.getController().animateTo(myLocationOverlay.getMyLocation());
-      }
-    });
-    mapView.getOverlays().add(myLocationOverlay);
+		wMSOverlay = new WMSOverlay();
+		mapView.getOverlays().add(wMSOverlay);
 
-    // Vis liste af overlejrede ikoner
-    Drawable ikon=getResources().getDrawable(android.R.drawable.star_big_on);
-    itemizedoverlay=new MitItemizedOverlay(ikon);
-    itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(57607065, 10249187), "Tversted Plantage", "Osterklit"), ikon);
-    itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(55756630, 9133909), "Legoland", "Billund"), getResources().getDrawable(android.R.drawable.ic_dialog_email));
-    itemizedoverlay.tilføj(new OverlayItem(valby, "Her bor Jacob", "Valby"), getResources().getDrawable(R.drawable.logo));
-    itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(54714330, 11664910), "Døllefjælde-Musse", "Naturpark"), null);
-    itemizedoverlay.tilføjFærdig();
-    mapView.getOverlays().add(itemizedoverlay);
+		setContentView(mapView);
+	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		myLocationOverlay.enableMyLocation();
+		myLocationOverlay.enableCompass();
+	}
 
-    wMSOverlay=new WMSOverlay();
-    mapView.getOverlays().add(wMSOverlay);
+	@Override
+	protected void onStop() {
+		super.onStop();
+		myLocationOverlay.disableMyLocation();
+		myLocationOverlay.disableCompass();
+	}
 
-    setContentView(mapView);
-  }
+	protected boolean isRouteDisplayed() {
+		return false;
+	} // skal defineres
 
-  @Override
-  protected void onResume() {
-    super.onResume();
-    myLocationOverlay.enableMyLocation();
-    myLocationOverlay.enableCompass();
-  }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, 50, 0, "Satellit til/fra");
+		menu.add(0, 51, 0, "Trafik til/fra");
+		menu.add(0, 52, 0, "Hvor er der\ngadevisn. til/fra");
+		menu.add(0, 53, 0, "Rutevejledning");
+		menu.add(0, 54, 0, "Start std kortvisning");
+		menu.add(0, 55, 0, "Start gadevisning");
+		menu.add(0, 56, 0, "Nærmeste adresse");
+		return true;
+	}
 
-  @Override
-  protected void onStop() {
-    super.onStop();
-    myLocationOverlay.disableMyLocation();
-    myLocationOverlay.disableCompass();
-  }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case 50:
+				mapView.setSatellite(!mapView.isSatellite());
+				break;
+			case 51:
+				mapView.setTraffic(!mapView.isTraffic());
+				break;
+			case 52:
+				mapView.setStreetView(!mapView.isStreetView());
+				break;
+			case 53:
+				GeoPoint her = myLocationOverlay.getMyLocation();
+				if (her == null) {
+					her = valby;
+				}
+				startActivity(new Intent(Intent.ACTION_VIEW,
+						Uri.parse("http://maps.google.com/maps?saddr=" + her.getLatitudeE6() * MIKRO + "," + her.getLongitudeE6() * MIKRO
+						+ "&daddr=" + valgtPunkt.getLatitudeE6() * MIKRO + "," + valgtPunkt.getLongitudeE6() * MIKRO)));
+				break;
+			case 54:
+				startActivity(new Intent(Intent.ACTION_VIEW,
+						Uri.parse("geo:" + valgtPunkt.getLatitudeE6() * MIKRO + "," + valgtPunkt.getLongitudeE6() * MIKRO + "?z=" + mapView.getZoomLevel())));
+				break;
+			case 55: // google.streetview:cbll=55.65407,12.493775&cbp=1
+				startActivity(new Intent(Intent.ACTION_VIEW,
+						Uri.parse("google.streetview:cbll=" + valgtPunkt.getLatitudeE6() * MIKRO + "," + valgtPunkt.getLongitudeE6() * MIKRO + "&cbp=1")));
+				break;
+			case 56:
+				Geocoder geocoder = new Geocoder(this);
+				try { // forsøg at finde nærmeste adresse - burde ske asynkront
+					List<Address> adresser = geocoder.getFromLocation(
+							valgtPunkt.getLatitudeE6() * MIKRO, valgtPunkt.getLongitudeE6() * MIKRO, 1);
+					if (adresser != null && adresser.size() > 0) {
+						Toast.makeText(this, adresser.get(0).toString(), Toast.LENGTH_LONG).show();
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					Toast.makeText(this, ex.toString(), Toast.LENGTH_LONG).show();
+				}
+				break;
+			default:
+				Toast.makeText(this, "Ikke implementeret", Toast.LENGTH_SHORT).show();
+		}
 
-  protected boolean isRouteDisplayed() {
-    return false;
-  } // skal defineres
+		return super.onOptionsItemSelected(item);
+	}
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    super.onCreateOptionsMenu(menu);
-    menu.add(0, 50, 0, "Satellit til/fra");
-    menu.add(0, 51, 0, "Trafik til/fra");
-    menu.add(0, 52, 0, "Hvor er der\ngadevisn. til/fra");
-    menu.add(0, 53, 0, "Rutevejledning");
-    menu.add(0, 54, 0, "Start std kortvisning");
-    menu.add(0, 55, 0, "Start gadevisning");
-    menu.add(0, 56, 0, "Nærmeste adresse");
-    return true;
-  }
+	/**
+	 * Eksempel på hvordan man overlejrer et kort (kaldet WMS - Web Map Service)
+	 */
+	public class WMSOverlay extends Overlay {
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case 50:
-        mapView.setSatellite(!mapView.isSatellite());
-        break;
-      case 51:
-        mapView.setTraffic(!mapView.isTraffic());
-        break;
-      case 52:
-        mapView.setStreetView(!mapView.isStreetView());
-        break;
-      case 53:
-        GeoPoint her=myLocationOverlay.getMyLocation();
-        if (her==null) her=valby;
-        startActivity(new Intent(Intent.ACTION_VIEW,
-            Uri.parse("http://maps.google.com/maps?saddr="+her.getLatitudeE6()*MIKRO+","+her.getLongitudeE6()*MIKRO
-            +"&daddr="+valgtPunkt.getLatitudeE6()*MIKRO+","+valgtPunkt.getLongitudeE6()*MIKRO)));
-        break;
-      case 54:
-        startActivity(new Intent(Intent.ACTION_VIEW,
-            Uri.parse("geo:"+valgtPunkt.getLatitudeE6()*MIKRO+","+valgtPunkt.getLongitudeE6()*MIKRO+"?z="+mapView.getZoomLevel())));
-        break;
-      case 55: // google.streetview:cbll=55.65407,12.493775&cbp=1
-        startActivity(new Intent(Intent.ACTION_VIEW,
-            Uri.parse("google.streetview:cbll="+valgtPunkt.getLatitudeE6()*MIKRO+","+valgtPunkt.getLongitudeE6()*MIKRO+"&cbp=1")));
-        break;
-      case 56:
-        Geocoder geocoder = new Geocoder(this);
-        try { // forsøg at finde nærmeste adresse - burde ske asynkront
-          List<Address> adresser = geocoder.getFromLocation(
-                  valgtPunkt.getLatitudeE6()*MIKRO,valgtPunkt.getLongitudeE6()*MIKRO, 1);
-          if (adresser!=null && adresser.size()>0) {
-            Toast.makeText(this, adresser.get(0).toString(), Toast.LENGTH_LONG).show();
-          }
-        } catch (Exception ex) {
-          ex.printStackTrace();
-          Toast.makeText(this, ex.toString(), Toast.LENGTH_LONG).show();
-        }
-        break;
-      default:
-        Toast.makeText(this, "Ikke implementeret", Toast.LENGTH_SHORT).show();
-    }
+		GeoPoint øverstVenstre = new GeoPoint(0, 0);
+		GeoPoint nederstHøjre = new GeoPoint(0, 0);
+		Paint paint = new Paint();
+		Bitmap overlejretKort;
+		boolean iGangMedAtHenteNytKort = false;
 
-    return super.onOptionsItemSelected(item);
-  }
+		public WMSOverlay() {
+			paint.setAlpha(128);
+			paint.setStyle(Paint.Style.STROKE);
+		}
 
+		private Rect geoTilSkærmRekt(GeoPoint øverstVenstre, GeoPoint nederstHøjre) {
+			Point p1 = mapView.getProjection().toPixels(øverstVenstre, null);
+			Point p2 = mapView.getProjection().toPixels(nederstHøjre, null);
+			Rect kortRekt = new Rect(p1.x, p1.y, p2.x, p2.y);
+			return kortRekt;
+		}
 
-  /**
-   * Eksempel på hvordan man overlejrer et kort (kaldet WMS - Web Map Service)
-   */
-  public class WMSOverlay extends Overlay {
+		@Override
+		public void draw(Canvas c, MapView mapView, boolean shadow) {
+			//super.draw(c, mapView, shadow);
 
-    GeoPoint øverstVenstre = new GeoPoint(0, 0);
-    GeoPoint nederstHøjre = new GeoPoint(0, 0);
-    Paint paint = new Paint();
-    Bitmap overlejretKort;
-    boolean iGangMedAtHenteNytKort = false;
+			if (shadow) {
+				return; // tegner ikke skygger
+			}
+			Rect canvasRekt = new Rect(0, 0, c.getWidth(), c.getHeight());
+			Rect kortRekt = geoTilSkærmRekt(øverstVenstre, nederstHøjre);
 
-    public WMSOverlay() {
-      paint.setAlpha(128);
-      paint.setStyle(Paint.Style.STROKE);
-    }
+			if (!kortRekt.contains(canvasRekt.centerX(), canvasRekt.centerY())
+					&& !iGangMedAtHenteNytKort) {
+				iGangMedAtHenteNytKort = true;
+				startHentNytKort(mapView.getProjection(), canvasRekt);
+				Toast.makeText(KortAktivitet.this, "Henter nyt overlejret kort...", Toast.LENGTH_SHORT).show();
+			}
+			//Log.d("WMSOverlay", "tegner "+øvVenPix+kortRekt);
+			if (overlejretKort != null) {
+				c.drawBitmap(overlejretKort, canvasRekt, kortRekt, paint);
+			}
+			c.drawRect(kortRekt, paint);
+		}
 
-    private Rect geoTilSkærmRekt(GeoPoint øverstVenstre, GeoPoint nederstHøjre) {
-      Point p1=mapView.getProjection().toPixels(øverstVenstre, null);
-      Point p2=mapView.getProjection().toPixels(nederstHøjre, null);
-      Rect kortRekt=new Rect(p1.x, p1.y, p2.x, p2.y);
-      return kortRekt;
-    }
+		@Override
+		public boolean onTap(GeoPoint pkt, MapView mv) {
+			Toast.makeText(KortAktivitet.this, "Trykkede på " + pkt, Toast.LENGTH_SHORT).show();
+			valgtPunkt = pkt;
+			return false;
+		}
 
-    @Override
-    public void draw(Canvas c, MapView mapView, boolean shadow) {
-      //super.draw(c, mapView, shadow);
+		private void startHentNytKort(final Projection projektion, final Rect canvasRekt) {
+			new AsyncTask() {
 
-      if (shadow) return; // tegner ikke skygger
+				GeoPoint nytØV = projektion.fromPixels(0, 0);
+				GeoPoint nytNH = projektion.fromPixels(canvasRekt.width(), canvasRekt.height());
+				Rect nytKortRekt = geoTilSkærmRekt(nytØV, nytNH);
 
-      Rect canvasRekt = new Rect(0, 0, c.getWidth(), c.getHeight());
-      Rect kortRekt = geoTilSkærmRekt(øverstVenstre, nederstHøjre);
+				@Override
+				protected Object doInBackground(Object... arg0) {
+					try {
+						// Kilde: http://androidgps.blogspot.com/2008/09/simple-wms-client-for-android.html
+						String url = String.format(Locale.US, "http://iceds.ge.ucl.ac.uk/cgi-bin/icedswms?"
+								+ "LAYERS=lights&TRANSPARENT=true&FORMAT=image/png&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application/vnd.ogc.se_inimage&SRS=EPSG:4326"
+								+ "&BBOX=%f,%f,%f,%f&WIDTH=%d&HEIGHT=%d",
+								MIKRO * nytØV.getLongitudeE6(), MIKRO * nytNH.getLatitudeE6(),
+								MIKRO * nytNH.getLongitudeE6(), MIKRO * nytØV.getLatitudeE6(),
+								canvasRekt.width(), canvasRekt.height());
 
-      if (!kortRekt.contains(canvasRekt.centerX(), canvasRekt.centerY())
-              && !iGangMedAtHenteNytKort) {
-        iGangMedAtHenteNytKort = true;
-        startHentNytKort(mapView.getProjection(), canvasRekt);
-        Toast.makeText(KortAktivitet.this, "Henter nyt overlejret kort...", Toast.LENGTH_SHORT).show();
-      }
-      //Log.d("WMSOverlay", "tegner "+øvVenPix+kortRekt);
-      if (overlejretKort!=null)
-        c.drawBitmap(overlejretKort, canvasRekt, kortRekt, paint);
-      c.drawRect(kortRekt, paint);
-    }
+						Log.d("WMSOverlay", "henter nyt kort fra: " + url);
+						InputStream input = new URL(url).openStream();
+						overlejretKort = BitmapFactory.decodeStream(input);
+						Log.d("WMSOverlay", "færdig med at hente nyt kort");
+						øverstVenstre = nytØV;
+						nederstHøjre = nytNH;
+						mapView.postInvalidate(); // bed om en gentegning af kortet (fra en anden tråd)
+						input.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					iGangMedAtHenteNytKort = false;
+					return null;
+				}
+			}.execute(); // start udførelsen asynkront
+		}
+	}
 
-    @Override
-    public boolean onTap(GeoPoint pkt, MapView mv) {
-      Toast.makeText(KortAktivitet.this, "Trykkede på "+pkt, Toast.LENGTH_SHORT).show();
-      valgtPunkt = pkt;
-      return false;
-    }
+	/**
+	 * Eksempel på at overlejre informationer (ikoner) på et kort
+	 */
+	public class MitItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
-    private void startHentNytKort(final Projection projektion, final Rect canvasRekt) {
-      new AsyncTask() {
-        GeoPoint nytØV=projektion.fromPixels(0, 0);
-        GeoPoint nytNH=projektion.fromPixels(canvasRekt.width(), canvasRekt.height());
-        Rect nytKortRekt = geoTilSkærmRekt(nytØV, nytNH);
+		public ArrayList<OverlayItem> elementer = new ArrayList<OverlayItem>();
 
-        @Override
-        protected Object doInBackground(Object... arg0) {
-          try {
-            // Kilde: http://androidgps.blogspot.com/2008/09/simple-wms-client-for-android.html
-            String url=String.format(Locale.US, "http://iceds.ge.ucl.ac.uk/cgi-bin/icedswms?"
-                +"LAYERS=lights&TRANSPARENT=true&FORMAT=image/png&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application/vnd.ogc.se_inimage&SRS=EPSG:4326"
-                +"&BBOX=%f,%f,%f,%f&WIDTH=%d&HEIGHT=%d",
-                MIKRO*nytØV.getLongitudeE6(), MIKRO*nytNH.getLatitudeE6(),
-                MIKRO*nytNH.getLongitudeE6(), MIKRO*nytØV.getLatitudeE6(),
-                canvasRekt.width(), canvasRekt.height());
+		public MitItemizedOverlay(Drawable stdIkon) {
+			super(boundCenterBottom(stdIkon));
+		}
 
-            Log.d("WMSOverlay", "henter nyt kort fra: "+url);
-            InputStream input=new URL(url).openStream();
-            overlejretKort = BitmapFactory.decodeStream(input);
-            Log.d("WMSOverlay", "færdig med at hente nyt kort");
-            øverstVenstre = nytØV;
-            nederstHøjre = nytNH;
-            mapView.postInvalidate(); // bed om en gentegning af kortet (fra en anden tråd)
-            input.close();
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-          iGangMedAtHenteNytKort = false;
-          return null;
-        }
-      }.execute(); // start udførelsen asynkront
-    }
-  }
+		public void tilføjFærdig() {
+			this.populate();
+		}
 
+		@Override
+		protected OverlayItem createItem(int i) {
+			return elementer.get(i);
+		}
 
-  /**
-   * Eksempel på at overlejre informationer (ikoner) på et kort
-   */
-  public class MitItemizedOverlay extends ItemizedOverlay<OverlayItem> {
+		@Override
+		public int size() {
+			return elementer.size();
+		}
 
-    public ArrayList<OverlayItem> elementer=new ArrayList<OverlayItem>();
+		@Override
+		protected boolean onTap(int i) {
+			OverlayItem e = elementer.get(i);
+			Toast.makeText(KortAktivitet.this, "Klikkede nr " + i + " " + e.getTitle(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(KortAktivitet.this, e.getSnippet() + "\n" + e.routableAddress(), Toast.LENGTH_SHORT).show();
+			return true;
+		}
 
-    public MitItemizedOverlay(Drawable stdIkon) {
-      super(boundCenterBottom(stdIkon));
-    }
-
-    public void tilføjFærdig() {
-      this.populate();
-    }
-
-    @Override
-    protected OverlayItem createItem(int i) {
-      return elementer.get(i);
-    }
-
-    @Override
-    public int size() {
-      return elementer.size();
-    }
-
-    @Override
-    protected boolean onTap(int i) {
-      OverlayItem e=elementer.get(i);
-      Toast.makeText(KortAktivitet.this, "Klikkede nr "+i+" "+e.getTitle(), Toast.LENGTH_SHORT).show();
-      Toast.makeText(KortAktivitet.this, e.getSnippet()+"\n"+e.routableAddress(), Toast.LENGTH_SHORT).show();
-      return true;
-    }
-
-    void tilføj(OverlayItem overlayItem, Drawable ikon) {
-      if (ikon!=null) {
-        overlayItem.setMarker(boundCenterBottom(ikon));
-      }
-      elementer.add(overlayItem);
-    }
-  }
+		void tilføj(OverlayItem overlayItem, Drawable ikon) {
+			if (ikon != null) {
+				overlayItem.setMarker(boundCenterBottom(ikon));
+			}
+			elementer.add(overlayItem);
+		}
+	}
 }

@@ -29,139 +29,139 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-public class VisKontakterMedBillede extends Activity
-{
+public class VisKontakterMedBillede extends Activity {
+
 	private ListView listView;
 	private ArrayList<String> numre;
-/*
+	/*
 
-  public static void log(Object txt) {
-    Log.d("Log", ""+txt);
-  }
-
-
-
-  public static void tjekKontakter() {
-
-    if (kontakter==null || kontakter_skal_opdateres) {
-      kontakter = new LinkedHashMap<String, Kontakt>();
-      kontakter_skal_opdateres = false;
-
-      Uri uri=ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-
-      String[] kolonner={
-          ContactsContract.Contacts._ID,
-          ContactsContract.Contacts.DISPLAY_NAME,
-          ContactsContract.CommonDataKinds.Phone.NUMBER,
-//          Contacts.PHOTO_ID
-      };
-      String where = Contacts.IN_VISIBLE_GROUP + " = '1'";
-      String orderBy = ContactsContract.Contacts.DISPLAY_NAME+" COLLATE LOCALIZED ASC";
-      Cursor cursor = cr.query(uri, kolonner, where, null, orderBy);
-
-      while (cursor.moveToNext()) {
-        Kontakt k = new Kontakt();
-        k.id=cursor.getLong(0);
-        k.navn=cursor.getString(1);
-        k.ikkeNormaliseretTelefonNr=cursor.getString(2);
-        k.telefonNr=normaliserTelefonnr(k.ikkeNormaliseretTelefonNr);
-
-//        Kontakt.log(cursor.getString(3));
-
-
-        kontakter.put(k.telefonNr, k);
-      }
-      cursor.close();
-      Set<String> ks = kontakter.keySet();
-      if (!ks.equals(alleKontakter)) {
-        alleKontakter = new ArrayList<String>(kontakter.keySet());
-        handler.postDelayed(registerKontakterIgen, 100);
-        forsinkelse = 5000;
-      }
-    }
-
-
-  @Override
-  public void onCreate(Bundle savedInstanceState)
-  {
-    super.onCreate(savedInstanceState);
+	public static void log(Object txt) {
+	Log.d("Log", ""+txt);
+	}
 
 
 
-    Uri uri=ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-    ContentObserver minContentObserver = new ContentObserver(new Handler()) {
-      @Override
-      public void onChange (boolean selfChange) {
-        log("KONTAKTBOG ÆNDRET");
-        kontakter_skal_opdateres = true;
-      }
-    };
-    cr.registerContentObserver(uri, true, minContentObserver);
+	public static void tjekKontakter() {
+
+	if (kontakter==null || kontakter_skal_opdateres) {
+	kontakter = new LinkedHashMap<String, Kontakt>();
+	kontakter_skal_opdateres = false;
+
+	Uri uri=ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+
+	String[] kolonner={
+	ContactsContract.Contacts._ID,
+	ContactsContract.Contacts.DISPLAY_NAME,
+	ContactsContract.CommonDataKinds.Phone.NUMBER,
+	//          Contacts.PHOTO_ID
+	};
+	String where = Contacts.IN_VISIBLE_GROUP + " = '1'";
+	String orderBy = ContactsContract.Contacts.DISPLAY_NAME+" COLLATE LOCALIZED ASC";
+	Cursor cursor = cr.query(uri, kolonner, where, null, orderBy);
+
+	while (cursor.moveToNext()) {
+	Kontakt k = new Kontakt();
+	k.id=cursor.getLong(0);
+	k.navn=cursor.getString(1);
+	k.ikkeNormaliseretTelefonNr=cursor.getString(2);
+	k.telefonNr=normaliserTelefonnr(k.ikkeNormaliseretTelefonNr);
+
+	//        Kontakt.log(cursor.getString(3));
 
 
-    ArrayAdapter adapter = new ArrayAdapter<String>(this,
-      R.layout.listeelement, R.id.listeelem_overskrift, numre) {
-      @Override
-      public View getView(int position, View convertView, ViewGroup parent) {
-        View view=super.getView(position, convertView, parent);
-        TextView listeelem_overskrift=(TextView) view.findViewById(R.id.listeelem_overskrift);
-        TextView listeelem_beskrivelse=(TextView) view.findViewById(R.id.listeelem_beskrivelse);
-        ImageView listeelem_billede = (ImageView) view.findViewById(R.id.listeelem_billede);
+	kontakter.put(k.telefonNr, k);
+	}
+	cursor.close();
+	Set<String> ks = kontakter.keySet();
+	if (!ks.equals(alleKontakter)) {
+	alleKontakter = new ArrayList<String>(kontakter.keySet());
+	handler.postDelayed(registerKontakterIgen, 100);
+	forsinkelse = 5000;
+	}
+	}
 
-        Kontakt k = Programdata.kontakter.get(numre.get(position));
 
-        listeelem_overskrift.setText(k.navn);
-        listeelem_beskrivelse.setText(k.telefonNr);
-        Bitmap billede = hentBillede(cr);
-        if (billede != null) listeelem_billede.setImageBitmap(billede);
-        else listeelem_billede.setImageResource(android.R.drawable.ic_menu_gallery);
-        return view;
-      }
-    };
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+	super.onCreate(savedInstanceState);
 
-  }
 
-  Bitmap hentBillede(ContentResolver cr) {
-    if (!billedeForsøgtHentet) {
-      billedeForsøgtHentet = true;
-      billedeUri = null;
-      billedeRef = null;
 
-      Uri phoneUri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(telefonNr));
-      Cursor contact = cr.query(phoneUri, new String[]{ContactsContract.Contacts._ID}, null, null, null);
+	Uri uri=ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+	ContentObserver minContentObserver = new ContentObserver(new Handler()) {
+	@Override
+	public void onChange (boolean selfChange) {
+	log("KONTAKTBOG ÆNDRET");
+	kontakter_skal_opdateres = true;
+	}
+	};
+	cr.registerContentObserver(uri, true, minContentObserver);
 
-      if (contact.moveToFirst()) {
-        long userId = contact.getLong(contact.getColumnIndex(ContactsContract.Contacts._ID));
-        billedeUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, userId);
-      }
-    }
 
-    Bitmap b = billedeRef==null?null:billedeRef.get();
-    if (b==null && billedeUri == null && billedeForsøgtHentet) {
-      b = hentUkendtVenIkon();
-    } else if (b == null) {  // Billedet er blevet garbage colleted eller aldrig indlæst
-      InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, billedeUri);
-      RFAktivitet.log("Billede "+telefonNr+" ("+billedeUri+") er: "+input);
-      if (input == null) {
-        billedeUri = null;
-        return null; // intet billede, så billedeRef=null for fremtiden
-      }
-      try {
-        Bitmap b2 = BitmapFactory.decodeStream(input);
+	ArrayAdapter adapter = new ArrayAdapter<String>(this,
+	R.layout.listeelement, R.id.listeelem_overskrift, numre) {
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+	View view=super.getView(position, convertView, parent);
+	TextView listeelem_overskrift=(TextView) view.findViewById(R.id.listeelem_overskrift);
+	TextView listeelem_beskrivelse=(TextView) view.findViewById(R.id.listeelem_beskrivelse);
+	ImageView listeelem_billede = (ImageView) view.findViewById(R.id.listeelem_billede);
 
-        b = b2;
+	Kontakt k = Programdata.kontakter.get(numre.get(position));
 
-        input.close();
-      } catch (IOException ex) {
-        RFAktivitet.logFejl(ex);
-      }
-      if (b == null) {
-        billedeUri = null;
-        return null; // intet billede, så billedeRef=null for fremtiden
-      }
-      billedeRef = new SoftReference<Bitmap>(b);
-    }
-    return b;
-  }
-*/
+	listeelem_overskrift.setText(k.navn);
+	listeelem_beskrivelse.setText(k.telefonNr);
+	Bitmap billede = hentBillede(cr);
+	if (billede != null) listeelem_billede.setImageBitmap(billede);
+	else listeelem_billede.setImageResource(android.R.drawable.ic_menu_gallery);
+	return view;
+	}
+	};
+
+	}
+
+	Bitmap hentBillede(ContentResolver cr) {
+	if (!billedeForsøgtHentet) {
+	billedeForsøgtHentet = true;
+	billedeUri = null;
+	billedeRef = null;
+
+	Uri phoneUri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(telefonNr));
+	Cursor contact = cr.query(phoneUri, new String[]{ContactsContract.Contacts._ID}, null, null, null);
+
+	if (contact.moveToFirst()) {
+	long userId = contact.getLong(contact.getColumnIndex(ContactsContract.Contacts._ID));
+	billedeUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, userId);
+	}
+	}
+
+	Bitmap b = billedeRef==null?null:billedeRef.get();
+	if (b==null && billedeUri == null && billedeForsøgtHentet) {
+	b = hentUkendtVenIkon();
+	} else if (b == null) {  // Billedet er blevet garbage colleted eller aldrig indlæst
+	InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, billedeUri);
+	RFAktivitet.log("Billede "+telefonNr+" ("+billedeUri+") er: "+input);
+	if (input == null) {
+	billedeUri = null;
+	return null; // intet billede, så billedeRef=null for fremtiden
+	}
+	try {
+	Bitmap b2 = BitmapFactory.decodeStream(input);
+
+	b = b2;
+
+	input.close();
+	} catch (IOException ex) {
+	RFAktivitet.logFejl(ex);
+	}
+	if (b == null) {
+	billedeUri = null;
+	return null; // intet billede, så billedeRef=null for fremtiden
+	}
+	billedeRef = new SoftReference<Bitmap>(b);
+	}
+	return b;
+	}
+	 */
 }

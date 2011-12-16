@@ -13,33 +13,35 @@ import android.view.View;
  *
  * @author Jacob Nordfalk
  */
-
 class GrafikView extends View {
 
-  // programmatisk konstruktør
-  public GrafikView(Context a) { super(a); }
+	// programmatisk konstruktør
+	public GrafikView(Context a) {
+		super(a);
+	}
 
-  // deklarariv konstruktør
-  public GrafikView(Context a, AttributeSet at) { super(a, at); }
+	// deklarariv konstruktør
+	public GrafikView(Context a, AttributeSet at) {
+		super(a, at);
+	}
 
-  @Override
-  protected void onDraw(Canvas c) {
-     Paint tekstStregtype = new Paint();
-     tekstStregtype.setColor(Color.GREEN);
-     tekstStregtype.setTextSize(24);
-     tekstStregtype.setAntiAlias(true);
-     c.drawText("Hej verden", 0, 20, tekstStregtype);
-  }
+	@Override
+	protected void onDraw(Canvas c) {
+		Paint tekstStregtype = new Paint();
+		tekstStregtype.setColor(Color.GREEN);
+		tekstStregtype.setTextSize(24);
+		tekstStregtype.setAntiAlias(true);
+		c.drawText("Hej verden", 0, 20, tekstStregtype);
+	}
 }
-
 
 public class Grafikdemo0 extends Activity {
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    GrafikView grafikView = new GrafikView(this);
-    setContentView(grafikView);
-  }
+		GrafikView grafikView = new GrafikView(this);
+		setContentView(grafikView);
+	}
 }

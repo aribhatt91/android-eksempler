@@ -24,62 +24,63 @@ Tio estas pomo. Kion vi volas fari per la pomo?
  */
 public class TekstTilTale extends Activity implements OnClickListener, TextToSpeech.OnInitListener {
 
-  EditText udtaleTekst;
-  Button udtalKnap;
-  TextToSpeech tts;
-  boolean friskStart = false;
+	EditText udtaleTekst;
+	Button udtalKnap;
+	TextToSpeech tts;
+	boolean friskStart = false;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    if (savedInstanceState==null) friskStart = true; // tjek om skærm vendt eller aktivitet genstartet efter JVM har været smidt ud af hukommelsen
+		if (savedInstanceState == null) {
+			friskStart = true; // tjek om skærm vendt eller aktivitet genstartet efter JVM har været smidt ud af hukommelsen
+		}
+		udtaleTekst = new EditText(this);
+		udtaleTekst.setText("Min danske oot tale - med Locale US - eer maiet dorli.");
+		udtaleTekst.setId(117); // sæt ID så den redigerede tekst bliver genskabt ved skærmvending
 
-    udtaleTekst = new EditText(this);
-    udtaleTekst.setText("Min danske oot tale - med Locale US - eer maiet dorli.");
-    udtaleTekst.setId(117); // sæt ID så den redigerede tekst bliver genskabt ved skærmvending
+		udtalKnap = new Button(this);
+		udtalKnap.setOnClickListener(this);
+		udtalKnap.setText("Vent, indlæser TTS-modul...");
+		udtalKnap.setEnabled(false);
 
-    udtalKnap = new Button(this);
-    udtalKnap.setOnClickListener(this);
-    udtalKnap.setText("Vent, indlæser TTS-modul...");
-    udtalKnap.setEnabled(false);
+		TableLayout ll = new TableLayout(this);
+		ll.addView(udtaleTekst);
+		ll.addView(udtalKnap);
+		setContentView(ll);
+		tts = new TextToSpeech(this, this);
+		//tts.setLanguage(Locale.US);
+	}
 
-    TableLayout ll = new TableLayout(this);
-    ll.addView(udtaleTekst);
-    ll.addView(udtalKnap);
-    setContentView(ll);
-    tts = new TextToSpeech(this, this);
-    //tts.setLanguage(Locale.US);
-  }
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		tts.stop();
+		tts.shutdown();
+	}
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    tts.stop();
-    tts.shutdown();
-  }
+	// Fra TextToSpeech.OnInitListener
+	public void onInit(int status) {
+		if (status == TextToSpeech.SUCCESS) {
+			udtalKnap.setText("TTS klar for " + tts.getLanguage()
+					+ "\nMotor: " + tts.getDefaultEngine());
+			udtalKnap.setEnabled(true);
+			//tts.addSpeech("jeg bremser hårdt", getPackageName(), R.raw.jeg_bremser_haardt);
 
-  // Fra TextToSpeech.OnInitListener
-  public void onInit(int status) {
-    if (status == TextToSpeech.SUCCESS) {
-      udtalKnap.setText("TTS klar for "+tts.getLanguage()
-              +"\nMotor: "+tts.getDefaultEngine());
-      udtalKnap.setEnabled(true);
-      //tts.addSpeech("jeg bremser hårdt", getPackageName(), R.raw.jeg_bremser_haardt);
+			if (friskStart) {
+				tts.speak("Android-Elementers eksempel på text til tale er klar.", TextToSpeech.QUEUE_ADD, null);
+			}
+			// Vis tastaturet
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(udtaleTekst, InputMethodManager.SHOW_FORCED);
+		} else {
+			udtalKnap.setText("Kunne ikke indlæse TTS");
+		}
+	}
 
-      if (friskStart) {
-        tts.speak("Android-Elementers eksempel på text til tale er klar.", TextToSpeech.QUEUE_ADD, null);
-      }
-      // Vis tastaturet
-      InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-      imm.showSoftInput(udtaleTekst,  InputMethodManager.SHOW_FORCED);
-    } else {
-      udtalKnap.setText("Kunne ikke indlæse TTS");
-    }
-  }
-
-  public void onClick(View arg0) {
-    String tekst = udtaleTekst.getText().toString();
-    tts.speak(tekst, TextToSpeech.QUEUE_ADD, null);
-  }
+	public void onClick(View arg0) {
+		String tekst = udtaleTekst.getText().toString();
+		tts.speak(tekst, TextToSpeech.QUEUE_ADD, null);
+	}
 }

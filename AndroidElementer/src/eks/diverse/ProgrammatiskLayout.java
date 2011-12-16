@@ -23,82 +23,83 @@ import eks.grafik.ButtonPaaHovedet;
  */
 public class ProgrammatiskLayout extends Activity implements OnClickListener {
 
-  String teksten = "GrafikView";
-  Button okKnap;
-  EditText postnrEditText;
-  View minGrafik;
+	String teksten = "GrafikView";
+	Button okKnap;
+	EditText postnrEditText;
+	View minGrafik;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    // Opret grafik-view
-    minGrafik = new View(this) {
-      @Override
-      protected void onDraw(Canvas c) {
-        Paint tekstStregtype = new Paint();
-        tekstStregtype.setColor(Color.GREEN);
-        tekstStregtype.setTextSize(24);
-        c.rotate(23, 0, 0); // getWidth()/2, getHeight()/2// rotér 23 grader om midten
-        c.drawText(teksten, 0, 20, tekstStregtype);
-      }
-    };
+		// Opret grafik-view
+		minGrafik = new View(this) {
 
-    TableLayout tableLayout = new TableLayout(this);
+			@Override
+			protected void onDraw(Canvas c) {
+				Paint tekstStregtype = new Paint();
+				tekstStregtype.setColor(Color.GREEN);
+				tekstStregtype.setTextSize(24);
+				c.rotate(23, 0, 0); // getWidth()/2, getHeight()/2// rotér 23 grader om midten
+				c.drawText(teksten, 0, 20, tekstStregtype);
+			}
+		};
 
-    tableLayout.addView(minGrafik);
-    minGrafik.getLayoutParams().height = 60;
+		TableLayout tableLayout = new TableLayout(this);
 
-    // Lav en række med teksten "Vejret for 2500 Valby" (det første gult)
-    TableRow række = new TableRow(this);
-    TextView textView = new TextView(this);
-    textView.setText("Vejret for ");
-    textView.setTextColor(Color.YELLOW);
-    række.addView(textView);
+		tableLayout.addView(minGrafik);
+		minGrafik.getLayoutParams().height = 60;
 
-    postnrEditText = new EditText(this);
-    postnrEditText.setText("2500");
-    postnrEditText.setSingleLine(true);
-    //postnrEditText.setSelection(0, 4);  // postnrEditText.getText().length() giver 4
-    række.addView(postnrEditText);
+		// Lav en række med teksten "Vejret for 2500 Valby" (det første gult)
+		TableRow række = new TableRow(this);
+		TextView textView = new TextView(this);
+		textView.setText("Vejret for ");
+		textView.setTextColor(Color.YELLOW);
+		række.addView(textView);
 
-
-    tableLayout.addView(række);
-
-    okKnap = new Button(this);
-    okKnap.setText("OK");
-    tableLayout.addView(okKnap);
+		postnrEditText = new EditText(this);
+		postnrEditText.setText("2500");
+		postnrEditText.setSingleLine(true);
+		//postnrEditText.setSelection(0, 4);  // postnrEditText.getText().length() giver 4
+		række.addView(postnrEditText);
 
 
+		tableLayout.addView(række);
 
-    ButtonPaaHovedet annullerKnap = new ButtonPaaHovedet(this);
-    annullerKnap.setText("Annuller!");
-    tableLayout.addView(annullerKnap);
+		okKnap = new Button(this);
+		okKnap.setText("OK");
+		tableLayout.addView(okKnap);
 
 
-    WebView webView = new WebView(this);
-    webView.loadUrl("http://javabog.dk");
-    tableLayout.addView(webView);
-    webView.getLayoutParams().height = 300; //LayoutParams.WRAP_CONTENT;
 
-    //simpla.setContentView(tableLayout);
+		ButtonPaaHovedet annullerKnap = new ButtonPaaHovedet(this);
+		annullerKnap.setText("Annuller!");
+		tableLayout.addView(annullerKnap);
 
-    ScrollView scrollView = new ScrollView(this);
-    scrollView.addView(tableLayout);
 
-    setContentView(scrollView);
+		WebView webView = new WebView(this);
+		webView.loadUrl("http://javabog.dk");
+		tableLayout.addView(webView);
+		webView.getLayoutParams().height = 300; //LayoutParams.WRAP_CONTENT;
 
-    okKnap.setOnClickListener(this);
-    annullerKnap.setOnClickListener(this);
-  }
+		//simpla.setContentView(tableLayout);
 
-  public void onClick(View hvadBlevDerKlikketPå) {
-    System.out.println("Der blev klikket på " + hvadBlevDerKlikketPå);
-    if (hvadBlevDerKlikketPå == okKnap) {
-      teksten = postnrEditText.getText().toString();
-      minGrafik.invalidate();
-    } else {
-      Toast.makeText(this, "Denne knap er ikke implementeret endnu", Toast.LENGTH_LONG).show();
-    }
-  }
+		ScrollView scrollView = new ScrollView(this);
+		scrollView.addView(tableLayout);
+
+		setContentView(scrollView);
+
+		okKnap.setOnClickListener(this);
+		annullerKnap.setOnClickListener(this);
+	}
+
+	public void onClick(View hvadBlevDerKlikketPå) {
+		System.out.println("Der blev klikket på " + hvadBlevDerKlikketPå);
+		if (hvadBlevDerKlikketPå == okKnap) {
+			teksten = postnrEditText.getText().toString();
+			minGrafik.invalidate();
+		} else {
+			Toast.makeText(this, "Denne knap er ikke implementeret endnu", Toast.LENGTH_LONG).show();
+		}
+	}
 }
