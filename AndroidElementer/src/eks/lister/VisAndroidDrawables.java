@@ -45,19 +45,19 @@ public class VisAndroidDrawables extends Activity {
 		super.onCreate(savedInstanceState);
 		ListView listView = new ListView(this);
 		listView.setAdapter(new AndroidDrawablesAdapter());
-    listView.setDividerHeight(3);
+		listView.setDividerHeight(3);
 
 
 		/*
 		håndtering af baggrundsbilleder
 		listView.setBackgroundResource(R.drawable.bil);
 
-    // Sørg for at baggrunden bliver tegnet, også når listen scroller.
-    // Se http://android-developers.blogspot.com/2009/01/why-is-my-list-black-android.html
-    listView.setCacheColorHint(0x00000000);
-    // Man kunne have en ensfarvet baggrund, det gør scroll mere flydende
-    //getListView().setCacheColorHint(0xffe4e4e4);
-		*/
+		// Sørg for at baggrunden bliver tegnet, også når listen scroller.
+		// Se http://android-developers.blogspot.com/2009/01/why-is-my-list-black-android.html
+		listView.setCacheColorHint(0x00000000);
+		// Man kunne have en ensfarvet baggrund, det gør scroll mere flydende
+		//getListView().setCacheColorHint(0xffe4e4e4);
+		 */
 
 		setContentView(listView);
 	}
@@ -108,9 +108,11 @@ public class VisAndroidDrawables extends Activity {
 					@Override
 					protected Object doInBackground(Object... params) {
 						// Tjek om viewholderen er blevet genbrugt til anden position
-						if (listeelem.position == position) try {
-							return res.getDrawable(resurseId); // Overfør til onPostExecute()
-						} catch (Exception e) {// sker hvis en drawable med det ID ikke findes
+						if (listeelem.position == position) {
+							try {
+								return res.getDrawable(resurseId); // Overfør til onPostExecute()
+							} catch (Exception e) {// sker hvis en drawable med det ID ikke findes
+							}
 						}
 						return null;
 					}
@@ -131,7 +133,6 @@ public class VisAndroidDrawables extends Activity {
 		}
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, 100, Menu.NONE, "Genbrug elementer");
@@ -143,10 +144,11 @@ public class VisAndroidDrawables extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 100) {
 			genbrugElementer = !genbrugElementer;
-			Toast.makeText(this, "Genbrug elementer: "+ genbrugElementer, Toast.LENGTH_SHORT).show();
-		} if (item.getItemId() == 101) {
+			Toast.makeText(this, "Genbrug elementer: " + genbrugElementer, Toast.LENGTH_SHORT).show();
+		}
+		if (item.getItemId() == 101) {
 			asynkronIndlæsning = !asynkronIndlæsning;
-			Toast.makeText(this, "Asynkron indlæsning: "+ asynkronIndlæsning, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Asynkron indlæsning: " + asynkronIndlæsning, Toast.LENGTH_SHORT).show();
 		}
 		return true;
 	}
