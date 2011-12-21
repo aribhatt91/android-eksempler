@@ -6,6 +6,7 @@ import android.view.View;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -39,10 +40,10 @@ public class BenytBilledeknapper extends Activity {
 		tr.addView(knap2);
 		return tr;
 	}
-	private static OnTouchListener farvKnapNårDenErTrykketNed = new OnTouchListener() {
 
+	private static OnTouchListener farvKnapNårDenErTrykketNed = new OnTouchListener() {
 		public boolean onTouch(View view, MotionEvent me) {
-			Log.d("onTouch(", me.toString());
+			Log.d("onTouch()", me.toString());
 			ImageView ib = (ImageView) view;
 			if (me.getAction() == MotionEvent.ACTION_DOWN) {
 				//log("farve "+me);
@@ -53,6 +54,18 @@ public class BenytBilledeknapper extends Activity {
 				ib.setColorFilter(null);
 			}
 			return true;
+		}
+	};
+
+	OnFocusChangeListener farvKnapNårFokus = new OnFocusChangeListener() {
+		public void onFocusChange(View v, boolean hasFocus) {
+			Log.d("onFocusChange()","hasFocus="+hasFocus);
+			ImageView ib = (ImageView) v;
+			if (hasFocus) {
+				ib.setColorFilter(0xFFC0C0C0, PorterDuff.Mode.MULTIPLY);
+			} else {
+				ib.setColorFilter(null);
+			}
 		}
 	};
 
@@ -67,16 +80,20 @@ public class BenytBilledeknapper extends Activity {
 				+ "Det kan løses ved at farve billedet når det berøres ('trykkes ned').\n"));
 
 
+		tl.addView(tr(tv("ImageButton"), tv("Med farvefilter")));
+
 		ImageButton knap1 = new ImageButton(this);
 		knap1.setImageResource(R.drawable.logo);
 
 		ImageButton knap2 = new ImageButton(this);
 		knap2.setImageResource(R.drawable.logo);
 		knap2.setOnTouchListener(farvKnapNårDenErTrykketNed);
+		knap2.setOnFocusChangeListener(farvKnapNårFokus);
 
-		tl.addView(tr(tv("ImageButton"), tv("Med farvefilter")));
 		tl.addView(tr(knap1, knap2));
 
+
+		tl.addView(tr(tv("IB uden baggrund"), tv("Med farvefilter")));
 
 		ImageButton knap3 = new ImageButton(this);
 		knap3.setImageResource(R.drawable.logo);
@@ -87,9 +104,10 @@ public class BenytBilledeknapper extends Activity {
 		knap4.setBackgroundDrawable(null);
 		knap4.setOnTouchListener(farvKnapNårDenErTrykketNed);
 
-		tl.addView(tr(tv("IB uden baggrund"), tv("Med farvefilter")));
 		tl.addView(tr(knap3, knap4));
 
+
+		tl.addView(tr(tv("ImageView"), tv("Med farvefilter")));
 
 		ImageView knap5 = new ImageView(this);
 		knap5.setImageResource(R.drawable.logo);
@@ -98,7 +116,6 @@ public class BenytBilledeknapper extends Activity {
 		knap6.setImageResource(R.drawable.logo);
 		knap6.setOnTouchListener(farvKnapNårDenErTrykketNed);
 
-		tl.addView(tr(tv("ImageView"), tv("Med farvefilter")));
 		tl.addView(tr(knap5, knap6));
 
 
