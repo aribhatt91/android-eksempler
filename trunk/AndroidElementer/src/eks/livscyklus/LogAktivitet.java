@@ -91,7 +91,7 @@ public class LogAktivitet extends Activity {
 	 * Evt skærmtastatur skal vises/skjules
 	 * Systemet vil kalde denne metode så du kan give et enkelt objekt som indeholder
 	 * data der ikke er relateret til telefonens konfiguration (eonConfigurationInstance).
-	 * Dett bliver overført til det nye aktivitets-objekt oprettes med de nye skærmdimensioner etc.
+	 * Dette bliver overført til det nye aktivitets-objekt oprettes med de nye skærmdimensioner etc.
 	 * I den nye instans kan du få objektet ved at kalde getLastNonConfigurationInstance()
 	 * @return Data der ikke er relateret til telefonens konfiguration
 	 */

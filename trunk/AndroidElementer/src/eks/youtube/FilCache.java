@@ -22,7 +22,7 @@ import java.io.Reader;
  *
  * @author Jacob Nordfalk
  */
-public class Cache {
+public class FilCache {
 
 	private static final int BUFFERSTR = 4 * 1024;
 	private static String lagerDir;
@@ -32,12 +32,12 @@ public class Cache {
 		Log.d("Cache", tekst);
 	}
 
-	public static void init(String dir) {
+	public static void init(File dir) {
 		if (lagerDir != null) {
 			return; // vi skifter ikke lager midt i det hele
 		}
-		lagerDir = dir;
-		new File(lagerDir).mkdirs();
+		lagerDir = dir.getPath();
+		dir.mkdirs();
 		try { // skjul lyd og billeder for MP3-afspillere o.lign.
 			new File(dir, ".nomedia").createNewFile();
 		} catch (IOException ex) {

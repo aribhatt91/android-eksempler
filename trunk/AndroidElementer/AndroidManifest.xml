@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="dk.nordfalk.android.elementer"
   android:installLocation="preferExternal" c="installér på SD-kort"
-  android:versionCode="15"
-  android:versionName="1.15">
+  android:versionCode="16"
+  android:versionName="1.16">
 <!--
 Mangler eksempler på
 - services
@@ -34,11 +34,12 @@ Aktivitetsliste:
   <!-- This app has permission to register and receive message -->
   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-  <application android:debuggable="true" android:icon="@drawable/logo">
-  <!--
-    aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
-    internt i programmet
-  -->
+  <application android:debuggable="true" android:icon="@drawable/logo"
+			android:name="eks.livscyklus.MinApplicationSingleton">
+		<!--
+			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
+			internt i programmet
+		-->
     <activity android:name="eks.diverse.AfspilLyd"/>
     <activity android:name="eks.diverse.BenytMenuer"/>
 
@@ -102,7 +103,13 @@ Aktivitetsliste:
     <activity android:name="eks.recievers.OpdagAppInstallation"/>
     <activity android:name="eks.recievers.ModtagSMSer"/>
 
-    <activity android:name="eks.touchinput.BenytGestureDetector"/>
+
+    <activity android:name="eks.service.HoldAppLevende"/>
+		<!-- Simpel service der, når startet, forsøger at holde app'en i hukommelsen -->
+    <service android:name="eks.service.HoldAppLevendeService" />
+
+
+		<activity android:name="eks.touchinput.BenytGestureDetector"/>
     <activity android:name="eks.touchinput.BenytScaleGestureDetector"/>
     <activity android:name="eks.touchinput.BenytMultiTouchController"/>
 
@@ -141,23 +148,23 @@ Aktivitetsliste:
                  android:resource="@xml/levendeikon_visklokken" />
     </receiver>
 
-
+		<!-- C2DM - Cloud 2 device meddelelser -->
     <activity android:name="eks.c2dm.MeddelelserFraServer"/>
 
-    <!-- Only C2DM servers can send messages for the app. If permission is not set - any other app can generate it -->
+    <!-- Broadcastreciever der modtager C2DM-meddelelser.
+		     android:permission sikrer at andre apps ikke kan 'fake' et broadcast  -->
     <receiver android:name="eks.c2dm.C2DMReceiver" android:permission="com.google.android.c2dm.permission.SEND">
-        <!-- Receive the actual message -->
+        <!-- Filter for meddelelsen -->
         <intent-filter>
             <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             <category android:name="dk.nordfalk.android.elementer" />
         </intent-filter>
-        <!-- Receive the registration id -->
+        <!-- Filter til registrerings-id -->
         <intent-filter>
             <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
             <category android:name="dk.nordfalk.android.elementer" />
         </intent-filter>
     </receiver>
-
 
     <!-- aktivitet som kan ses fra startskærmen -->
     <activity android:name="dk.nordfalk.aktivitetsliste.Aktivitetsliste" android:label="AndroidElementer">

@@ -70,8 +70,8 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Burde bruge SD-kortet
-		Cache.init(getCacheDir().getPath());
+		// Burde nok bruge SD-kortet, men det kan forsvinde midt i det hele
+		FilCache.init(getCacheDir());
 		if (videoklip.isEmpty()) {
 			klipAsyncTask.execute();
 		}
@@ -90,8 +90,8 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
 			try {
 
 				//InputStream is = new URL("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads").openStream();
-				//InputStream is = new FileInputStream(Cache.hentFil("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads", false));
-				//InputStream is = new FileInputStream(Cache.hentFil("http://gdata.youtube.com/feeds/api/users/bookboxinc/uploads", false));
+				//InputStream is = new FileInputStream(FilCache.hentFil("http://gdata.youtube.com/feeds/api/users/Esperantoestas/uploads", false));
+				//InputStream is = new FileInputStream(FilCache.hentFil("http://gdata.youtube.com/feeds/api/users/bookboxinc/uploads", false));
 				InputStream is = getResources().openRawResource(R.raw.youtubefeed_eksempel);
 				ArrayList<Klip> klip = parseRss(is);
 				is.close();
@@ -105,7 +105,7 @@ public class YoutubeRssParsning extends Activity implements OnItemClickListener 
 					System.out.println(k.titel + " " + k.videourl);
 					System.out.println("k.thumburl = " + k.thumburl);
 					if (k.thumburl != null) {
-						k.thumb = BitmapFactory.decodeFile(Cache.hentFil(k.thumburl, true));
+						k.thumb = BitmapFactory.decodeFile(FilCache.hentFil(k.thumburl, true));
 					}
 					publishProgress();
 				} catch (Exception ex) {

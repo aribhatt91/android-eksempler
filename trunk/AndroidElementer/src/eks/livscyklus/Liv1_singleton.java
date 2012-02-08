@@ -1,8 +1,6 @@
 package eks.livscyklus;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 
 /**
@@ -31,6 +29,6 @@ public class Liv1_singleton extends LogAktivitet {
 		et.setText(data.toString());
 		setContentView(et);
 
-		this.data.liste.add("hej");
+		data.liste.add("hej");
 	}
 }
