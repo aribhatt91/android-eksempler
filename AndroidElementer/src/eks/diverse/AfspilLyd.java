@@ -15,16 +15,16 @@ import dk.nordfalk.android.elementer.R;
  */
 public class AfspilLyd extends Activity implements OnClickListener {
 
-	Button spilKnap;
+	Button enKnap;
 	MediaPlayer enLyd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		spilKnap = new Button(this);
-		spilKnap.setText("Spil en lyd");
-		spilKnap.setOnClickListener(this);
-		setContentView(spilKnap);
+		enKnap = new Button(this);
+		enKnap.setText("Spil en lyd");
+		enKnap.setOnClickListener(this);
+		setContentView(enKnap);
 
 		// Volumen op/ned skal styre lydstyrken af medieafspilleren, uanset som noget spilles lige nu eller ej
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);

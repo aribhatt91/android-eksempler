@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="dk.nordfalk.android.elementer"
   android:installLocation="preferExternal" c="installér på SD-kort"
-  android:versionCode="16"
-  android:versionName="1.16">
+  android:versionCode="17"
+  android:versionName="1.17">
 <!--
 Mangler eksempler på
 - services
@@ -40,7 +40,15 @@ Aktivitetsliste:
 			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
 			internt i programmet
 		-->
+    <activity android:name="begynder1.knapper.EnKnap"/>
+    <activity android:name="begynder1.knapper.FlereKnapper"/>
+    <activity android:name="begynder2.flere_aktiviteter.Hovedmenu_akt"/>
+    <activity android:name="begynder2.flere_aktiviteter.Hjaelp_akt"/>
+    <activity android:name="begynder2.flere_aktiviteter.Indstillinger_akt"/>
+    <activity android:name="begynder2.flere_aktiviteter.Spillet_akt"/>
+
     <activity android:name="eks.diverse.AfspilLyd"/>
+    <activity android:name="eks.diverse.AfspilVideo"/>
     <activity android:name="eks.diverse.BenytMenuer"/>
 
     <activity android:name="eks.intents.BenytIntents"/>
@@ -174,6 +182,7 @@ Aktivitetsliste:
       </intent-filter>
     </activity>
 
+    <!-- Jeg skjuler alle aktiviteter der står herunder fra Aktivitetsliste -->
     <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekodeIWebView"/>
     <activity android:name="dk.nordfalk.aktivitetsliste.VisKildekode">
       <!-- bruges af metoden VisKildekode.findWebUrl() -->
@@ -181,14 +190,6 @@ Aktivitetsliste:
     </activity>
 
 
-    <!--
-    <activity android:name="dk.nordfalk.aktivitetsliste.AktivitetslisteHierakisk" android:label="AElem hierakisk">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
-            <category android:name="android.intent.category.LAUNCHER"/>
-        </intent-filter>
-    </activity>
-    -->
 
 
   </application>
