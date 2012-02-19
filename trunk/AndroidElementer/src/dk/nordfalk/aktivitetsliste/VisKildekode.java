@@ -37,6 +37,8 @@ import java.util.regex.Pattern;
 public class VisKildekode extends Activity {
 	String filnavn;
 	TextView tv;
+	ScrollView sv;
+
 	private static int onCreateTæller = 0;
 	public final static String KILDEKODE_FILNAVN = "filen der skal vises";
 	final static String LOKAL_PRÆFIX = "file:///android_asset/";
@@ -64,12 +66,20 @@ public class VisKildekode extends Activity {
 		float skriftstørrelse = getPreferences(MODE_PRIVATE).getFloat("skriftstørrelse", 0);
 		if (skriftstørrelse > 0) tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, skriftstørrelse);
 
-		ScrollView sv = new ScrollView(this);
+		sv = new ScrollView(this);
 		sv.addView(tv);
 		setContentView(sv);
 
-		tv.setId(117);
-		sv.setId(118);
+		// Genskab scrollpos
+		if (savedInstanceState!=null) {
+			final int position = savedInstanceState.getInt("scrollpos");
+			sv.post(new Runnable() {
+				public void run() {
+					sv.scrollTo(0, position);
+				}
+			});
+		}
+
 
 		Intent kaldtMedIntent = getIntent();
 		if (kaldtMedIntent.getExtras() != null) {
@@ -239,5 +249,12 @@ public class VisKildekode extends Activity {
 			Logger.getLogger(VisKildekode.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
+	}
+
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("scrollpos", sv.getScrollY());
 	}
 }
