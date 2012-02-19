@@ -41,7 +41,8 @@ Aktivitetsliste:
 			internt i programmet
 		-->
     <activity android:name="begynder1.knapper.EnKnap"/>
-    <activity android:name="begynder1.knapper.FlereKnapper"/>
+    <activity android:name="begynder1.knapper.TreKnapper"/>
+    <activity android:name="begynder1.knapper.TreKnapperXml"/>
     <activity android:name="begynder2.flere_aktiviteter.Hovedmenu_akt"/>
     <activity android:name="begynder2.flere_aktiviteter.Hjaelp_akt"/>
     <activity android:name="begynder2.flere_aktiviteter.Indstillinger_akt"/>
