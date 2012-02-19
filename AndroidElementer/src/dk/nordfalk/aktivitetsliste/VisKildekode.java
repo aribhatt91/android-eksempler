@@ -67,10 +67,7 @@ public class VisKildekode extends Activity {
 					+ "Du kan lave et 'langt tryk' på aktivitetslisten for at vise kildekoden til en aktivitet");
 		} else {
 			try {
-				InputStream is = getAssets().open(filnavn);
-				byte b[] = new byte[is.available()]; // kun små filer
-				is.read(b);
-				is.close();
+				byte[] b = læsAssetFil(filnavn);
 				String str = new String(b, "UTF-8");
 
 				tv.setText(str);
@@ -154,11 +151,20 @@ public class VisKildekode extends Activity {
 
 	}
 
+	private byte[] læsAssetFil(String filnavn) throws IOException {
+		InputStream is = getAssets().open(filnavn);
+		byte b[] = new byte[is.available()]; // kun små filer
+		is.read(b);
+		is.close();
+		return b;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(0, 100, 0, "Vis i WebView");
 		menu.add(0, 102, 0, "Vælg fil");
-		menu.add(0, 103, 0, "Ekstern browser");
+		menu.add(0, 103, 0, "Vis i browser");
+// XXX		menu.add(0, 104, 0, "Vis i andet...");
 		return true;
 	}
 
@@ -170,7 +176,13 @@ public class VisKildekode extends Activity {
 			vælgFil();
 		} else if (item.getItemId() == 103) {
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(HS_PRÆFIX + filnavn)));
+		} else if (item.getItemId() == 104) {
+//XXX			byte[] b = læsAssetFil(filnavn);
+//act=android.intent.action.VIEW dat=file:///mnt/sdcard/data/log.txt typ=text/plain flg=0x3 cmp=android/com.android.internal.app.ResolverActivity (has extras) }
+//			new Intent(Intent.ACTION_VIEW, Uri.parse(HS_PRÆFIX + filnavn);
+//			startActivity();
 		}
+
 		return true;
 	}
 
