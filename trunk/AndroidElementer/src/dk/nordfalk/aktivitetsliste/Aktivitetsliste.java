@@ -68,7 +68,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 
 			LinkedHashMap<String, Integer> pakkeTilPosition = new LinkedHashMap<String, Integer>();
 			//kategorier.add("(søg)");
-			pakkeTilPosition.put(" = vis\nalle = ", 0);
+			pakkeTilPosition.put(" = vis alle = ", 0);
 			klasselister.add(alleAktiviteter);
 			for (String navn : alleAktiviteter) {
 				int n = navn.lastIndexOf(".");
@@ -212,7 +212,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		int position = prefs.getInt("position", 0);
 		visKlasserListView.setSelectionFromTop(position, 30);
-		kategorivalg.setSelection(prefs.getInt("kategoriPos", 0));
+		kategorivalg.setSelection(prefs.getInt("kategoriPos", 1));
 
 		Log.d("Aktivitetsliste", "4 tid: "+(System.currentTimeMillis()-tid));
 	}
