@@ -25,6 +25,7 @@ Aktivitetsliste:
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
   <uses-permission android:name="android.permission.CALL_PHONE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
   <!-- Only this application can receive the messages and registration result -->
   <permission android:name="dk.nordfalk.android.elementer.permission.C2D_MESSAGE" android:protectionLevel="signature" />
