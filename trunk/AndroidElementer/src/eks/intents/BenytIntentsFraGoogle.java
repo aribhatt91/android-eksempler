@@ -54,6 +54,8 @@ public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
 			if (hvadBlevDerKlikketPå == kortvisning) {
 				startActivity(new Intent(Intent.ACTION_VIEW,
 						Uri.parse("geo:55.65407,12.493775?z=3")));
+				startActivity(new Intent(Intent.ACTION_VIEW,
+						Uri.parse("geo:55.65407,12.493775?z=3")));
 			} else if (hvadBlevDerKlikketPå == rutevisning) {
 				startActivity(new Intent(Intent.ACTION_VIEW,
 						Uri.parse("http://maps.google.com/maps?saddr=55.65407,12.493775&daddr=55.66,12.5")));

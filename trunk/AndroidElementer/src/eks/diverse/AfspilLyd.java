@@ -35,4 +35,12 @@ public class AfspilLyd extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		enLyd.start();
 	}
+
+	@Override
+	public void onDestroy() {
+		enLyd.stop();
+		enLyd.release();
+		super.onDestroy();
+	}
+
 }

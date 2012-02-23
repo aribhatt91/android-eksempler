@@ -46,14 +46,18 @@ public class BenytMenuer extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+
 		tv.append("\nonOptionsItemSelected(" + item.getTitle());
 		if (item.getItemId() == 101) {
 			Intent i = new Intent(this, ByvejrAktivitet.class);
 			startActivity(i);
+			return true;
 		} else if (item.getItemId() == 102) {
 			Intent i = new Intent(this, Indstillinger.class);
 			startActivity(i);
+			return true;
+		} else {
+			return false;
 		}
-		return true;
 	}
 }

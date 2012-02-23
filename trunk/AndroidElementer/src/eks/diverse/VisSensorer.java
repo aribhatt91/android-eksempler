@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package eks.diverse;
 
 import android.app.Activity;
@@ -20,11 +16,9 @@ import dk.nordfalk.android.elementer.R;
  * @author Jacob Nordfalk
  */
 public class VisSensorer extends Activity implements SensorEventListener {
-
 	TextView textView;
-	String[] senesteMålinger = new String[12];
+	String[] senesteMålinger = new String[15];
 	SensorManager sensorManager;
-	//Sensorlytter sensorlytter=new Sensorlytter();
 	MediaPlayer enLyd;
 
 	@Override
@@ -40,20 +34,22 @@ public class VisSensorer extends Activity implements SensorEventListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		//int hyppighed = SensorManager.SENSOR_DELAY_NORMAL;
+		int hyppighed = 250000; // 4 gange i sekundet
 
+		/*
 		Sensor orienteringsSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
 		if (orienteringsSensor != null) {
-			sensorManager.registerListener(this, orienteringsSensor, SensorManager.SENSOR_DELAY_UI);
+		sensorManager.registerListener(this, orienteringsSensor, hyppighed);
 		} else {
-			textView.setText("Fejl. Din telefon har ikke en orienteringssensor");
+		textView.setText("Fejl. Din telefon har ikke en orienteringssensor");
 		}
-
+		/**/
 		for (Sensor sensor : sensorManager.getSensorList(Sensor.TYPE_ALL)) {
 			System.out.println("sensor=" + sensor);
-			sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+			sensorManager.registerListener(this, sensor, hyppighed);
 		}
-
+		/**/
 		enLyd = MediaPlayer.create(this, R.raw.jeg_bremser_haardt);
 	}
 
@@ -65,8 +61,6 @@ public class VisSensorer extends Activity implements SensorEventListener {
 		enLyd.release();
 	}
 
-// indre klasse
-//class Sensorlytter implements SensorEventListener {
 	public void onSensorChanged(SensorEvent e) {
 		int sensortype = e.sensor.getType();
 
@@ -81,9 +75,9 @@ public class VisSensorer extends Activity implements SensorEventListener {
 		}
 
 		if (sensortype == Sensor.TYPE_ACCELEROMETER) {
-			double g = 9.80665; // normal-tyngdeaccelerationen - se http://da.wikipedia.org/wiki/Tyngdeacceleration
+			// Tjek om det er 3 * normal tyngdeaccelerationen - se http://da.wikipedia.org/wiki/Tyngdeacceleration
 			double sum = Math.abs(e.values[0]) + Math.abs(e.values[1]) + Math.abs(e.values[2]);
-			if (sum > 3 * g) {
+			if (sum > 3 * SensorManager.GRAVITY_EARTH) {
 				if (!enLyd.isPlaying()) {
 					enLyd.start(); // BANG!
 				}
@@ -91,16 +85,20 @@ public class VisSensorer extends Activity implements SensorEventListener {
 			}
 		}
 
-		System.out.println(måling);
+		//System.out.println(måling);
+
 		if (sensortype < senesteMålinger.length) {
 			senesteMålinger[sensortype] = måling;
 		}
 
-		String tekst = måling;
+		StringBuilder tekst = new StringBuilder(måling);
+		tekst.append("\n===========");
 
-		// Tilføj alle de forskellige sensorers seneste målinger til teksteo
-		for (String m : senesteMålinger) {
-			tekst = tekst + "\n\n" + m;
+		// Tilføj alle de forskellige sensorers seneste målinger til tekst
+		for (String enMåling : senesteMålinger) {
+			if (enMåling != null) {
+				tekst.append("\n\n").append(enMåling);
+			}
 		}
 		textView.setText(tekst);
 	}
@@ -108,5 +106,4 @@ public class VisSensorer extends Activity implements SensorEventListener {
 	public void onAccuracyChanged(Sensor sensor, int præcision) {
 		// ignorér - men vi er nødt til at have metoden for at implementere interfacet
 	}
-	// }; // Sensorlytter slut
 }

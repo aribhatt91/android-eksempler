@@ -206,11 +206,22 @@ public class VisKildekode extends Activity {
 				FileOutputStream fos = new FileOutputStream(f);
 				fos.write(b);
 				fos.close();
-				Intent i = new Intent(Intent.ACTION_VIEW, Uri.fromFile(f.getAbsoluteFile()));
-				i.setDataAndType(Uri.fromFile(f.getAbsoluteFile()), "text/plain");
+				Intent i = new Intent(Intent.ACTION_VIEW);//, Uri.fromFile(f.getAbsoluteFile()));
+				i.setDataAndType(Uri.fromFile(f), "application/text");
+//				i.setDataAndType(Uri.fromFile(f), "text/plain");
 				//startActivity(Intent.createChooser(i, filnavn));
 				System.out.println("Gemmer fil i " + f);
 				System.out.println("Starter " + i.toURI());
+/*
+				                   Uri path = Uri.fromFile(file);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(path, "application/pdf");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    try {
+                        startActivity(intent);
+                    }
+	*/
 				startActivity(i);
 			} catch (Exception ex) {
 				ex.printStackTrace();

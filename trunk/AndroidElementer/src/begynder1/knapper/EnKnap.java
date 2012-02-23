@@ -7,8 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 /**
- *
- * @author Jacob Nordfalk
+ * En aktivitet med én knap
  */
 public class EnKnap extends Activity implements OnClickListener {
 	// Vi erklærer variabler herude så de huskes fra metode til metode
@@ -30,11 +29,13 @@ public class EnKnap extends Activity implements OnClickListener {
 	}
 
 	public void onClick(View v) {
-		System.out.println("Der blev trykket på knappen");
-
 		// Vis et tal der skifter så vi kan se hver gang der trykkes
 		long etTal = System.currentTimeMillis();
 
+		// Skriv meddelelse på knappen (kan på skærmen)
 		enKnap.setText("Du trykkede på mig. Tak! \n"+etTal);
+		
+		// Skriv meddelelse til loggen (loggen kan ses med adb logcat)
+		System.out.println("Der blev trykket på knappen");
 	}
 }
