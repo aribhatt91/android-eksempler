@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -29,7 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import dk.nordfalk.android.elementer.R;
+import eks.livscyklus.Serialisering;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,7 +62,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 		super.onCreate(savedInstanceState);
 		final long tid = System.currentTimeMillis();
 
-		if (alleAktiviteter.isEmpty()) { // Førstegangsinitialisering af programdata
+		if (klasselister.isEmpty()) { // Førstegangsinitialisering af programdata
 			try {
 				for (ActivityInfo a : getPackageManager().
 						getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities) {
@@ -66,55 +73,86 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 			}
 			alleAktiviteter.add("AndroidManifest.xml");
 
-			LinkedHashMap<String, Integer> pakkeTilPosition = new LinkedHashMap<String, Integer>();
-			//kategorier.add("(søg)");
-			pakkeTilPosition.put(" = vis alle = ", 0);
-			klasselister.add(alleAktiviteter);
-			for (String navn : alleAktiviteter) {
-				int n = navn.lastIndexOf(".");
-				String pakkenavn = navn.substring(0, n); // Fjern klassenavnet
-				//String klassenavn = navn.substring(n+1); // Klassenavnet
+			final File cachefil = new File(getCacheDir(), "Aktivitetslistecache.ser");
 
-				Integer position = pakkeTilPosition.get(pakkenavn);
-				ArrayList klasser;
-				if (position == null) {
-					position = pakkeTilPosition.size();
-					pakkeTilPosition.put(pakkenavn, position);
-					klasser = new ArrayList<String>();
-					klasselister.add(klasser);
-				} else {
-					klasser = klasselister.get(position);
+			ObjectInputStream objektstrøm = null;
+			try { // Hent gamle resultater for hurtig opstart
+				objektstrøm = new ObjectInputStream(new FileInputStream(cachefil));
+				Log.d("Aktivitetsliste", "deser1 tid: "+(System.currentTimeMillis()-tid));
+				ArrayList<String> alleGemteAktiviteter = (ArrayList<String>) objektstrøm.readObject();
+				Log.d("Aktivitetsliste", "deser2 tid: "+(System.currentTimeMillis()-tid));
+				if (alleGemteAktiviteter.equals(alleAktiviteter)) {
+					// Gemte aktiviteter er de samme! Vi fortsætter...
+					pakkenavne = (ArrayList<String>) objektstrøm.readObject();
+					pakkekategorier = (ArrayList<String>) objektstrøm.readObject();
+					klasselister = (ArrayList<ArrayList<String>>) objektstrøm.readObject();
+					Log.d("Aktivitetsliste", "deser3 tid: "+(System.currentTimeMillis()-tid));
 				}
-				klasser.add(navn);
-			}
+				objektstrøm.close();
+			} catch (Exception ex) { ex.printStackTrace(); }
 
-			pakkeTilPosition.put("eks.levendebaggrund", pakkeTilPosition.size());
-			klasselister.add(new ArrayList<String>());
-			pakkeTilPosition.put("eks.levendeikon", pakkeTilPosition.size());
-			klasselister.add(new ArrayList<String>());
-			pakkenavne = new ArrayList(pakkeTilPosition.keySet());
-			pakkekategorier = new ArrayList(pakkenavne); // tag kopi og ændr den
-			for (int i=1; i<pakkekategorier.size(); i++) {
-				String pakkenavn = pakkekategorier.get(i);
-				if (pakkenavn.startsWith("eks")) {
-					pakkenavn = pakkenavn.substring(4); // tag 'diverse' fra 'eks.diverse'
-					pakkekategorier.set(i, pakkenavn);
-				}
-			}
+			if (klasselister.isEmpty()) {
 
+				LinkedHashMap<String, Integer> pakkeTilPosition = new LinkedHashMap<String, Integer>();
+				//kategorier.add("(søg)");
+				pakkeTilPosition.put(" = vis alle = ", 0);
+				klasselister.add(alleAktiviteter);
+				for (String navn : alleAktiviteter) {
+					int n = navn.lastIndexOf(".");
+					String pakkenavn = navn.substring(0, n); // Fjern klassenavnet
+					//String klassenavn = navn.substring(n+1); // Klassenavnet
 
-			// Start asynkron indlæsning af klasselister
-			new Thread() {
-				public void run() {
-					for (int i = 1; i < pakkekategorier.size(); i++) {
-						try { // Vent lidt for at lade systemet starte op
-							Thread.sleep(500);
-						} catch (Exception ex) { }
-						tjekForAndreFilerIPakken(i);
-						Log.d("Aktivitetsliste", "T "+i+" tid: "+(System.currentTimeMillis()-tid));
+					Integer position = pakkeTilPosition.get(pakkenavn);
+					ArrayList klasser;
+					if (position == null) {
+						position = pakkeTilPosition.size();
+						pakkeTilPosition.put(pakkenavn, position);
+						klasser = new ArrayList<String>();
+						klasselister.add(klasser);
+					} else {
+						klasser = klasselister.get(position);
 					}
+					klasser.add(navn);
 				}
-			}.start();
+
+				pakkeTilPosition.put("eks.levendebaggrund", pakkeTilPosition.size());
+				klasselister.add(new ArrayList<String>());
+				pakkeTilPosition.put("eks.levendeikon", pakkeTilPosition.size());
+				klasselister.add(new ArrayList<String>());
+				pakkenavne = new ArrayList(pakkeTilPosition.keySet());
+				pakkekategorier = new ArrayList(pakkenavne); // tag kopi og ændr den
+				for (int i=1; i<pakkekategorier.size(); i++) {
+					String pakkenavn = pakkekategorier.get(i);
+					if (pakkenavn.startsWith("eks")) {
+						pakkenavn = pakkenavn.substring(4); // tag 'diverse' fra 'eks.diverse'
+						pakkekategorier.set(i, pakkenavn);
+					}
+					manglerTjekForAndreFiler.add(i);
+				}
+
+
+				// Start asynkron indlæsning af klasselister
+				new Thread() {
+					public void run() {
+						for (int i = 1; i < pakkekategorier.size(); i++) {
+							try { // Vent lidt for at lade systemet starte op
+								Thread.sleep(500);
+							} catch (Exception ex) { }
+							tjekForAndreFilerIPakken(i);
+							Log.d("Aktivitetsliste", "T "+i+" tid: "+(System.currentTimeMillis()-tid));
+
+							try { // Gem alle resultater for hurtig opstart
+								ObjectOutputStream objektstrøm = new ObjectOutputStream(new FileOutputStream(cachefil));
+								objektstrøm.writeObject(alleAktiviteter);
+								objektstrøm.writeObject(pakkenavne);
+								objektstrøm.writeObject(pakkekategorier);
+								objektstrøm.writeObject(klasselister);
+								objektstrøm.close();
+							} catch (Exception ex) { ex.printStackTrace(); }
+						}
+					}
+				}.start();
+			} // klasselister.isEmpty
 
 			Toast.makeText(this, "Lav langt tryk for at se kildekoden\n", Toast.LENGTH_LONG).show();
 			Log.d("Aktivitetsliste", "1 tid: "+(System.currentTimeMillis()-tid));
@@ -305,10 +343,10 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 		startActivity(i);
 	}
 
-	static HashSet<Integer> tjekketForAndreFiler = new HashSet<Integer>();
+	static HashSet<Integer> manglerTjekForAndreFiler = new HashSet<Integer>();
 	private synchronized void tjekForAndreFilerIPakken(int position) {
-		if (tjekketForAndreFiler.contains(position)) return;
-		tjekketForAndreFiler.add(position);
+		if (!manglerTjekForAndreFiler.contains(position)) return;
+		manglerTjekForAndreFiler.remove(position);
 		String pnavn = pakkenavne.get(position);
 		ArrayList<String> klasser = klasselister.get(position);
 		Log.d("Aktivitetsliste", "pakkeTilKlasseliste.get "+position+" = "+klasser+" "+pnavn);

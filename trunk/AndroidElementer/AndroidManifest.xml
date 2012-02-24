@@ -86,9 +86,10 @@ Aktivitetsliste:
     <activity android:name="eks.diverse.ProgrammatiskLayout"/>
 
     <activity android:name="eks.grafik.Tegneprogram"/>
-    <activity android:name="eks.grafik.Kompasspil" android:screenOrientation="portrait"/>
     <activity android:name="eks.grafik.Grafikdemo0"/>
     <activity android:name="eks.grafik.Grafikdemo1"/>
+    <activity android:name="eks.grafik.Kompas" android:screenOrientation="portrait"/>
+    <activity android:name="eks.grafik.Balancespil" android:screenOrientation="portrait"/>
     <activity android:name="eks.grafik.Grafikdemo2"/>
     <activity android:name="eks.grafik.BenytAnimationer"/>
     <activity android:name="eks.grafik.BenytBilledeknapper"/>

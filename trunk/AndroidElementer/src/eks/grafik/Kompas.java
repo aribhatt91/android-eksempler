@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Simplificeret udgave af Android ApiDemos (com.example.android.apis.graphics)
 package eks.grafik;
 
 import android.app.Activity;
@@ -30,11 +29,13 @@ import android.os.PowerManager.WakeLock;
 import android.view.View;
 import dk.nordfalk.android.elementer.R;
 
-public class Kompasspil extends Activity implements SensorEventListener {
+/** Simplificeret udgave af Android ApiDemos kompas-eksempel
+ *	(com.example.android.apis.graphics.Compass)
+ */
+public class Kompas extends Activity implements SensorEventListener {
 	SensorManager sensorManager;
 	Sensor sensor;
-	float vinkelTilNord, hældning, krængning, stjerneX, stjerneY;
-	boolean død;
+	float vinkelTilNord, hældning, krængning;
 	KompasView kompasView;
 	WakeLock wakeLock;
 
@@ -48,27 +49,21 @@ public class Kompasspil extends Activity implements SensorEventListener {
 		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-		wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "");
+		wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Kompas");
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
-		/*
-		 * when the activity is resumed, we acquire a wake-lock so that the
-		 * screen stays on, since the user will likely not be fiddling with the
-		 * screen or buttons.
-		 */
-		wakeLock.acquire();
+		wakeLock.acquire(); // Hold skærmen tændt
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		sensorManager.unregisterListener(this);
-		// and release our wake-lock
-		wakeLock.release();
+		sensorManager.unregisterListener(this); // Stop med at modtage sensordata
+		wakeLock.release(); // Frigiv låsen på at holde skærmen tændt
 	}
 
 	long sidsteTid = 0;
@@ -77,19 +72,6 @@ public class Kompasspil extends Activity implements SensorEventListener {
 		vinkelTilNord = event.values[0];
 		hældning = event.values[1];
 		krængning = event.values[2];
-		død = false;
-
-		if (sidsteTid!=0) {
-			float dt = (event.timestamp - sidsteTid) / 10000000.0f;
-			stjerneX = stjerneX - krængning * dt;
-			stjerneY = stjerneY - hældning * dt;
-
-			if (stjerneX*stjerneX + stjerneY*stjerneY > 100000) {
-				// For langt væk - nulstil
-				stjerneX = stjerneY = 0;
-				død = true; // baggrunden tegnes rødt
-			}
-		}
 
 		sidsteTid = event.timestamp;
 
@@ -106,9 +88,6 @@ public class Kompasspil extends Activity implements SensorEventListener {
 		// Indlæs res/drawable/bil.png
 		Drawable enBil = getResources().getDrawable(R.drawable.bil);
 
-		// Indlæs Android-resurse android-sdk/platforms/android-*/data/res/drawable/star_on.png
-		Drawable enStjerne = getResources().getDrawable(android.R.drawable.star_on);
-
 		public KompasView(Context context) {
 			super(context);
 
@@ -124,15 +103,14 @@ public class Kompasspil extends Activity implements SensorEventListener {
 			paint.setStyle(Paint.Style.FILL);
 
 			enBil.setBounds(-100, -100, 100, 100);
-			enStjerne.setBounds(-20, -20, 20, 20);
 		}
 
 		@Override
 		protected void onDraw(Canvas canvas) {
-			// Tegn en hvid baggrund, eller rød hvis stjernen kom for langt væk
-			canvas.drawColor( død ? Color.RED : Color.WHITE );
+			// Tegn en hvid baggrund
+			canvas.drawColor( Color.WHITE );
 
-			// Tegn bilen
+			// Tegn bilen. Den drejer afhængig af hældning og bliver trykket skæv afhængig af krængning
 			canvas.save();
 			canvas.translate(100, 100);
 			canvas.rotate(hældning);
@@ -142,13 +120,7 @@ public class Kompasspil extends Activity implements SensorEventListener {
 
 			// Tegn stjernen
 			canvas.save();
-			canvas.translate(getWidth()/2 + stjerneX, getHeight()/2 + stjerneY);
-			enStjerne.draw(canvas);
-			canvas.restore();
-
-			// Tegn kompasset
-			canvas.save();
-			canvas.translate(getWidth()-100, 100);
+			canvas.translate(getWidth()/2, getHeight()/2);
 			canvas.rotate(-vinkelTilNord);
 			canvas.drawPath(kompaspilPath, paint);
 			canvas.restore();
