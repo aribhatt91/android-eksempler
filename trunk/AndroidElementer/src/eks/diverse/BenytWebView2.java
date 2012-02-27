@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.Toast;
 
-public class BenytWebView extends Activity {
+public class BenytWebView2 extends Activity {
 
 	public class MinKlasse {
 
 		public void visToast(String tekst) {
-			Toast.makeText(BenytWebView.this, tekst, Toast.LENGTH_LONG).show();
+			Toast.makeText(BenytWebView2.this, tekst, Toast.LENGTH_LONG).show();
 		}
 
 		public void afslut() {

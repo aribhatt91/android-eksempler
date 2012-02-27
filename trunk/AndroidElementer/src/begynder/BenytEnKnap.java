@@ -9,7 +9,7 @@ import android.widget.Button;
 /**
  * En aktivitet med én knap
  */
-public class Benyt1Knap extends Activity implements OnClickListener {
+public class BenytEnKnap extends Activity implements OnClickListener {
 	// Vi erklærer variabler herude så de huskes fra metode til metode
 	Button enKnap;
 
