@@ -81,6 +81,7 @@ public class Kompas extends Activity implements SensorEventListener {
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 	}
 
+
 	class KompasView extends View {
 		Paint paint = new Paint();
 		Path kompaspilPath = new Path();
@@ -110,7 +111,15 @@ public class Kompas extends Activity implements SensorEventListener {
 			// Tegn en hvid baggrund
 			canvas.drawColor( Color.WHITE );
 
-			// Tegn bilen. Den drejer afhængig af hældning og bliver trykket skæv afhængig af krængning
+			// Tegn kompas-pilen
+			canvas.save();
+			canvas.translate(getWidth()/2, getHeight()/2);
+			canvas.rotate(-vinkelTilNord);
+			canvas.drawPath(kompaspilPath, paint);
+			canvas.restore();
+
+			// Tegn også en bil for sjovs skyld
+			// Den drejer afhængig af hældning og bliver trykket skæv afhængig af krængning
 			canvas.save();
 			canvas.translate(100, 100);
 			canvas.rotate(hældning);
@@ -118,12 +127,6 @@ public class Kompas extends Activity implements SensorEventListener {
 			enBil.draw(canvas);
 			canvas.restore();
 
-			// Tegn stjernen
-			canvas.save();
-			canvas.translate(getWidth()/2, getHeight()/2);
-			canvas.rotate(-vinkelTilNord);
-			canvas.drawPath(kompaspilPath, paint);
-			canvas.restore();
 		}
 	}
 

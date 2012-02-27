@@ -24,7 +24,7 @@ public class Balancespil extends Activity implements SensorEventListener {
 	WakeLock wakeLock;
 
 	float hældning, krængning, bilX, bilY;
-	float[][] partiklerXY = new float[6][4]; // 6 punkter der hver har: x, y, xfart, yfart
+	float[][] stjernerXY = new float[6][4]; // 6 stjerner der hver har: x, y, xfart, yfart
 	boolean duDøde;
 	long startTid = 0;
 	int vindretning;
@@ -42,15 +42,17 @@ public class Balancespil extends Activity implements SensorEventListener {
 
 		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+		// Hold skærmen helt tændt, også lidt efter...
 		wakeLock = powerManager.newWakeLock(
 				PowerManager.SCREEN_BRIGHT_WAKE_LOCK|PowerManager.ON_AFTER_RELEASE, "Spil");
 
-		for (float[] pxy : partiklerXY) {
-			pxy[0] = 800*(float) Math.random()-400;
-			pxy[1] = 800*(float) Math.random()-400;
-			pxy[2] = 200*(float) Math.random()-100;
-			pxy[3] = 200*(float) Math.random()-100;
+		for (float[] pxy : stjernerXY) {
+			pxy[0] = 800*(float) Math.random()-400; // x
+			pxy[1] = 800*(float) Math.random()-400; // y
+			pxy[2] = 200*(float) Math.random()-100; // hastighed x
+			pxy[3] = 200*(float) Math.random()-100; // hastighed y
 		}
 
 	}
@@ -106,7 +108,7 @@ public class Balancespil extends Activity implements SensorEventListener {
 		}
 
 		// Opdater partiklernes positioner og fart
-		for (float[] pxy : partiklerXY) {
+		for (float[] pxy : stjernerXY) {
 			pxy[0] = pxy[0] + vindDX + pxy[2]*dt;
 			pxy[1] = pxy[1] + vindDY + pxy[3]*dt;
 			// Er den fløjet ud af skærmen så giv den koordinater i modsatte side
@@ -115,7 +117,7 @@ public class Balancespil extends Activity implements SensorEventListener {
 
 			// Rammer den bilen så...
 			double dist2 = Math.pow(pxy[0]-bilX, 2) + Math.pow(pxy[1]-bilY, 2);
-			if (dist2<2500) { // 50 punkter
+			if (dist2<2500) { // Stjernen er mindre end 50 punkter fra bilen
 				System.out.println(dist2);
 				duDøde = true; // baggrunden tegnes rødt
 				pxy[0] = -200; // Flyt punktet væk så vi ikke rammer det igen med det samme
@@ -139,7 +141,7 @@ public class Balancespil extends Activity implements SensorEventListener {
 
 	class SpilView extends View {
 		Paint paint = new Paint();
-		Path kompaspilPath = new Path();
+		Path vindretningspilPath = new Path();
 
 		// Indlæs res/drawable/bil.png
 		Drawable enBil = getResources().getDrawable(R.drawable.bil);
@@ -151,11 +153,11 @@ public class Balancespil extends Activity implements SensorEventListener {
 			super(context);
 
 			// Lav en form som en kompas-pil
-			kompaspilPath.moveTo(0, -50);
-			kompaspilPath.lineTo(-20, 60);
-			kompaspilPath.lineTo(0, 50);
-			kompaspilPath.lineTo(20, 60);
-			kompaspilPath.close();
+			vindretningspilPath.moveTo(0, -50);
+			vindretningspilPath.lineTo(-20, 60);
+			vindretningspilPath.lineTo(0, 50);
+			vindretningspilPath.lineTo(20, 60);
+			vindretningspilPath.close();
 
 			paint.setAntiAlias(true);
 			paint.setColor(Color.BLACK);
@@ -171,19 +173,19 @@ public class Balancespil extends Activity implements SensorEventListener {
 			// Tegn en hvid baggrund, eller rød hvis stjernen kom for langt væk
 			canvas.drawColor( duDøde ? Color.RED : Color.WHITE );
 
-			// Spillet er beregnet til en skærm der er 480 punkter bred.
-			float skærmSkala = getWidth()/480f; // Skalér efter
-			//System.out.println("skærmSkala="+skærmSkala);
+			// Spillet er beregnet til en skærm der er 480 punkter bred...
+			float skærmSkala = getWidth()/480f; // ... så skalér derefter
 			canvas.scale(skærmSkala, skærmSkala);
 
+			// Tegn point
 			canvas.drawText(""+pointOpnået, 20, 40, paint);
 			canvas.drawText(""+maxPointOpnået, 20, 80, paint);
 
-			// Tegn kompasset
+			// Tegn pilen der viser vindretningen
 			canvas.save();
 			canvas.translate(getWidth()/skærmSkala-50, 50);
 			canvas.rotate(vindretning+90);
-			canvas.drawPath(kompaspilPath, paint);
+			canvas.drawPath(vindretningspilPath, paint);
 			canvas.restore();
 
 			// Flyt koordinatsystem til midten
@@ -195,9 +197,8 @@ public class Balancespil extends Activity implements SensorEventListener {
 			enBil.draw(canvas);
 			canvas.restore();
 
-
-			for (float[] pxy : partiklerXY) {
-				canvas.drawPoint(pxy[0], pxy[1], paint);
+			// Tegn stjernerne
+			for (float[] pxy : stjernerXY) {
 				canvas.save();
 				canvas.translate(pxy[0], pxy[1]);
 				canvas.rotate(krængning*3);
@@ -206,5 +207,4 @@ public class Balancespil extends Activity implements SensorEventListener {
 			}
 		}
 	}
-
 }

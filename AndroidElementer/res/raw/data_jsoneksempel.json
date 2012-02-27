@@ -1,17 +1,19 @@
 {
-  "bank": "Merkur",  
+  "bank": "Merkur",
   "kunder": [
   {
-    "navn": "Jacob", 
+    "navn": "Jacob",
     "kredit": 1000
   },
-  { 
-    "navn": "Søren", 
-    "kredit": 1007
+  {
+    "navn": "Søren",
+    "kredit": 1007,
+    "alder": 29
   },
   {
-    "navn": "Bent", 
-    "kredit": 5
+    "navn": "Bent",
+    "kredit": 5,
+    "kreditværdighed": "LAV"
   }
   ]
 }

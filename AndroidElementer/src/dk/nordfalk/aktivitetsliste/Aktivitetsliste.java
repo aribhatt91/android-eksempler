@@ -2,14 +2,16 @@ package dk.nordfalk.aktivitetsliste;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.KeyguardManager;
+import android.app.KeyguardManager.KeyguardLock;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcel;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,7 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import dk.nordfalk.android.elementer.R;
-import eks.livscyklus.Serialisering;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -38,124 +39,44 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 public class Aktivitetsliste extends Activity implements OnItemClickListener, OnItemLongClickListener, OnItemSelectedListener {
-
 	/** Programdata - static da de ikke fylder det store og vi dermed slipper for reinitialisering */
 	static ArrayList<String> alleAktiviteter = new ArrayList<String>();
 	static ArrayList<String> pakkenavne;
 	static ArrayList<String> pakkekategorier;
 	static ArrayList<ArrayList<String>> klasselister = new ArrayList<ArrayList<String>>();
-
 	ArrayList<String> klasserDerVisesNu = new ArrayList<String>();
 	ArrayAdapter<String> klasserDerVisesNuAdapter;
 	int onStartTæller;
 	ToggleButton seKildekode;
 	Gallery kategorivalg;
-	//EditText søgEditText;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		final long tid = System.currentTimeMillis();
+		long tid = System.currentTimeMillis();
 
-		if (klasselister.isEmpty()) { // Førstegangsinitialisering af programdata
-			try {
-				for (ActivityInfo a : getPackageManager().
-						getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities) {
-					alleAktiviteter.add(a.name);
-				}
-			} catch (NameNotFoundException ex) {
-				ex.printStackTrace();
-			}
-			alleAktiviteter.add("AndroidManifest.xml");
+		if (klasselister.isEmpty()) {
 
-			final File cachefil = new File(getCacheDir(), "Aktivitetslistecache.ser");
+			indlæsAktiviteter();
 
-			ObjectInputStream objektstrøm = null;
-			try { // Hent gamle resultater for hurtig opstart
-				objektstrøm = new ObjectInputStream(new FileInputStream(cachefil));
-				Log.d("Aktivitetsliste", "deser1 tid: "+(System.currentTimeMillis()-tid));
-				ArrayList<String> alleGemteAktiviteter = (ArrayList<String>) objektstrøm.readObject();
-				Log.d("Aktivitetsliste", "deser2 tid: "+(System.currentTimeMillis()-tid));
-				if (alleGemteAktiviteter.equals(alleAktiviteter)) {
-					// Gemte aktiviteter er de samme! Vi fortsætter...
-					pakkenavne = (ArrayList<String>) objektstrøm.readObject();
-					pakkekategorier = (ArrayList<String>) objektstrøm.readObject();
-					klasselister = (ArrayList<ArrayList<String>>) objektstrøm.readObject();
-					Log.d("Aktivitetsliste", "deser3 tid: "+(System.currentTimeMillis()-tid));
-				}
-				objektstrøm.close();
-			} catch (Exception ex) { ex.printStackTrace(); }
+			// App'en startes i frist JVM, den er sikkert lige installeret fra USB-kabel, så...
+			// Fjern evt skærmlås ...
+			KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Activity.KEYGUARD_SERVICE);
+			KeyguardLock lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
+			lock.disableKeyguard();
 
-			if (klasselister.isEmpty()) {
+			// ... og tænd skærmen 30 sekunder og, også lidt efter...
+			PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+			WakeLock wakeLock = powerManager.newWakeLock(
+					PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "Aktivitetsliste");
+			wakeLock.acquire(30000);
 
-				LinkedHashMap<String, Integer> pakkeTilPosition = new LinkedHashMap<String, Integer>();
-				//kategorier.add("(søg)");
-				pakkeTilPosition.put(" = vis alle = ", 0);
-				klasselister.add(alleAktiviteter);
-				for (String navn : alleAktiviteter) {
-					int n = navn.lastIndexOf(".");
-					String pakkenavn = navn.substring(0, n); // Fjern klassenavnet
-					//String klassenavn = navn.substring(n+1); // Klassenavnet
-
-					Integer position = pakkeTilPosition.get(pakkenavn);
-					ArrayList klasser;
-					if (position == null) {
-						position = pakkeTilPosition.size();
-						pakkeTilPosition.put(pakkenavn, position);
-						klasser = new ArrayList<String>();
-						klasselister.add(klasser);
-					} else {
-						klasser = klasselister.get(position);
-					}
-					klasser.add(navn);
-				}
-
-				pakkeTilPosition.put("eks.levendebaggrund", pakkeTilPosition.size());
-				klasselister.add(new ArrayList<String>());
-				pakkeTilPosition.put("eks.levendeikon", pakkeTilPosition.size());
-				klasselister.add(new ArrayList<String>());
-				pakkenavne = new ArrayList(pakkeTilPosition.keySet());
-				pakkekategorier = new ArrayList(pakkenavne); // tag kopi og ændr den
-				for (int i=1; i<pakkekategorier.size(); i++) {
-					String pakkenavn = pakkekategorier.get(i);
-					if (pakkenavn.startsWith("eks")) {
-						pakkenavn = pakkenavn.substring(4); // tag 'diverse' fra 'eks.diverse'
-						pakkekategorier.set(i, pakkenavn);
-					}
-					manglerTjekForAndreFiler.add(i);
-				}
-
-
-				// Start asynkron indlæsning af klasselister
-				new Thread() {
-					public void run() {
-						for (int i = 1; i < pakkekategorier.size(); i++) {
-							try { // Vent lidt for at lade systemet starte op
-								Thread.sleep(500);
-							} catch (Exception ex) { }
-							tjekForAndreFilerIPakken(i);
-							Log.d("Aktivitetsliste", "T "+i+" tid: "+(System.currentTimeMillis()-tid));
-
-							try { // Gem alle resultater for hurtig opstart
-								ObjectOutputStream objektstrøm = new ObjectOutputStream(new FileOutputStream(cachefil));
-								objektstrøm.writeObject(alleAktiviteter);
-								objektstrøm.writeObject(pakkenavne);
-								objektstrøm.writeObject(pakkekategorier);
-								objektstrøm.writeObject(klasselister);
-								objektstrøm.close();
-							} catch (Exception ex) { ex.printStackTrace(); }
-						}
-					}
-				}.start();
-			} // klasselister.isEmpty
-
-			Toast.makeText(this, "Lav langt tryk for at se kildekoden\n", Toast.LENGTH_LONG).show();
-			Log.d("Aktivitetsliste", "1 tid: "+(System.currentTimeMillis()-tid));
+			Toast.makeText(this, "Lav langt tryk for at se kildekoden", Toast.LENGTH_LONG).show();
+			Log.d("Aktivitetsliste", "1 tid: " + (System.currentTimeMillis() - tid));
 		}
 
 
@@ -174,7 +95,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 		kategorivalg.setVerticalScrollBarEnabled(true);
 		kategorivalg.setOnItemSelectedListener(this);
 		kategorivalg.setUnselectedAlpha(0.4f);
-		kategorivalg.setBackgroundColor(Color.DKGRAY);
+		//kategorivalg.setBackgroundColor(Color.DKGRAY);
 		if (savedInstanceState == null) // Frisk start - vis animation
 		{
 			kategorivalg.startAnimation(AnimationUtils.loadAnimation(this, R.anim.egen_anim2));
@@ -184,7 +105,6 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 		klasserDerVisesNu.addAll(alleAktiviteter);
 		// Anonym nedarving af ArrayAdapter med omdefineret getView()
 		klasserDerVisesNuAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, android.R.id.text1, klasserDerVisesNu) {
-
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
 				View view = super.getView(position, convertView, parent);
@@ -211,9 +131,9 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 			}
 		};
 		ListView visKlasserListView = new ListView(this);
-		Log.d("Aktivitetsliste", "2 tid: "+(System.currentTimeMillis()-tid));
+		Log.d("Aktivitetsliste", "2 tid: " + (System.currentTimeMillis() - tid));
 		visKlasserListView.setAdapter(klasserDerVisesNuAdapter);
-		Log.d("Aktivitetsliste", "3 tid: "+(System.currentTimeMillis()-tid));
+		Log.d("Aktivitetsliste", "3 tid: " + (System.currentTimeMillis() - tid));
 
 		visKlasserListView.setOnItemClickListener(this);
 		visKlasserListView.setOnItemLongClickListener(this);
@@ -252,8 +172,9 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 		visKlasserListView.setSelectionFromTop(position, 30);
 		kategorivalg.setSelection(prefs.getInt("kategoriPos", 1));
 
-		Log.d("Aktivitetsliste", "4 tid: "+(System.currentTimeMillis()-tid));
+		Log.d("Aktivitetsliste", "4 tid: " + (System.currentTimeMillis() - tid));
 	}
+
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -280,6 +201,8 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 			Toast.makeText(this, "Vink: Tryk længe på et punkt for at se kildekoden", Toast.LENGTH_LONG).show();
 		}
 	}
+
+
 
 	public void onItemClick(AdapterView<?> listView, View v, int position, long id) {
 		String akt = klasserDerVisesNu.get(position);
@@ -321,10 +244,6 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 		return true;
 	}
 
-	/**
-	 *
-	 * @param position
-	 */
 	private void visKildekode(String klasse) {
 		String filnavn = klasse;
 		if (filnavn.equals("AndroidManifest.xml")) {
@@ -343,13 +262,31 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 		startActivity(i);
 	}
 
+
+
+	// Galleriet/pakkelisten
+	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+		//tv.setText("onItemSelected "+position+" "+kategorivalg.getSelectedItemPosition());
+		klasserDerVisesNu.clear();
+		tjekForAndreFilerIPakken(position);
+		klasserDerVisesNu.addAll(klasselister.get(position));
+		klasserDerVisesNuAdapter.notifyDataSetChanged();
+	}
+
+	public void onNothingSelected(AdapterView<?> parent) {
+	}
+
+
+
 	static HashSet<Integer> manglerTjekForAndreFiler = new HashSet<Integer>();
 	private synchronized void tjekForAndreFilerIPakken(int position) {
-		if (!manglerTjekForAndreFiler.contains(position)) return;
+		if (!manglerTjekForAndreFiler.contains(position)) {
+			return;
+		}
 		manglerTjekForAndreFiler.remove(position);
 		String pnavn = pakkenavne.get(position);
 		ArrayList<String> klasser = klasselister.get(position);
-		Log.d("Aktivitetsliste", "pakkeTilKlasseliste.get "+position+" = "+klasser+" "+pnavn);
+		Log.d("Aktivitetsliste", "pakkeTilKlasseliste.get " + position + " = " + klasser + " " + pnavn);
 
 		// if (a.toLowerCase().contains(kategori)) klasserDerVisesNu.add(a); // kun nødvendig til søgning
 		try { // Skan efter filer der ikke er aktiviteter og vis også dem
@@ -371,15 +308,105 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 		}
 	}
 
-	//
-	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		//tv.setText("onItemSelected "+position+" "+kategorivalg.getSelectedItemPosition());
-		this.klasserDerVisesNu.clear();
-		tjekForAndreFilerIPakken(position);
-		this.klasserDerVisesNu.addAll(klasselister.get(position));
-		klasserDerVisesNuAdapter.notifyDataSetChanged();
-	}
+	public void indlæsAktiviteter() {
+		final long tid = System.currentTimeMillis();
+		// Førstegangsinitialisering af programdata
+		try {
+			for (ActivityInfo a : getPackageManager().
+					getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities) {
+				alleAktiviteter.add(a.name);
+			}
+		} catch (NameNotFoundException ex) {
+			ex.printStackTrace();
+		}
+		alleAktiviteter.add("AndroidManifest.xml");
 
-	public void onNothingSelected(AdapterView<?> parent) {
+		final File cachefil = new File(getCacheDir(), "Aktivitetslistecache.ser");
+
+		ObjectInputStream objektstrøm = null;
+		try { // Hent gamle resultater for hurtig opstart
+			objektstrøm = new ObjectInputStream(new FileInputStream(cachefil));
+			Log.d("Aktivitetsliste", "deser1 tid: " + (System.currentTimeMillis() - tid));
+			ArrayList<String> alleGemteAktiviteter = (ArrayList<String>) objektstrøm.readObject();
+			Log.d("Aktivitetsliste", "deser2 tid: " + (System.currentTimeMillis() - tid));
+			if (alleGemteAktiviteter.equals(alleAktiviteter)) {
+				// Gemte aktiviteter er de samme! Vi fortsætter...
+				pakkenavne = (ArrayList<String>) objektstrøm.readObject();
+				pakkekategorier = (ArrayList<String>) objektstrøm.readObject();
+				klasselister = (ArrayList<ArrayList<String>>) objektstrøm.readObject();
+				Log.d("Aktivitetsliste", "deser3 tid: " + (System.currentTimeMillis() - tid));
+			}
+			objektstrøm.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		if (klasselister.isEmpty()) { // cache var ikke god, vi indlæser fra grunden
+
+			LinkedHashMap<String, Integer> pakkeTilPosition = new LinkedHashMap<String, Integer>();
+			//kategorier.add("(søg)");
+			pakkeTilPosition.put(" = vis alle = ", 0);
+			klasselister.add(alleAktiviteter);
+			for (String navn : alleAktiviteter) {
+				int n = navn.lastIndexOf(".");
+				String pakkenavn = navn.substring(0, n); // Fjern klassenavnet
+				//String klassenavn = navn.substring(n+1); // Klassenavnet
+
+				Integer position = pakkeTilPosition.get(pakkenavn);
+				ArrayList klasser;
+				if (position == null) {
+					position = pakkeTilPosition.size();
+					pakkeTilPosition.put(pakkenavn, position);
+					klasser = new ArrayList<String>();
+					klasselister.add(klasser);
+				} else {
+					klasser = klasselister.get(position);
+				}
+				klasser.add(navn);
+			}
+
+			pakkeTilPosition.put("eks.levendebaggrund", pakkeTilPosition.size());
+			klasselister.add(new ArrayList<String>());
+			pakkeTilPosition.put("eks.levendeikon", pakkeTilPosition.size());
+			klasselister.add(new ArrayList<String>());
+			pakkenavne = new ArrayList(pakkeTilPosition.keySet());
+			pakkekategorier = new ArrayList(pakkenavne); // tag kopi og ændr den
+			for (int i = 1; i < pakkekategorier.size(); i++) {
+				String pakkenavn = pakkekategorier.get(i);
+				if (pakkenavn.startsWith("eks")) {
+					pakkenavn = pakkenavn.substring(4); // tag 'diverse' fra 'eks.diverse'
+					pakkekategorier.set(i, pakkenavn);
+				}
+				manglerTjekForAndreFiler.add(i);
+			}
+
+
+			// Påbegynd asynkron indlæsning af klasselister
+			new Thread() {
+				@Override
+				public void run() {
+					for (int i = 1; i < pakkekategorier.size(); i++) {
+						try { // Vent lidt for at lade systemet starte op
+							Thread.sleep(500);
+						} catch (Exception ex) {
+						}
+						tjekForAndreFilerIPakken(i);
+						Log.d("Aktivitetsliste", "T " + i + " tid: " + (System.currentTimeMillis() - tid));
+
+						try { // Gem alle resultater for hurtig opstart
+							ObjectOutputStream objektstrøm = new ObjectOutputStream(new FileOutputStream(cachefil));
+							objektstrøm.writeObject(alleAktiviteter);
+							objektstrøm.writeObject(pakkenavne);
+							objektstrøm.writeObject(pakkekategorier);
+							objektstrøm.writeObject(klasselister);
+							objektstrøm.close();
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				}
+			}.start();
+
+		} // cacheindlæsning slut
 	}
 }

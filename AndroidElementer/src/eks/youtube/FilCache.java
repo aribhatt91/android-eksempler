@@ -77,7 +77,7 @@ public class FilCache {
 			int responseCode = httpForb.getResponseCode();
 			if (responseCode == 400 && cacheFil.exists()) {
 				httpForb.disconnect();
-				log("Netværksfejl, men der er cachet kopi i " + cacheFilnavn);
+				log("Fejl, men der er cachet kopi i " + cacheFilnavn);
 				return cacheFilnavn;
 			}
 			if (responseCode == 304) {

@@ -55,29 +55,29 @@ public class XmlParsning extends Activity {
 			XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
 			XmlPullParser xpp=factory.newPullParser();
 			 */
-			XmlPullParser xpp = android.util.Xml.newPullParser();  // Android-kald til at oprette parser
-			xpp.setInput(is, "UTF-8"); // evt "ISO-8859-1"
+			XmlPullParser parser = android.util.Xml.newPullParser();  // Android-kald til at oprette parser
+			parser.setInput(is, "UTF-8"); // evt "ISO-8859-1"
 
 			Bank bank = null; // Husker den aktuelle bank
 			Kunde kunde = null; // Husker den aktuelle kunde
 
-			int eventType = xpp.getEventType();
+			int eventType = parser.getEventType();
 			while (eventType != XmlPullParser.END_DOCUMENT) {
 				if (eventType == XmlPullParser.START_TAG) {
-					String tag = xpp.getName();
+					String tag = parser.getName();
 					if ("bank".equals(tag)) {
 						bank = new Bank();
 						banker.add(bank);
-						bank.navn = xpp.getAttributeValue(null, "navn");
+						bank.navn = parser.getAttributeValue(null, "navn");
 					} else if ("kunde".equals(tag)) {
 						kunde = new Kunde();
 						bank.kunder.add(kunde);
-						kunde.navn = xpp.getAttributeValue(null, "navn");
+						kunde.navn = parser.getAttributeValue(null, "navn");
 					} else if ("kredit".equals(tag)) {
-						kunde.kredit = Double.parseDouble(xpp.nextText());
+						kunde.kredit = Double.parseDouble(parser.nextText());
 					}
 				}
-				eventType = xpp.next();
+				eventType = parser.next();
 			}
 			is.close();
 		} catch (Exception ex) {

@@ -6,7 +6,6 @@ import android.text.Html;
 import android.widget.TextView;
 import dk.nordfalk.android.elementer.R;
 import java.io.InputStream;
-import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,7 +13,7 @@ import org.json.JSONObject;
  *
  * @author Jacob Nordfalk
  */
-public class JsonParsning extends Activity {
+public class CSVParsning extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,27 +21,21 @@ public class JsonParsning extends Activity {
 		TextView tv = new TextView(this);
 
 		try {
-			InputStream is = getResources().openRawResource(R.raw.data_jsoneksempel);
-			//InputStream is = new URL("http://javabog.dk/eksempel.json").openStream();
-
+			InputStream is = getResources().openRawResource(R.raw.data_csveksempel);
 			byte b[] = new byte[is.available()]; // kun små filer
 			is.read(b);
 			String str = new String(b, "UTF-8");
 			tv.append(str);
 
-			JSONObject json = new JSONObject(str);
-			String bank = json.getString("bank");
-			tv.append("\n=== Oversigt over " + bank + "s kunder ===\n");
 			double totalKredit = 0;
-
-			JSONArray kunder = json.getJSONArray("kunder");
-			int antal = kunder.length();
-			for (int i = 0; i < antal; i++) {
-				JSONObject kunde = kunder.getJSONObject(i);
-				System.err.println("obj = " + kunde);
-				String navn = kunde.getString("navn");
-				double kredit = kunde.getDouble("kredit");
-				tv.append(navn + " med " + kredit + " kr.\n");
+			for (String linje : str.split("\n")) {
+				linje = linje.trim();
+				if (linje.length() == 0 || linje.startsWith("#")) continue;
+				String[] felter = linje.split(", ");
+				String bank = felter[0];
+				String navn = felter[1];
+				double kredit = Double.parseDouble(felter[2]);
+				tv.append(bank+" har "+navn + " som kunde med " + kredit + " kr.\n");
 				totalKredit = totalKredit + kredit;
 			}
 			tv.append("\n\nTotal kredit er " + totalKredit + " kr.");
