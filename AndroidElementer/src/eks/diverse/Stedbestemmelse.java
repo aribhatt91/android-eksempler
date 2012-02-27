@@ -27,12 +27,11 @@ import java.util.logging.Logger;
  *
  * @author Jacob Nordfalk
  */
-public class Stedbestemmelse extends Activity {
+public class Stedbestemmelse extends Activity implements LocationListener {
 
 	TextView textView;
 	ScrollView scrollView;
 	LocationManager locationManager;
-	Locationlytter locationlytter = new Locationlytter();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +80,7 @@ public class Stedbestemmelse extends Activity {
 		}
 
 		//  Bed om opdateringer hvert 60. sekunder eller 20. meter
-		locationManager.requestLocationUpdates(bedsteUdbyder, 60000, 20, locationlytter);
+		locationManager.requestLocationUpdates(bedsteUdbyder, 60000, 20, this);
 
 		Location sidsteSted = locationManager.getLastKnownLocation(bedsteUdbyder);
 
@@ -101,24 +100,22 @@ public class Stedbestemmelse extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		locationManager.removeUpdates(locationlytter);
+		locationManager.removeUpdates(this);
 	}
 
-	// indre klasse
-	class Locationlytter implements LocationListener {
+	// Metode specificeret i LocationListener
+	public void onLocationChanged(Location sted) {
+		textView.append(sted + "\n\n");
+		scrollView.scrollTo(0, textView.getHeight()); // rul ned i bunden
+	}
 
-		public void onLocationChanged(Location sted) {
-			textView.append(sted + "\n\n");
-			scrollView.scrollTo(0, textView.getHeight()); // rul ned i bunden
-		}
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// ignorér - men vi er nødt til at have metoden for at implementere LocationListener
+	}
 
-		public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-		}
+	public void onProviderEnabled(String arg0) {
+	}
 
-		public void onProviderEnabled(String arg0) {
-		}
-
-		public void onProviderDisabled(String arg0) {
-		}
-	}; // Locationlytter slut
+	public void onProviderDisabled(String arg0) {
+	}
 }
