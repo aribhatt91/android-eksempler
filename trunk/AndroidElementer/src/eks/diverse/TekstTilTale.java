@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +24,7 @@ Tio estas pomo. Kion vi volas fari per la pomo?
  *
  * @author Jacob Nordfalk
  */
-public class TekstTilTale extends Activity implements OnClickListener, TextToSpeech.OnInitListener {
+public class TekstTilTale extends Activity implements OnInitListener, OnClickListener {
 
 	EditText udtaleTekst;
 	Button udtalKnap;
@@ -46,7 +48,7 @@ public class TekstTilTale extends Activity implements OnClickListener, TextToSpe
 		udtalKnap.setEnabled(false);
 
 		TableLayout ll = new TableLayout(this);
-		ll.addView(udtaleTekst);
+		ll.addView(udtaleTekst, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, 0, 1));
 		ll.addView(udtalKnap);
 		setContentView(ll);
 		tts = new TextToSpeech(this, this);

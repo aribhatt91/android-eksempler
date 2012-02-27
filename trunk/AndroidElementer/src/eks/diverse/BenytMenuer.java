@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package eks.diverse;
 
 import android.app.Activity;
@@ -19,7 +15,6 @@ import eks.vejret.Indstillinger;
  * @author Jacob Nordfalk
  */
 public class BenytMenuer extends Activity {
-
 	private TextView tv;
 
 	@Override
@@ -57,7 +52,8 @@ public class BenytMenuer extends Activity {
 			startActivity(i);
 			return true;
 		} else {
-			return false;
+			// Ikke håndteret - send kaldet videre til standardhåntering
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }
