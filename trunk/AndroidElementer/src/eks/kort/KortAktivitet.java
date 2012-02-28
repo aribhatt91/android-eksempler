@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Point;
-import java.io.InputStream;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -16,7 +14,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,27 +32,31 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
+
 import dk.nordfalk.android.elementer.R;
-import java.io.IOException;
+
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
+import java.io.InputStream;
 /**
  *
  * @author Jacob Nordfalk
  */
 public class KortAktivitet extends MapActivity {
 
-	static float MIKRO = 1.0f / 1000000; // Google maps' koordinater er i mikrograder
+	final static float MIKRO = 1.0f / 1000000; // Google maps' koordinater er i mikrograder
+
 	MapView mapView;
+
 	// Overlejrede data
 	MyLocationOverlay myLocationOverlay;
+	MitItemizedOverlay itemizedOverlay;
 	WMSOverlay wMSOverlay;
-	MitItemizedOverlay itemizedoverlay;
+
 	// Geopunkter
 	GeoPoint valby = new GeoPoint(55654074, 12493775);
 	GeoPoint valgtPunkt = valby;
@@ -100,7 +101,6 @@ public class KortAktivitet extends MapActivity {
 			et.setText(tekst);
 			dialog.setView(et);
 			dialog.setPositiveButton("Regstér nu)", new AlertDialog.OnClickListener() {
-
 				public void onClick(DialogInterface arg0, int arg1) {
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://code.google.com/android/maps-api-signup.html")));
 				}
@@ -122,9 +122,8 @@ public class KortAktivitet extends MapActivity {
 		mapView.getController().setZoom(7);
 		mapView.setClickable(true);
 		mapView.setEnabled(true);
-		mapView.setBuiltInZoomControls(true);
-		// Centrér omkring Valby
-		mapView.getController().setCenter(valby);
+		mapView.setBuiltInZoomControls(true); // vis zoomknapper (plus og minus)
+		mapView.getController().setCenter(valby); // Centrér omkring Valby
 
 
 		// Overlejr kortet med brugerens placering
@@ -137,15 +136,16 @@ public class KortAktivitet extends MapActivity {
 		});
 		mapView.getOverlays().add(myLocationOverlay);
 
+
 		// Vis liste af overlejrede ikoner
 		Drawable ikon = getResources().getDrawable(android.R.drawable.star_big_on);
-		itemizedoverlay = new MitItemizedOverlay(ikon);
-		itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(57607065, 10249187), "Tversted Plantage", "Osterklit"), ikon);
-		itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(55756630, 9133909), "Legoland", "Billund"), getResources().getDrawable(android.R.drawable.ic_dialog_email));
-		itemizedoverlay.tilføj(new OverlayItem(valby, "Her bor Jacob", "Valby"), getResources().getDrawable(R.drawable.logo));
-		itemizedoverlay.tilføj(new OverlayItem(new GeoPoint(54714330, 11664910), "Døllefjælde-Musse", "Naturpark"), null);
-		itemizedoverlay.tilføjFærdig();
-		mapView.getOverlays().add(itemizedoverlay);
+		itemizedOverlay = new MitItemizedOverlay(ikon);
+		itemizedOverlay.tilføj(new OverlayItem(new GeoPoint(57607065, 10249187), "Tversted Plantage", "Osterklit"), ikon);
+		itemizedOverlay.tilføj(new OverlayItem(new GeoPoint(55756630, 9133909), "Legoland", "Billund"), getResources().getDrawable(android.R.drawable.ic_dialog_email));
+		itemizedOverlay.tilføj(new OverlayItem(valby, "Her bor Jacob", "Valby"), getResources().getDrawable(R.drawable.logo));
+		itemizedOverlay.tilføj(new OverlayItem(new GeoPoint(54714330, 11664910), "Døllefjælde-Musse", "Naturpark"), null);
+		itemizedOverlay.tilføjFærdig();
+		mapView.getOverlays().add(itemizedOverlay);
 
 
 		wMSOverlay = new WMSOverlay();
@@ -233,6 +233,52 @@ public class KortAktivitet extends MapActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
+
+
+
+
+	/**
+	 * Eksempel på at overlejre informationer (ikoner) på et kort
+	 */
+	public class MitItemizedOverlay extends ItemizedOverlay<OverlayItem> {
+
+		public ArrayList<OverlayItem> elementer = new ArrayList<OverlayItem>();
+
+		public MitItemizedOverlay(Drawable stdIkon) {
+			super(boundCenterBottom(stdIkon));
+		}
+
+		public void tilføjFærdig() {
+			this.populate();
+		}
+
+		@Override
+		protected OverlayItem createItem(int i) {
+			return elementer.get(i);
+		}
+
+		@Override
+		public int size() {
+			return elementer.size();
+		}
+
+		@Override
+		protected boolean onTap(int i) {
+			OverlayItem e = elementer.get(i);
+			Toast.makeText(KortAktivitet.this, "Klikkede nr " + i + " " + e.getTitle(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(KortAktivitet.this, e.getSnippet() + "\n" + e.routableAddress(), Toast.LENGTH_SHORT).show();
+			return true;
+		}
+
+		void tilføj(OverlayItem overlayItem, Drawable ikon) {
+			if (ikon != null) {
+				overlayItem.setMarker(boundCenterBottom(ikon));
+			}
+			elementer.add(overlayItem);
+		}
+	}
+
+
 
 	/**
 	 * Eksempel på hvordan man overlejrer et kort (kaldet WMS - Web Map Service)
@@ -323,44 +369,4 @@ public class KortAktivitet extends MapActivity {
 		}
 	}
 
-	/**
-	 * Eksempel på at overlejre informationer (ikoner) på et kort
-	 */
-	public class MitItemizedOverlay extends ItemizedOverlay<OverlayItem> {
-
-		public ArrayList<OverlayItem> elementer = new ArrayList<OverlayItem>();
-
-		public MitItemizedOverlay(Drawable stdIkon) {
-			super(boundCenterBottom(stdIkon));
-		}
-
-		public void tilføjFærdig() {
-			this.populate();
-		}
-
-		@Override
-		protected OverlayItem createItem(int i) {
-			return elementer.get(i);
-		}
-
-		@Override
-		public int size() {
-			return elementer.size();
-		}
-
-		@Override
-		protected boolean onTap(int i) {
-			OverlayItem e = elementer.get(i);
-			Toast.makeText(KortAktivitet.this, "Klikkede nr " + i + " " + e.getTitle(), Toast.LENGTH_SHORT).show();
-			Toast.makeText(KortAktivitet.this, e.getSnippet() + "\n" + e.routableAddress(), Toast.LENGTH_SHORT).show();
-			return true;
-		}
-
-		void tilføj(OverlayItem overlayItem, Drawable ikon) {
-			if (ikon != null) {
-				overlayItem.setMarker(boundCenterBottom(ikon));
-			}
-			elementer.add(overlayItem);
-		}
-	}
 }

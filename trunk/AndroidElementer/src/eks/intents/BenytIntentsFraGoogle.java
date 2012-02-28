@@ -52,19 +52,21 @@ public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
 	public void onClick(View hvadBlevDerKlikketPå) {
 		try {
 			if (hvadBlevDerKlikketPå == kortvisning) {
-				startActivity(new Intent(Intent.ACTION_VIEW,
-						Uri.parse("geo:55.65407,12.493775?z=3")));
-				startActivity(new Intent(Intent.ACTION_VIEW,
-						Uri.parse("geo:55.65407,12.493775?z=3")));
+				Intent i = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("geo:55.65407,12.493775?z=3"));
+				startActivity(i);
 			} else if (hvadBlevDerKlikketPå == rutevisning) {
-				startActivity(new Intent(Intent.ACTION_VIEW,
-						Uri.parse("http://maps.google.com/maps?saddr=55.65407,12.493775&daddr=55.66,12.5")));
+				Intent i = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("http://maps.google.com/maps?saddr=55.65407,12.493775&daddr=55.66,12.5"));
+				startActivity(i);
+			} else if (hvadBlevDerKlikketPå == gadevisning) {
+				Intent i = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("google.streetview:cbll=55.65407,12.493775&cbp=1"));
+				startActivity(i);
 			} else if (hvadBlevDerKlikketPå == dokumentation) {
-				startActivity(new Intent(Intent.ACTION_VIEW,
-						Uri.parse("http://developer.android.com/guide/appendix/g-app-intents.html")));
-			} else {
-				startActivity(new Intent(Intent.ACTION_VIEW,
-						Uri.parse("google.streetview:cbll=55.65407,12.493775&cbp=1")));
+				Intent i = new Intent(Intent.ACTION_VIEW,
+						Uri.parse("http://developer.android.com/guide/appendix/g-app-intents.html"));
+				startActivity(i);
 			}
 		} catch (ActivityNotFoundException e) {
 			Toast.makeText(this, "Du mangler Googles udvidelser på denne telefon:\n" + e.getMessage(), Toast.LENGTH_LONG).show();

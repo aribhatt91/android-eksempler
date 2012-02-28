@@ -18,22 +18,19 @@ import eks.vejret.ByvejrAktivitet;
  */
 public class FlytbarVejrudsigt extends Activity {
 
-	Bitmap vejrudsigt;
 	float x, y;
 	float xFingerSidst, yFingerSidst;
-	View minGrafik;
+	Bitmap vejrudsigt;
+	View vejrudsigtView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		minGrafik = new View(this) {
-
+		vejrudsigtView = new View(this) { // anonym nedarving af View
 			@Override
 			protected void onDraw(Canvas canvas) {
-				Paint stregtype = new Paint();
-				canvas.drawBitmap(vejrudsigt, x, y, stregtype);
-				canvas.drawText("Dagens vejrudsigt:", 10, 5, stregtype);
+				tegnVejrudsigt(canvas);
 			}
 		};
 
@@ -43,7 +40,6 @@ public class FlytbarVejrudsigt extends Activity {
 		setContentView(intro);
 
 		new AsyncTask() {
-
 			@Override
 			protected Object doInBackground(Object... arg) {
 				try {
@@ -58,7 +54,7 @@ public class FlytbarVejrudsigt extends Activity {
 			@Override
 			protected void onPostExecute(Object resultat) {
 				if ("OK".equals(resultat)) {
-					setContentView(minGrafik);
+					setContentView(vejrudsigtView);
 				} else {
 					intro.append("\n\nBeklager, vejrudsigten ku' ikke hentes\n\n" + resultat);
 				}
@@ -66,11 +62,18 @@ public class FlytbarVejrudsigt extends Activity {
 		}.execute();
 	}
 
+
+	public void tegnVejrudsigt(Canvas canvas) {
+		Paint stregtype = new Paint();
+		canvas.drawBitmap(vejrudsigt, x, y, stregtype);
+		canvas.drawText("Dagens vejrudsigt:", 10, 5, stregtype);
+	}
+
 	@Override
 	public boolean onTrackballEvent(MotionEvent event) {
 		x = x + event.getX();
 		y = y + event.getY();
-		minGrafik.invalidate();
+		vejrudsigtView.invalidate();
 		return true;
 	}
 
@@ -85,7 +88,7 @@ public class FlytbarVejrudsigt extends Activity {
 			float dy = event.getY() - yFingerSidst;
 			x = x + dx;
 			y = y + dy;
-			minGrafik.invalidate();
+			vejrudsigtView.invalidate();
 		}
 		xFingerSidst = event.getX();
 		yFingerSidst = event.getY();

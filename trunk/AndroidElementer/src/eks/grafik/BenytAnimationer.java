@@ -125,6 +125,8 @@ public class BenytAnimationer extends Activity implements OnClickListener {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
+		// Når der vendes tilbage til denne aktivitet skal den gamle aktivitet
+		// fades ud og denne aktivitet flyve ind med animationen i res/anim/egen_anim.xml
 		overridePendingTransition(R.anim.egen_anim, android.R.anim.fade_out);
 	}
 }
