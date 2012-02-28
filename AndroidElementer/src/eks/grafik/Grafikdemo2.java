@@ -13,6 +13,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import dk.nordfalk.android.elementer.R;
 
+/**
+ *
+ * @author Jacob Nordfalk
+ */
+public class Grafikdemo2 extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		MinGrafik minGrafik = new MinGrafik(this);
+		minGrafik.setBackgroundResource(R.drawable.logo);
+		setContentView(minGrafik);
+	}
+}
+
+
 class MinGrafik extends View {
 
 	float rotation = -45;
@@ -110,17 +126,3 @@ class MinGrafik extends View {
 	}
 }
 
-/**
- *
- * @author Jacob Nordfalk
- */
-public class Grafikdemo2 extends Activity {
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		MinGrafik minGrafik = new MinGrafik(this);
-		minGrafik.setBackgroundResource(R.drawable.logo);
-		setContentView(minGrafik);
-	}
-}

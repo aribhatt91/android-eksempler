@@ -14,25 +14,28 @@ public class FangBrowseIntent extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		Intent i = getIntent();
-		String url = i.getDataString();
+		// Tjek om vi er blevet startet med et Intent med en URL, f.eks. som
+		// new Intent(Intent.ACTION_VIEW, Uri.parse("http://javabog.dk/OOP/kapitel3.jsp"));
 
-		if (url == null) {
+		Intent i = getIntent();
+		String urlFraIntent = i.getDataString();
+
+		if (urlFraIntent == null) {
 			TextView tv = new TextView(this);
 			tv.setText("Dette eksempel viser hvordan man fanger et browserintent.\n"
 					+ "Gå ind på http://javabog.dk og vælg et kapitel fra grundbogen, "
 					+ "f.eks http://javabog.dk/OOP/kapitel3.jsp ");
 			Linkify.addLinks(tv, Linkify.ALL);
 			setContentView(tv);
-			return;
+		} else {
+			// Ok, der var en URL med i intentet
+			Toast.makeText(this, "AndroidElementer viser\n" + urlFraIntent, Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Intent var\n" + i, Toast.LENGTH_LONG).show();
+
+			WebView webView = new WebView(this);
+			webView.loadUrl(urlFraIntent);
+
+			setContentView(webView);
 		}
-
-		Toast.makeText(this, "AndroidElementer viser\n" + url, Toast.LENGTH_LONG).show();
-		Toast.makeText(this, "Intent var\n" + i, Toast.LENGTH_LONG).show();
-
-		WebView webView = new WebView(this);
-		webView.loadUrl(url);
-
-		setContentView(webView);
 	}
 }

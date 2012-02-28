@@ -15,7 +15,6 @@ import java.util.ArrayList;
  * @author Jacob Nordfalk
  */
 public class Tegneprogram extends Activity {
-
 	View tegneflade;
 	ArrayList<Point> berøringspunkter = new ArrayList<Point>();
 	Paint tekstStregtype = new Paint();
@@ -27,7 +26,6 @@ public class Tegneprogram extends Activity {
 		tekstStregtype.setTextSize(24);
 
 		tegneflade = new View(this) { // anonym nedarving af View
-
 			@Override
 			protected void onDraw(Canvas c) {
 				super.onDraw(c);

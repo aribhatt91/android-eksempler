@@ -25,7 +25,6 @@ import android.widget.Toast;
  * @author Jacob Nordfalk
  */
 public class BenytIntents extends Activity implements OnClickListener {
-
 	EditText tekstfelt, nummerfelt;
 	Button ringOp, ringOpDirekte, sendSms, sendEpost, websøgning;
 
@@ -82,18 +81,18 @@ public class BenytIntents extends Activity implements OnClickListener {
 		setContentView(sv);
 	}
 
-	public void onClick(View hvadBlevDerKlikketPå) {
+	public void onClick(View v) {
 		String nummer = nummerfelt.getText().toString();
 		String tekst = tekstfelt.getText().toString();
-		if (hvadBlevDerKlikketPå == ringOp) {
+		if (v == ringOp) {
 			ringOp(nummer);
-		} else if (hvadBlevDerKlikketPå == ringOpDirekte) {
+		} else if (v == ringOpDirekte) {
 			ringOpDirekte(nummer);
-		} else if (hvadBlevDerKlikketPå == sendSms) {
+		} else if (v == sendSms) {
 			åbnSendSms(nummer, tekst + lavTelefoninfo());
-		} else if (hvadBlevDerKlikketPå == sendEpost) {
+		} else if (v == sendEpost) {
 			åbnSendEpost(tekst, nummer, lavTelefoninfo());
-		} else if (hvadBlevDerKlikketPå == websøgning) {
+		} else if (v == websøgning) {
 			websøgning(tekst);
 		}
 	}
@@ -135,13 +134,13 @@ public class BenytIntents extends Activity implements OnClickListener {
 	}
 
 	public void websøgning(String søgestreng) {
-		Intent searchGivenText = new Intent(Intent.ACTION_WEB_SEARCH);
-		searchGivenText.putExtra(SearchManager.QUERY, søgestreng);
-		startActivity(searchGivenText);
+		Intent søgeIntent = new Intent(Intent.ACTION_WEB_SEARCH);
+		søgeIntent.putExtra(SearchManager.QUERY, søgestreng);
+		startActivity(søgeIntent);
 	}
 
-	public void åbnUrl(String url) {
-		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+	public void åbnUrl(String adresse) {
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adresse));
 		startActivity(intent);
 	}
 
@@ -152,9 +151,11 @@ public class BenytIntents extends Activity implements OnClickListener {
 		postIntent.putExtra(Intent.EXTRA_CC, new String[]{"jacob.nordfalk@gmail.com"});
 		postIntent.putExtra(Intent.EXTRA_SUBJECT, emne);
 		postIntent.putExtra(Intent.EXTRA_TEXT, txt);
-		startActivity(Intent.createChooser(postIntent, "Send mail..."));
+		startActivity(Intent.createChooser(postIntent, "Send e-post..."));
 	}
 
+	/** Ofte har man som udvikler brug for info om den telefon brugeren har.
+	    Denne metode giver telefonmodel, Androidversion og programversion etc. */
 	public String lavTelefoninfo() {
 		String version = "(ukendt)";
 		try {
