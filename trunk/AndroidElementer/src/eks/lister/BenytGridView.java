@@ -19,13 +19,13 @@ public class BenytGridView extends Activity implements OnItemClickListener {
 
 		String[] lande = {"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal",};
 
-		GridView listView = new GridView(this);
-		listView.setOnItemClickListener(this);
-		listView.setNumColumns(GridView.AUTO_FIT);
+		GridView gridView = new GridView(this);
+		gridView.setOnItemClickListener(this);
+		gridView.setNumColumns(GridView.AUTO_FIT);
 
-		listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande));
+		gridView.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande));
 
-		setContentView(listView);
+		setContentView(gridView);
 	}
 
 	public void onItemClick(AdapterView<?> l, View v, int position, long id) {

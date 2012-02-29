@@ -57,57 +57,68 @@ public class FilCache {
 			return cacheFilnavn;
 		} else {
 			log("Kontakter " + url);
+			long hentHvisNyereEnd = cacheFil.lastModified();
 
-			HttpURLConnection httpForb = (HttpURLConnection) new URL(url).openConnection();
+			int prøvIgen = 3;
+			while (prøvIgen>0) {
+				HttpURLConnection httpForb = (HttpURLConnection) new URL(url).openConnection();
 
-			if (cacheFil.exists()) {
-				httpForb.setIfModifiedSince(cacheFil.lastModified());
-			}
-
-			httpForb.setConnectTimeout(10000); // 10 sekunder
-			try {
-				httpForb.connect();
-			} catch (IOException e) {
-				if (!cacheFil.exists()) {
-					throw e; // netværksfejl - og vi har ikke en lokal kopi
+				if (cacheFil.exists()) {
+					httpForb.setIfModifiedSince(hentHvisNyereEnd);
 				}
-				log("Netværksfejl, men der er cachet kopi i " + cacheFilnavn);
-				return cacheFilnavn;
-			}
-			int responseCode = httpForb.getResponseCode();
-			if (responseCode == 400 && cacheFil.exists()) {
-				httpForb.disconnect();
-				log("Fejl, men der er cachet kopi i " + cacheFilnavn);
-				return cacheFilnavn;
-			}
-			if (responseCode == 304) {
-				httpForb.disconnect();
-				log("Der er cachet kopi i " + cacheFilnavn);
-				return cacheFilnavn;
-			}
-			if (responseCode != 200) {
-				throw new IOException(responseCode + " " + httpForb.getResponseMessage() + " for " + url);
-			}
 
-			log("Henter " + url + " og gemmer i " + cacheFilnavn);
-			boolean ok = false;
-			try {
-				InputStream is = httpForb.getInputStream();
-				FileOutputStream fos = new FileOutputStream(cacheFilnavn);
-				kopierOgLuk(is, fos);
-				ok = true;
-			} finally {
-				if (!ok) {
-					cacheFil.delete(); // gem ikke halve filer!
+				httpForb.setConnectTimeout(10000); // 10 sekunder
+				try {
+					httpForb.connect();
+				} catch (IOException e) {
+					if (!cacheFil.exists()) {
+						throw e; // netværksfejl - og vi har ikke en lokal kopi
+					}
+					log("Netværksfejl, men der er cachet kopi i " + cacheFilnavn);
+					return cacheFilnavn;
 				}
+				int responseCode = httpForb.getResponseCode();
+				if (responseCode == 400 && cacheFil.exists()) {
+					httpForb.disconnect();
+					log("Netværksfejl, men der er cachet kopi i " + cacheFilnavn);
+					return cacheFilnavn;
+				}
+				if (responseCode == 304) {
+					httpForb.disconnect();
+					log("Der er cachet kopi i " + cacheFilnavn);
+					return cacheFilnavn;
+				}
+				if (responseCode != 200) {
+					if (prøvIgen==0)
+						throw new IOException(responseCode + " " + httpForb.getResponseMessage() + " for " + url);
+					// Prøv igen
+					log("Netværksfejl, vi venter lidt og prøver igen");
+					log(responseCode + " " + httpForb.getResponseMessage() + " for " + url);
+					try { Thread.sleep(100); } catch (InterruptedException ex) { }
+					continue;
+				}
+
+				log("Henter " + url + " og gemmer i " + cacheFilnavn);
+				boolean ok = false;
+				try {
+					InputStream is = httpForb.getInputStream();
+					FileOutputStream fos = new FileOutputStream(cacheFilnavn);
+					kopierOgLuk(is, fos);
+					ok = true;
+				} finally {
+					if (!ok) {
+						cacheFil.delete(); // gem ikke halve filer!
+					}
+				}
+
+				long lastModified = httpForb.getHeaderFieldDate("last-modified", nu);
+				log("last-modified" + new Date(lastModified));
+				cacheFil.setLastModified(lastModified);
+
+				return cacheFilnavn;
 			}
-
-			long lastModified = httpForb.getHeaderFieldDate("last-modified", nu);
-			log("last-modified" + new Date(lastModified));
-			cacheFil.setLastModified(lastModified);
-
-			return cacheFilnavn;
 		}
+    throw new IllegalStateException("Dette burde aldrig ske!");
 	}
 
 	public static String findLokaltFilnavn(String url) {

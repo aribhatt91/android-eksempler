@@ -83,12 +83,15 @@ public class KortAktivitet extends MapActivity {
 				}
 
 				// indsæt din egen nøgle her:
+				if (md5.equals("dit md5 fingerprint")) {
+					return "nøglen du får fra Google Maps signup";
+				}
 			}
 
 			// Ingen nøgle fundet. Vis hjælp til brugeren
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 			dialog.setTitle("Mangler API-nøgle");
-			String tekst = "Kør kortet kan vises skal du registrere dig og få en API-nøgle .\n"
+			String tekst = "Før kortet kan vises skal du registrere dig og få en API-nøgle .\n"
 					+ "Dit MD5 certificat, som er: \n\n" + md5
 					+ "\n\nskal registreres på:\nhttp://code.google.com/android/maps-api-signup.html\n"
 					+ "Derefter skal begge dele skrives ind i kildekoden (" + this.getClass().getSimpleName() + ".java).\n"

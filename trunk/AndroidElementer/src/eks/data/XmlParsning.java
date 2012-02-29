@@ -11,16 +11,14 @@ import org.xmlpull.v1.XmlPullParser;
 
 /** Simpel dataklasse til at geme XML-værdier i */
 class Kunde {
-
-	String navn;
-	double kredit;
+  String navn;
+  double kredit;
 }
 
 /** Simpel dataklasse til at geme XML-værdier i */
 class Bank {
-
-	String navn;
-	ArrayList<Kunde> kunder = new ArrayList<Kunde>();
+  String navn;
+  ArrayList<Kunde> kunder = new ArrayList<Kunde>();
 }
 
 /**

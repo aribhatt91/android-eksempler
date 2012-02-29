@@ -129,40 +129,40 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent res) {
-		resultatTextView.setText(requestCode + " gav resultat " + resultCode + " og data:\n" + res);
-		System.out.println(requestCode + " gav resultat " + resultCode + " med data=" + res);
+	protected void onActivityResult(int requestCode, int resultCode, Intent resIntent) {
+		resultatTextView.setText(requestCode + " gav resultat " + resultCode + " og data:\n" + resIntent);
+		System.out.println(requestCode + " gav resultat " + resultCode + " med data=" + resIntent);
 
 		resultatHolder.removeAllViews();
 
 		if (resultCode == Activity.RESULT_OK) {
 			try {
 				if (requestCode == VÆLG_KONTAKT) {
-					resultatTextView.append("\n\nres.getData()=" + res.getData());
-					resultatTextView.append("\n\nres.getExtras()=" + res.getExtras());
-					Uri contactData = res.getData();
+					resultatTextView.append("\n\nres.getData()=" + resIntent.getData());
+					resultatTextView.append("\n\nres.getExtras()=" + resIntent.getExtras());
+					Uri contactData = resIntent.getData();
 					Cursor c = managedQuery(contactData, null, null, null, null);
 					if (c.moveToFirst()) {
 						resultatTextView.append("\n\nNAVN:"
 								+ c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
 					}
 				} else if (requestCode == VÆLG_FLERE_KONTAKTER) {
-					resultatTextView.append("\n\nres.getData()=" + res.getData());
-					resultatTextView.append("\n\nres.getExtras()=" + res.getExtras());
-					Uri kontaktData = res.getData();
+					resultatTextView.append("\n\nres.getData()=" + resIntent.getData());
+					resultatTextView.append("\n\nres.getExtras()=" + resIntent.getExtras());
+					Uri kontaktData = resIntent.getData();
 					Cursor c = managedQuery(kontaktData, null, null, null, null);
 					while (c.moveToFirst()) {
 						resultatTextView.append("\n\nNAVN:"
 								+ c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
 					}
 				} else if (requestCode == VÆLG_BILLEDE) {
-					AssetFileDescriptor filDS = getContentResolver().openAssetFileDescriptor(res.getData(), "r");
+					AssetFileDescriptor filDS = getContentResolver().openAssetFileDescriptor(resIntent.getData(), "r");
 					Bitmap bmp = BitmapFactory.decodeStream(filDS.createInputStream());
 					ImageView iv = new ImageView(this);
 					iv.setImageBitmap(bmp);
 					resultatHolder.addView(iv);
 				} else if (requestCode == TAG_BILLEDE) {
-					Bitmap bmp = (Bitmap) res.getExtras().get("data");
+					Bitmap bmp = (Bitmap) resIntent.getExtras().get("data");
 					ImageView iv = new ImageView(this);
 					iv.setImageBitmap(bmp);
 					resultatHolder.addView(iv);

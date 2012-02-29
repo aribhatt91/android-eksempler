@@ -25,10 +25,10 @@ public class BenytListViewMedEgetLayout2 extends Activity implements OnItemClick
 		listView.setOnItemClickListener(this);
 
 		listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande) {
-
 			@Override
 			public View getView(int position, View cachedView, ViewGroup parent) {
 				View view = super.getView(position, cachedView, parent);
+
 				TextView listeelem_beskrivelse = (TextView) view.findViewById(R.id.listeelem_beskrivelse);
 				listeelem_beskrivelse.setText("Land nummer " + position);
 				ImageView listeelem_billede = (ImageView) view.findViewById(R.id.listeelem_billede);
@@ -37,6 +37,7 @@ public class BenytListViewMedEgetLayout2 extends Activity implements OnItemClick
 				} else {
 					listeelem_billede.setImageResource(android.R.drawable.sym_action_email);
 				}
+
 				return view;
 			}
 		});

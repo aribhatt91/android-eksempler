@@ -46,8 +46,9 @@ public class Kompas extends Activity implements SensorEventListener {
 		kompasView = new KompasView(this);
 		setContentView(kompasView);
 
-		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
 		wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Kompas");
 	}

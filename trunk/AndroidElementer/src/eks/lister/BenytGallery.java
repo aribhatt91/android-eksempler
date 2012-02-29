@@ -18,12 +18,12 @@ public class BenytGallery extends Activity implements OnItemClickListener {
 
 		String[] lande = {"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal",};
 
-		Gallery listView = new Gallery(this);
-		listView.setOnItemClickListener(this);
-		listView.setSpacing(25); // 25 punkter
+		Gallery gallery = new Gallery(this);
+		gallery.setOnItemClickListener(this);
+		gallery.setSpacing(25); // 25 punkter
 
-		listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande));
-		setContentView(listView);
+		gallery.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande));
+		setContentView(gallery);
 
 	}
 

@@ -104,6 +104,7 @@ Aktivitetsliste:
     <activity android:name="eks.diverse.Stedbestemmelse"/>
     <activity android:name="eks.diverse.TekstTilTale"/>
 
+    <activity android:name="eks.data.CSVParsning"/>
     <activity android:name="eks.data.JsonParsning"/>
     <activity android:name="eks.data.XmlParsning"/>
     <activity android:name="eks.data.BenytSQLite"/>
