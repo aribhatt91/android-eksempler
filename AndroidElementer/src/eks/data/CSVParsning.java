@@ -2,12 +2,9 @@ package eks.data;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.Html;
 import android.widget.TextView;
 import dk.nordfalk.android.elementer.R;
 import java.io.InputStream;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -26,6 +23,8 @@ public class CSVParsning extends Activity {
 			is.read(b);
 			String str = new String(b, "UTF-8");
 			tv.append(str);
+
+			tv.append("\n\n---------------\n");
 
 			double totalKredit = 0;
 			for (String linje : str.split("\n")) {
