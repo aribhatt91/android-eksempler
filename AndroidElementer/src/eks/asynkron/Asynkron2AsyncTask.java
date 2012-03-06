@@ -8,13 +8,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TableLayout;
 
-/**
- *
- * @author Jacob Nordfalk
- */
 public class Asynkron2AsyncTask extends Activity implements OnClickListener {
 
 	ProgressBar progressBar;
@@ -65,25 +60,25 @@ public class Asynkron2AsyncTask extends Activity implements OnClickListener {
 
 		if (hvadBlevDerKlikketPå == knap1) {
 
-			knap1.setText("arbejder");
+	knap1.setText("arbejder");
 
-			class AsyncTask1 extends AsyncTask {
+	class AsyncTask1 extends AsyncTask {
 
-				@Override
-				protected Object doInBackground(Object... arg0) {
-					try {
-						Thread.sleep(10000);
-					} catch (InterruptedException ex) {
-					}
-					return null;
-				}
+		@Override
+		protected Object doInBackground(Object... arg0) {
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException ex) {
+			}
+			return null;
+		}
 
-				@Override
-				protected void onPostExecute(Object result) {
-					knap1.setText("færdig!");
-				}
-			};
-			new AsyncTask1().execute();
+		@Override
+		protected void onPostExecute(Object result) {
+			knap1.setText("færdig!");
+		}
+	};
+	new AsyncTask1().execute();
 
 
 		} else if (hvadBlevDerKlikketPå == knap2) {

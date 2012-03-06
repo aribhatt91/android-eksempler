@@ -294,7 +294,10 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 			String mappe = pnavn.replace(".", "/");
 			ydre:
 			for (String fil : getAssets().list("src/" + mappe)) {
-				String klassenavn = fil.substring(0, fil.lastIndexOf(".")); // stryg filendelse
+				Log.d("fil", fil);
+				int filendelsePos = fil.lastIndexOf(".");
+				if (filendelsePos==-1) continue;
+				String klassenavn = fil.substring(0, filendelsePos); // stryg filendelse
 				//System.out.println(klassenavn);
 				for (String n : klasser) {
 					if (n.endsWith(klassenavn)) {
@@ -303,7 +306,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 				}
 				klasser.add(mappe + "/" + fil);
 			}
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}

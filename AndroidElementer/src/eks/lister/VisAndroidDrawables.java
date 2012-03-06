@@ -58,6 +58,11 @@ public class VisAndroidDrawables extends Activity {
 		// Man kunne have en ensfarvet baggrund, det gør scroll mere flydende
 		//getListView().setCacheColorHint(0xffe4e4e4);
 		 */
+		if (savedInstanceState == null) {
+			// Ny aktivitet, vis hjælp
+			Toast.makeText(this, "Dette eksempel viser også hvor stor forskel genbrug af elementer og asynkron indlæsning gør", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Tryk MENU for at slå disse forbedringer fra og mærk forskellen", Toast.LENGTH_LONG).show();
+		}
 
 		setContentView(listView);
 	}
