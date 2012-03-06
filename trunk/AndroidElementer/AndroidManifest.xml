@@ -123,6 +123,7 @@ Aktivitetsliste:
     <activity android:name="eks.lister.BenytGridView"/>
     <activity android:name="eks.lister.BenytListViewMedEgetLayout2"/>
     <activity android:name="eks.lister.VisAndroidDrawables"/>
+    <activity android:name="eks.lister.VisOverskrifter"/>
 
     <activity android:name="eks.lister.BenytExpandableListActivity"/>
 

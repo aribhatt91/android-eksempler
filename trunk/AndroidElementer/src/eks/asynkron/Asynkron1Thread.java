@@ -7,14 +7,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
-import android.widget.TextView;
 
-/**
- *
- * @author Jacob Nordfalk
- */
 public class Asynkron1Thread extends Activity implements OnClickListener {
-
 	Button knap1, knap2, knap3;
 
 	@Override
@@ -47,26 +41,21 @@ public class Asynkron1Thread extends Activity implements OnClickListener {
 	}
 
 	public void onClick(View hvadBlevDerKlikketPå) {
-
 		if (hvadBlevDerKlikketPå == knap1) {
-
 			knap1.setText("arbejder");
 			try {
 				Thread.sleep(10000);
-			} catch (InterruptedException ex) {
-			}
+			} catch (InterruptedException ex) { }
 			knap1.setText("færdig!");
 
 		} else if (hvadBlevDerKlikketPå == knap2) {
 
 			knap2.setText("arbejder");
 			Runnable r = new Runnable() {
-
 				public void run() {
 					try {
 						Thread.sleep(10000);
-					} catch (InterruptedException ex) {
-					}
+					} catch (InterruptedException ex) { }
 					knap2.setText("færdig!"); // Fejl - kun GUI-tråden må røre GUIen!
 				}
 			};
@@ -77,15 +66,12 @@ public class Asynkron1Thread extends Activity implements OnClickListener {
 			knap3.setText("arbejder");
 			System.out.println("arbejder");
 			Runnable r = new Runnable() {
-
 				public void run() {
 					try {
 						Thread.sleep(10000);
-					} catch (InterruptedException ex) {
-					}
+					} catch (InterruptedException ex) { }
 					System.out.println("færdig!");
 					Runnable r2 = new Runnable() {
-
 						public void run() {
 							knap3.setText("færdig!");
 						}
@@ -95,7 +81,6 @@ public class Asynkron1Thread extends Activity implements OnClickListener {
 				}
 			};
 			new Thread(r).start();
-
 		}
 	}
 	//Handler handler = new Handler(); // brug evt denne i stedet for runOnUiThread(r2);
