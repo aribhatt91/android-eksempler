@@ -71,11 +71,14 @@ public class KortAktivitet extends MapActivity {
 				m.update(sig.toByteArray());
 				md5 = new BigInteger(1, m.digest()).toString(16);
 
+				// Foranstil med nuller hvis summen indeholder mindre end 32 tegn
+				while (md5.length()<32) md5 = "0"+md5;
+
 				Log.d("findApiNøgle", "md5fingerprint: " + md5);
 
 				// Jacobs debug-nøgle
-				if (md5.equals("5fb3a9c4a1ebb853254fa1aebc37a89b")) {
-					return "0osb1BfVdrk1u8XJFAcAD0tA5hvcMFVbzInEgNQ";
+				if (md5.equals("55d643a6dd14dce9643ffde54491dd33")) {
+					return "0osb1BfVdrk1FfefX3nEC0WXr4HeYVNPNojXkXQ";
 				}
 				// Jacobs officielle nøgle
 				if (md5.equals("d9a7385fd19107698149b7576fcb8b29")) {

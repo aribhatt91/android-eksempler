@@ -130,7 +130,7 @@ public class Asynkron2AsyncTask extends Activity implements OnClickListener {
 						}
 						double procent = i * 100.0 / antalSkridt;
 						double resttidISekunder = (antalSkridt - i) * ventetidPrSkridtIMilisekunder / 100 / 10.0;
-						this.publishProgress(procent, resttidISekunder); // sendes som parameter til onProgressUpdate()
+						publishProgress(procent, resttidISekunder); // sendes som parameter til onProgressUpdate()
 					}
 					return "færdig med doInBackground()!"; // resultat (String) sendes til onPostExecute()
 				}
