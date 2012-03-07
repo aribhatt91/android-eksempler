@@ -36,7 +36,7 @@ Aktivitetsliste:
   <permission android:name="dk.nordfalk.android.elementer.permission.C2D_MESSAGE" android:protectionLevel="signature" />
   <uses-permission android:name="dk.nordfalk.android.elementer.permission.C2D_MESSAGE" />
 
-  <!-- This app has permission to register and receive message -->
+<!-- This app has permission to register and receive message -->
   <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
   <!-- Undgå at appen bliver utilgængelig for visse enheder i Android Marked. Se
