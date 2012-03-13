@@ -115,6 +115,7 @@ Aktivitetsliste:
     <activity android:name="eks.asynkron.Asynkron1Thread"/>
     <activity android:name="eks.asynkron.Asynkron2AsyncTask"/>
     <activity android:name="eks.asynkron.Asynkron2Handler"/>
+    <activity android:name="eks.asynkron.Asynkron3Korrekt"/>
 
     <activity android:name="eks.lister.BenytListView"/>
     <activity android:name="eks.lister.BenytListActivity"/>
