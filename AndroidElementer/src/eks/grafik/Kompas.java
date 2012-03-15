@@ -24,8 +24,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.view.View;
 import dk.nordfalk.android.elementer.R;
 
@@ -37,7 +35,6 @@ public class Kompas extends Activity implements SensorEventListener {
 	Sensor sensor;
 	float vinkelTilNord, hældning, krængning;
 	KompasView kompasView;
-	WakeLock wakeLock;
 
 	@Override
 	protected void onCreate(Bundle icicle) {
@@ -49,22 +46,18 @@ public class Kompas extends Activity implements SensorEventListener {
 		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 		sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
-		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-		wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "Kompas");
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
-		wakeLock.acquire(); // Hold skærmen tændt
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		sensorManager.unregisterListener(this); // Stop med at modtage sensordata
-		wakeLock.release(); // Frigiv låsen på at holde skærmen tændt
 	}
 
 	long sidsteTid = 0;

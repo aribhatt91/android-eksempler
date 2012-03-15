@@ -70,10 +70,14 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 			lock.disableKeyguard();
 
 			// ... og tænd skærmen 30 sekunder og, også lidt efter...
-			PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-			WakeLock wakeLock = powerManager.newWakeLock(
-					PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "Aktivitetsliste");
-			wakeLock.acquire(30000);
+			try {
+				PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+				WakeLock wakeLock = powerManager.newWakeLock(
+						PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "Aktivitetsliste");
+				wakeLock.acquire(30000);
+			} catch (Exception e) {
+				Toast.makeText(this, "Kunne ikke holde skærmen tændt:\n"+e, Toast.LENGTH_LONG).show();
+			}
 
 			Toast.makeText(this, "Lav langt tryk for at se kildekoden", Toast.LENGTH_LONG).show();
 			Log.d("Aktivitetsliste", "1 tid: " + (System.currentTimeMillis() - tid));

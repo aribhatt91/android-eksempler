@@ -15,7 +15,7 @@ Aktivitetsliste:
  - Sorter efter klassenavn
  -->
 
-	<!-- denne app virker fra Android 1.6 (API 4) og frem
+	<!-- denne app virker fra Android 2.1 (API 7) og frem
 				men den er beregnet til Android 2.3.3 (API 9) -->
   <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="9"/>
 

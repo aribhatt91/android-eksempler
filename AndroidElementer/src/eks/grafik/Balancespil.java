@@ -13,6 +13,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.view.View;
+import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
 
 /** Kan du holde bilen på skærmen uden at ramme stjernerne?
@@ -43,10 +44,16 @@ public class Balancespil extends Activity implements SensorEventListener {
 		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
 
-		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-		// Hold skærmen helt tændt, også lidt efter...
-		wakeLock = powerManager.newWakeLock(
-				PowerManager.SCREEN_BRIGHT_WAKE_LOCK|PowerManager.ON_AFTER_RELEASE, "Spil");
+		try {
+			PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+			// Hold skærmen helt tændt, også lidt efter...
+			wakeLock = powerManager.newWakeLock(
+					PowerManager.SCREEN_BRIGHT_WAKE_LOCK|PowerManager.ON_AFTER_RELEASE, "Spil");
+		} catch (Exception e) {
+			e.printStackTrace();
+			Toast.makeText(this, "Kunne ikke holde skærmen tændt:\n"+e, Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Har du husket:\n<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>\n i manifestet?", Toast.LENGTH_LONG).show();
+		}
 
 		for (float[] pxy : stjernerXY) {
 			pxy[0] = 800*(float) Math.random()-400; // x
@@ -61,7 +68,7 @@ public class Balancespil extends Activity implements SensorEventListener {
 	protected void onResume() {
 		super.onResume();
 		sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
-		wakeLock.acquire(); // Hold skærmen tændt
+		if (wakeLock!=null) wakeLock.acquire(); // Hold skærmen tændt
 		startTid = System.currentTimeMillis();
 	}
 
@@ -69,7 +76,7 @@ public class Balancespil extends Activity implements SensorEventListener {
 	protected void onPause() {
 		super.onPause();
 		sensorManager.unregisterListener(this); // Stop med at modtage sensordata
-		wakeLock.release(); // Frigiv låsen på at holde skærmen tændt
+		if (wakeLock!=null) wakeLock.release(); // Frigiv låsen på at holde skærmen tændt
 	}
 
 	long sidsteTid = 0;
@@ -126,8 +133,14 @@ public class Balancespil extends Activity implements SensorEventListener {
 
 		if (duDøde) {
 			bilX = bilY = 0;
-			Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-			vibrator.vibrate(100);
+			try {
+				Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+				vibrator.vibrate(100);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Toast.makeText(this, "Kunne ikke vibrere med telefonen:\n"+e, Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Har du husket:\n<uses-permission android:name=\"android.permission.VIBRATE\"/>\n i manifestet?", Toast.LENGTH_LONG).show();
+			}
 			startTid = System.currentTimeMillis();
 		}
 
