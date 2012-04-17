@@ -36,7 +36,9 @@ public class BenytScaleGestureDetector extends Activity {
 		return detector.onTouchEvent(event);
 	}
 
-	public void log(String tekst) {
+	public void log(String tekst, ScaleGestureDetector sgd) {
+		tekst = tekst + "\n"+sgd.getScaleFactor()
+				+"\n("+sgd.getFocusX()+","+sgd.getFocusY()+")";
 		tv.setText(tekst);
 		Log.d("Gestus", tekst);
 	}
@@ -44,17 +46,17 @@ public class BenytScaleGestureDetector extends Activity {
 	class GestusLytter implements OnScaleGestureListener {
 
 		public boolean onScale(ScaleGestureDetector sgd) {
-			log("onScale()\n" + sgd.getScaleFactor());
+			log("onScale()", sgd);
 			return false;
 		}
 
 		public boolean onScaleBegin(ScaleGestureDetector sgd) {
-			log("onScaleBegin()\n" + sgd.getScaleFactor());
+			log("onScaleBegin()", sgd);
 			return true;
 		}
 
 		public void onScaleEnd(ScaleGestureDetector sgd) {
-			log("onScaleEnd()\n" + sgd.getScaleFactor());
+			log("onScaleEnd()", sgd);
 		}
 	}
 }
