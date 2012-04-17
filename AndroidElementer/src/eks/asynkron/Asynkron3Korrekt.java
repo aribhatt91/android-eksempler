@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
-import dk.nordfalk.android.elementer.R;
 
 /**
  * Dette eksempel viser en AsyncTask der er knyttet korrekt til en aktivitet.

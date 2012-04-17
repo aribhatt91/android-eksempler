@@ -34,6 +34,7 @@ public class VisKontakter extends Activity {
 		ContentResolver cr = getContentResolver();
 
 		Uri uri = Email.CONTENT_URI;
+		textView.append("uri="+uri+"\n");
 		String[] kolonnner = {Contacts._ID, Contacts.DISPLAY_NAME, Email.DATA};
 		String where = Contacts.IN_VISIBLE_GROUP + " = '1'";
 		String orderBy = Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";

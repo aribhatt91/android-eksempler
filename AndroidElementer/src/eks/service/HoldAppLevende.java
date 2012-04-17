@@ -54,7 +54,9 @@ public class HoldAppLevende extends Activity implements OnClickListener {
 	public void onClick(View hvadBlevDerKlikketPå) {
 
 		if (hvadBlevDerKlikketPå == knap1) {
-      startService(new Intent(this, HoldAppLevendeService.class));
+			Intent i = new Intent(this, HoldAppLevendeService.class);
+			i.putExtra("nogle ekstra data", "med en værdi");
+      startService(i);
 		} else if (hvadBlevDerKlikketPå == knap2) {
       stopService(new Intent(this, HoldAppLevendeService.class));
 		} else if (hvadBlevDerKlikketPå == knap3) {
