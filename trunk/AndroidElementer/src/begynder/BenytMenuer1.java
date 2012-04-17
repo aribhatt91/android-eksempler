@@ -20,7 +20,7 @@ public class BenytMenuer1 extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		TextView tv = new TextView(this);
-		tv.setText("Tryk på menu-knappen\n");
+		tv.setText("Tryk på menu-knappen (eller F2 i emulatoren)\n");
 		setContentView(tv);
 	}
 

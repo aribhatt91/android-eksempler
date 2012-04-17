@@ -4,20 +4,10 @@
   android:installLocation="preferExternal" c="installér på SD-kort"
   android:versionCode="20"
   android:versionName="1.20">
-<!--
-Mangler
-
-Motorolas multitouch-eksempel?
-
-
-Aktivitetsliste:
- - Sorter efter pakkenavn
- - Sorter efter klassenavn
- -->
 
 	<!-- denne app virker fra Android 2.1 (API 7) og frem
-				men den er beregnet til Android 2.3.3 (API 9) -->
-  <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="9"/>
+				men den er beregnet til Android 2.3.3 (API 10) -->
+  <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="10"/>
 
   <!-- tilladelser -->
   <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -59,8 +49,10 @@ Aktivitetsliste:
 			internt i programmet
 		-->
     <activity android:name="begynder.BenytEnKnap"/>
-    <activity android:name="begynder.BenytTreKnapper"/>
-    <activity android:name="begynder.BenytTreKnapperXml"/>
+    <activity android:name="begynder.BenytFlereKnapper"/>
+    <activity android:name="begynder.BenytFlereKnapperXml"/>
+    <activity android:name="begynder.BenytMenuer1"/>
+    <activity android:name="begynder.BenytWebView1"/>
     <activity android:name="begynder.flere_aktiviteter.Hovedmenu_akt"/>
     <activity android:name="begynder.flere_aktiviteter.Hjaelp_akt"/>
     <activity android:name="begynder.flere_aktiviteter.Indstillinger_akt"/>
