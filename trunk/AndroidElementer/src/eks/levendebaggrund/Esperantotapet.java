@@ -19,8 +19,6 @@ package eks.levendebaggrund;
 
 import android.os.Bundle;
 import android.graphics.PointF;
-import android.graphics.drawable.Drawable;
-import dk.nordfalk.android.elementer.R;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;

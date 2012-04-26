@@ -1,19 +1,12 @@
 package begynder;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.TextView;
-import eks.vejret.ByvejrAktivitet;
-import eks.vejret.Indstillinger;
 
-/**
- *
- * @author Jacob Nordfalk
- */
 public class BenytMenuer1 extends Activity {
 
 	@Override
@@ -27,8 +20,9 @@ public class BenytMenuer1 extends Activity {
 	/** Kaldes én gang for at forberede menuen */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add(Menu.NONE, 101, Menu.NONE, "Start vejrudsigt");
-		menu.add(Menu.NONE, 102, Menu.NONE, "Indstillinger").setIcon(android.R.drawable.ic_menu_preferences);
+		menu.add(Menu.NONE, 101, Menu.NONE, "javabog.dk");
+		menu.add(Menu.NONE, 102, Menu.NONE, "Vejrudsigt").setIcon(android.R.drawable.ic_menu_compass);
+		menu.add(Menu.NONE, 103, Menu.NONE, "Afslut").setIcon(android.R.drawable.ic_menu_close_clear_cancel);
 		return true;
 	}
 
@@ -36,16 +30,18 @@ public class BenytMenuer1 extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == 101) {
-			Intent i = new Intent(this, ByvejrAktivitet.class);
-			startActivity(i);
-			return true;
+			WebView webView = new WebView(this);
+			webView.loadUrl("http://javabog.dk");
+			setContentView(webView);
 		} else if (item.getItemId() == 102) {
-			Intent i = new Intent(this, Indstillinger.class);
-			startActivity(i);
-			return true;
+			WebView webView = new WebView(this);
+			webView.loadUrl("http://www.dmi.dk/dmi/index/danmark.htm");
+			setContentView(webView);
+		} else if (item.getItemId() == 103) {
+			finish(); // Lukker aktiviteten
 		} else {
-			// Ikke håndteret - send kaldet videre til standardhåntering
-			return super.onOptionsItemSelected(item);
+			System.out.println("Ikke håndteret");
 		}
+		return true;
 	}
 }
