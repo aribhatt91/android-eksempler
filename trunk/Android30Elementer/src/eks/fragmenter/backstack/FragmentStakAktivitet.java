@@ -70,7 +70,14 @@ public class FragmentStakAktivitet extends LogFragmentActivity {
         // on to the back stack.
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.simple_fragment, newFragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        //ft.add(R.id.simple_fragment, newFragment);
+
+        //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        // Prøv nogle forskellige overgange
+        if (mStackLevel % 3 == 0) ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if (mStackLevel % 3 == 1) ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        if (mStackLevel % 3 == 2) ft.setTransition(FragmentTransaction.TRANSIT_NONE);
+
         ft.addToBackStack(null);
         ft.commit();
     }
