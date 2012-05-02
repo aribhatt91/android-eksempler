@@ -629,8 +629,8 @@ final class FragmentManagerImpl extends FragmentManager {
     static final Interpolator ACCELERATE_QUINT = new AccelerateInterpolator(2.5f);
     static final Interpolator ACCELERATE_CUBIC = new AccelerateInterpolator(1.5f);
 
-    static final int ANIM_DUR = 220;
-    //static final int ANIM_DUR = 2200;
+    //static final int ANIM_DUR = 220;
+    static final int ANIM_DUR = 2200;
 
     static Animation makeOpenCloseAnimation(Context context, float startScale,
             float endScale, float startAlpha, float endAlpha) {

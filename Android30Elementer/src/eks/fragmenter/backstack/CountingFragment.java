@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import dk.nordfalk.android30.elementer.R;
 
 /**
  *
@@ -50,7 +51,8 @@ public class CountingFragment extends Fragment {
     //View tv = v.findViewById(R.id.text);
     TextView tv = new TextView(getActivity());
     tv.setText("Fragment #" + mNum);
-    tv.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.gallery_thumb));
+    //tv.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.gallery_thumb));
+    tv.setBackgroundDrawable(getResources().getDrawable(android.R.drawable.ic_media_ff+mNum));
     return tv;
   }
 
