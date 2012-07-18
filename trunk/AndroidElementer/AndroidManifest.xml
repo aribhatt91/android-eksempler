@@ -62,7 +62,7 @@
     <activity android:name="begynder.flere_aktiviteter.Indstillinger_akt"/>
     <activity android:name="begynder.flere_aktiviteter.Spillet_akt"/>
 
-    <activity android:name="eks.diverse.AfspilLyd"/>
+    <activity android:name="eks.diverse.AfspilLyd" />
     <activity android:name="eks.diverse.AfspilVideo"/>
     <activity android:name="eks.diverse.BenytMenuer2"/>
 

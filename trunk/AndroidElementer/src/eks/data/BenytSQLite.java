@@ -58,5 +58,7 @@ public class BenytSQLite extends Activity {
 		}
 		cursor.close();
 
+		db.close();
+
 	}
 }

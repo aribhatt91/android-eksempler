@@ -2,6 +2,8 @@ package eks.intents;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
@@ -22,6 +24,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Demonstrerer hvordan man benytter intents til at vælg en
@@ -34,7 +37,6 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
 	TextView resultatTextView;
 	LinearLayout resultatHolder;
 	private int VÆLG_KONTAKT = 1111;
-	private int VÆLG_FLERE_KONTAKTER = 1112;
 	private int VÆLG_BILLEDE = 2222;
 	private int TAG_BILLEDE = 3333;
 
@@ -90,11 +92,6 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
 	public void onClick(View hvadBlevDerKlikketPå) {
 		try {
 			if (hvadBlevDerKlikketPå == vælgKontakt) {
-				// Se også http://stackoverflow.com/questions/2507898/how-to-pick-a-image-from-gallery-sd-card-for-my-app-in-android
-				Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-				startActivityForResult(i, VÆLG_KONTAKT);
-
-			} else if (hvadBlevDerKlikketPå == vælgKontaktFraBillede) {
 				Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
 				startActivityForResult(i, VÆLG_KONTAKT);
 
@@ -103,7 +100,7 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
 				// med mindre man laver noget til en specifik enhed
 				// http://stackoverflow.com/questions/3146377/selecting-multiple-contacts-in-android/6450200#6450200
 				Intent i = new Intent(Intent.ACTION_GET_CONTENT, Email.CONTENT_URI);
-				startActivityForResult(Intent.createChooser(i, ""), VÆLG_FLERE_KONTAKTER);
+				startActivityForResult(Intent.createChooser(i, ""), VÆLG_KONTAKT);
 
 			} else if (hvadBlevDerKlikketPå == vælgBillede) {
 				Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
@@ -134,27 +131,32 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
 		System.out.println(requestCode + " gav resultat " + resultCode + " med data=" + resIntent);
 
 		resultatHolder.removeAllViews();
+		ContentResolver cr = getContentResolver();
 
 		if (resultCode == Activity.RESULT_OK) {
 			try {
 				if (requestCode == VÆLG_KONTAKT) {
 					resultatTextView.append("\n\nres.getData()=" + resIntent.getData());
 					resultatTextView.append("\n\nres.getExtras()=" + resIntent.getExtras());
-					Uri contactData = resIntent.getData();
-					Cursor c = managedQuery(contactData, null, null, null, null);
-					if (c.moveToFirst()) {
-						resultatTextView.append("\n\nNAVN:"
-								+ c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
-					}
-				} else if (requestCode == VÆLG_FLERE_KONTAKTER) {
-					resultatTextView.append("\n\nres.getData()=" + resIntent.getData());
-					resultatTextView.append("\n\nres.getExtras()=" + resIntent.getExtras());
 					Uri kontaktData = resIntent.getData();
-					Cursor c = managedQuery(kontaktData, null, null, null, null);
-					while (c.moveToFirst()) {
-						resultatTextView.append("\n\nNAVN:"
-								+ c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME)));
+					Cursor c = cr.query(kontaktData, null, null, null, null);
+					while (c.moveToNext()) {
+						for (int i=0; i<c.getColumnCount(); i++) {
+						resultatTextView.append("\n"+c.getColumnName(i)+ ": "	+ c.getString(i));
+//								+ c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+						}
+						Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, c.getInt(c.getColumnIndex(ContactsContract.Contacts._ID)));
+						ImageView iv = new ImageView(this);
+						InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri);
+						if (input!=null) {
+							iv.setImageBitmap(BitmapFactory.decodeStream(input));
+							input.close();
+						} else {
+							iv.setImageResource(android.R.drawable.ic_menu_gallery);
+						}
+						resultatHolder.addView(iv);
 					}
+					c.close();
 				} else if (requestCode == VÆLG_BILLEDE) {
 					AssetFileDescriptor filDS = getContentResolver().openAssetFileDescriptor(resIntent.getData(), "r");
 					Bitmap bmp = BitmapFactory.decodeStream(filDS.createInputStream());
