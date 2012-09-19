@@ -4,20 +4,21 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
 /**
- *
+ * Demonstrerer hvordan man anvender intents til at aktivere nogle af Googles
+ * proprietære apps, nemlig kortvisning, rutevisning, gadevisning og Google Play
  * @author Jacob Nordfalk
  */
 public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
 
-	Button kortvisning, rutevisning, gadevisning, dokumentation;
+	Button kortvisning, rutevisning, gadevisning, googlePlay;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +38,14 @@ public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
 		gadevisning.setText("Gadevisning");
 		tl.addView(gadevisning);
 
-		dokumentation = new Button(this);
-		dokumentation.setText("Dokumentation om intents");
-		tl.addView(dokumentation);
+		googlePlay = new Button(this);
+		googlePlay.setText("Installér app via Google Play");
+		tl.addView(googlePlay);
 
 		kortvisning.setOnClickListener(this);
 		rutevisning.setOnClickListener(this);
 		gadevisning.setOnClickListener(this);
-		dokumentation.setOnClickListener(this);
+		googlePlay.setOnClickListener(this);
 
 		setContentView(tl);
 	}
@@ -63,9 +64,9 @@ public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
 				Intent i = new Intent(Intent.ACTION_VIEW,
 						Uri.parse("google.streetview:cbll=55.65407,12.493775&cbp=1"));
 				startActivity(i);
-			} else if (hvadBlevDerKlikketPå == dokumentation) {
+			} else if (hvadBlevDerKlikketPå == googlePlay) {
 				Intent i = new Intent(Intent.ACTION_VIEW,
-						Uri.parse("http://developer.android.com/guide/appendix/g-app-intents.html"));
+						Uri.parse("market://details?id=dk.nordfalk.esperanto.radio"));
 				startActivity(i);
 			}
 		} catch (ActivityNotFoundException e) {
