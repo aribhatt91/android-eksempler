@@ -37,7 +37,7 @@ public class Balancespil extends Activity implements SensorEventListener {
 	@Override
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-
+    
 		spilView = new SpilView(this);
 		setContentView(spilView);
 

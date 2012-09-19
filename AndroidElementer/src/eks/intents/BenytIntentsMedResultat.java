@@ -145,7 +145,8 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
 						resultatTextView.append("\n"+c.getColumnName(i)+ ": "	+ c.getString(i));
 //								+ c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
 						}
-						Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, c.getInt(c.getColumnIndex(ContactsContract.Contacts._ID)));
+						Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
+                c.getInt(c.getColumnIndex(ContactsContract.Contacts._ID)));
 						ImageView iv = new ImageView(this);
 						InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, uri);
 						if (input!=null) {

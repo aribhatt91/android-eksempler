@@ -28,6 +28,7 @@ public class BenytListViewMedEgetLayout extends Activity implements OnItemClickL
 
 	public void onItemClick(AdapterView<?> liste, View v, int position, long id) {
 		Toast.makeText(this, "Klik på " + position, Toast.LENGTH_SHORT).show();
-		
+    // v vil pege på det LinearLayout der er roden i R.layout.listeelement
+		//Toast.makeText(this, " v = " + v, Toast.LENGTH_SHORT).show();
 	}
 }

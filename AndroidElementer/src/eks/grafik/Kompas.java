@@ -60,15 +60,10 @@ public class Kompas extends Activity implements SensorEventListener {
 		sensorManager.unregisterListener(this); // Stop med at modtage sensordata
 	}
 
-	long sidsteTid = 0;
-
 	public void onSensorChanged(SensorEvent event) {
 		vinkelTilNord = event.values[0];
 		hældning = event.values[1];
 		krængning = event.values[2];
-
-		sidsteTid = event.timestamp;
-
 		kompasView.invalidate();
 	}
 

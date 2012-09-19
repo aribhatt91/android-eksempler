@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="dk.nordfalk.android.elementer"
-  android:versionCode="23"
-  android:versionName="1.23">
+  android:versionCode="24"
+  android:versionName="1.24">
 
 	<!--
-  android:installLocation="preferExternal" c="installér på SD-kort"
-
-
-	denne app virker fra Android 2.1 (API 7) og frem
-				men den er beregnet til Android 2.3.3 (API 10) -->
-  <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="10"/>
+    denne app virker fra Android 2.1 (API 7) og frem
+    men den er beregnet til Android 2.3.3 (API 9)
+    Bemærk at man ikke må bruge hovedtråden til netværk fra API 10,
+    så f.eks Byvejr vil ikke virke med API 10 og senere
+    -->
+  <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="9"/>
 
   <!-- tilladelser -->
   <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -57,6 +57,7 @@
     <activity android:name="begynder.BenytFlereKnapperXml"/>
     <activity android:name="begynder.BenytMenuer1"/>
     <activity android:name="begynder.BenytWebView1"/>
+    <activity android:name="begynder.flere_aktiviteter.Velkomstbillede_akt"/>
     <activity android:name="begynder.flere_aktiviteter.Hovedmenu_akt"/>
     <activity android:name="begynder.flere_aktiviteter.Hjaelp_akt"/>
     <activity android:name="begynder.flere_aktiviteter.Indstillinger_akt"/>
@@ -69,13 +70,19 @@
     <activity android:name="eks.intents.BenytIntents"/>
     <activity android:name="eks.intents.BenytIntentsFraGoogle"/>
     <activity android:name="eks.intents.BenytIntentsMedResultat" android:screenOrientation="portrait"/>
+
     <!-- Denne aktivitet fanger browsning af URLer der starter med http://javabog.dk/OOP/ -->
     <activity android:name="eks.intents.FangBrowseIntent">
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="http" android:host="javabog.dk" android:pathPrefix="/OOP/"/>
+        <data android:scheme="http" android:host="saluton.dk:8000" android:pathPrefix="/i/"/>
+        <data android:scheme="http" android:host="192.168.40.104:8000" android:pathPrefix="/i/"/>
+        <data android:scheme="http" android:host="10.0.2.2:8000" android:pathPrefix="/i/"/>
+        <data android:scheme="http" android:host="wordbattle.dk:8000" android:pathPrefix="/i/"/>
+        <data android:scheme="http" android:host="wordbattle.com:8000" android:pathPrefix="/i/"/>
+        <data android:scheme="http" android:host="vortbatalo.com:8000" android:pathPrefix="/i/"/>
       </intent-filter>
     </activity>
 
