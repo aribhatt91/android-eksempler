@@ -4,6 +4,7 @@
  */
 package eks.youtube;
 
+import android.os.SystemClock;
 import android.util.Log;
 import java.util.Date;
 import java.net.HttpURLConnection;
@@ -94,7 +95,7 @@ public class FilCache {
 					// Prøv igen
 					log("Netværksfejl, vi venter lidt og prøver igen");
 					log(responseCode + " " + httpForb.getResponseMessage() + " for " + url);
-					try { Thread.sleep(100); } catch (InterruptedException ex) { }
+          SystemClock.sleep(100);
 					continue;
 				}
 

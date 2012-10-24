@@ -13,13 +13,13 @@ import dk.nordfalk.android.elementer.R;
 public class VisOverskrifter extends Activity {
 
 	String[] landeOgOverskrifter = {
+		"*En overskrift",
 		"-Europas lande",
 		"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien",
 		"-Asien",
 		"Nepal", "Kina",
-		"*En overskrift",
-		"-Flere lande i Europa",
 		"*En overskrift mere",
+		"-Flere lande i Europa",
 		"Tyskland", "Finland", "Holland", "Italien",
 		"-Flere lande i Asien",
 		"Indien", "Nepal",
@@ -74,7 +74,7 @@ public class VisOverskrifter extends Activity {
 				if (typen==0) {
 					view = getLayoutInflater().inflate(android.R.layout.simple_list_item_1, null);
 				} else if (typen==1) {
-					view = getLayoutInflater().inflate(android.R.layout.simple_list_item_2, null);
+					view = getLayoutInflater().inflate(android.R.layout.simple_list_item_1, null);
 				} else {
 					view = getLayoutInflater().inflate(R.layout.listeelement, null);
 				}
@@ -84,9 +84,11 @@ public class VisOverskrifter extends Activity {
 			// Sæt indholdet afhængig af typen
 			if (typen==0) {
 				TextView tv = (TextView) view.findViewById(android.R.id.text1);
+        tv.setTextSize(12);
+        tv.setMinHeight(0);
 				tv.setText(landEllerOverskrift);
 			} else if (typen==1) {
-				TextView tv = (TextView) view.findViewById(android.R.id.text2);
+				TextView tv = (TextView) view.findViewById(android.R.id.text1);
 				tv.setText(landEllerOverskrift);
 			} else {
 				TextView tv = (TextView) view.findViewById(R.id.listeelem_overskrift);

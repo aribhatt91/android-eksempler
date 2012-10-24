@@ -9,6 +9,7 @@ import dk.nordfalk.android.elementer.R;
 
 public class Velkomstbillede_akt extends Activity implements Runnable {
   Handler handler = new Handler();
+  static Velkomstbillede_akt aktivitetDerVisesNu = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -18,11 +19,16 @@ public class Velkomstbillede_akt extends Activity implements Runnable {
     iv.setImageResource(R.drawable.logo);
     setContentView(iv);
 
-    handler.postDelayed(this, 3000); // Kalder run() om 3 sekunder
+    // Hvis savedInstanceState ikke er null er det en aktivitet der er ved at blive genstartet
+    if (savedInstanceState==null) {
+      handler.postDelayed(this, 3000); // <1> Kør run() om 3 sekunder
+    }
+    aktivitetDerVisesNu = this;
   }
 
   public void run() {
     startActivity(new Intent(this, Hovedmenu_akt.class));
-    finish(); // Luk velkomsaktiviteten
+    aktivitetDerVisesNu.finish();  // <2> Luk velkomsaktiviteten
+    aktivitetDerVisesNu = null;
   }
 }

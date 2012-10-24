@@ -7,6 +7,7 @@ package eks.providers;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog.Calls;
 import android.widget.ScrollView;
@@ -34,7 +35,8 @@ public class VisOpkald extends Activity {
 		String where = Calls.DATE + " >= " + (System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 7); // sidste 7 dage
 
 		ContentResolver cr = getContentResolver();
-		Cursor c = cr.query(Calls.CONTENT_URI, kolonner, where, null, Calls.DATE);
+		//Cursor c = cr.query(Calls.CONTENT_URI, kolonner, where, null, Calls.DATE);
+		Cursor c = cr.query(Uri.parse("content://call_log/calls"), kolonner, where, null, Calls.DATE);
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
 
 		textView.append("\nkolonner = " + Arrays.asList(kolonner)); // date, number, name, duration

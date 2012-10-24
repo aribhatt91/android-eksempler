@@ -5,12 +5,8 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
+import android.view.animation.*;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -24,6 +20,7 @@ public class BenytAnimationer extends Activity implements OnClickListener {
 
 	Button knap1, knap2, knap3, knap4, knap5, knap6;
 	private int animIndeks;
+  private Button knap7;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +52,17 @@ public class BenytAnimationer extends Activity implements OnClickListener {
 		knap6.setText("Eksempler på animationer");
 		tl.addView(knap6);
 
+		knap7 = new Button(this);
+		knap7.setText("Pyjamasdans!");
+		tl.addView(knap7);
+
 		knap1.setOnClickListener(this);
 		knap2.setOnClickListener(this);
 		knap3.setOnClickListener(this);
 		knap4.setOnClickListener(this);
 		knap5.setOnClickListener(this);
 		knap6.setOnClickListener(this);
+		knap7.setOnClickListener(this);
 
 		ScrollView sv = new ScrollView(this);
 		sv.addView(tl);
@@ -93,15 +95,12 @@ public class BenytAnimationer extends Activity implements OnClickListener {
 			sæt.addAnimation(alfaanim);
 			knap5.startAnimation(sæt);
 			sæt.setAnimationListener(new AnimationListener() {
-
 				public void onAnimationStart(Animation animation) {
 					knap1.setText("onAnimationStart(\n" + animation);
 				}
-
 				public void onAnimationEnd(Animation animation) {
 					knap1.setText("onAnimationEnd(\n" + animation);
 				}
-
 				public void onAnimationRepeat(Animation animation) {
 					knap1.setText("onAnimationRepeat(\n" + animation);
 				}
@@ -118,6 +117,24 @@ public class BenytAnimationer extends Activity implements OnClickListener {
 			String navn = getResources().getResourceEntryName(animResId);
 			knap5.setText("Viste " + navn);
 			knap5.startAnimation(AnimationUtils.loadAnimation(this, animResId));
+		} else if (hvadBlevDerKlikketPå == knap7) {
+      //Animation settet bruges til at samle flere former for animationer (scale,rotate,translate)
+      AnimationSet animationSet = new AnimationSet(true);
+
+      TranslateAnimation t = new TranslateAnimation(0, 0, 0, 200);
+      t.setDuration(500);
+      t.setFillAfter(true);
+      t.setRepeatCount(-1);
+      t.setRepeatMode(TranslateAnimation.REVERSE);
+      animationSet.addAnimation(t);
+
+      RotateAnimation r = new RotateAnimation(0f, 15f, 0, 0);
+      //r.setStartOffset(1000);
+      r.setDuration(300);
+      r.setRepeatCount(-1);
+      r.setRepeatMode(RotateAnimation.REVERSE);
+      animationSet.addAnimation(r);
+      knap5.startAnimation(animationSet);
 		}
 	}
 

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -393,10 +394,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 				@Override
 				public void run() {
 					for (int i = 1; i < pakkekategorier.size(); i++) {
-						try { // Vent lidt for at lade systemet starte op
-							Thread.sleep(500);
-						} catch (Exception ex) {
-						}
+            SystemClock.sleep(500); // Vent lidt for at lade systemet starte op
 						tjekForAndreFilerIPakken(i);
 						Log.d("Aktivitetsliste", "T " + i + " tid: " + (System.currentTimeMillis() - tid));
 
