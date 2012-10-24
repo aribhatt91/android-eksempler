@@ -12,18 +12,18 @@ import dk.nordfalk.android.elementer.R;
 
 public class BenytListViewMedEgetLayout extends Activity implements OnItemClickListener {
 
-	private ListView listView;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		String[] lande = {"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal"};
-		listView = new ListView(this);
-		listView.setOnItemClickListener(this);
-		listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande));
+    ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande);
 
-		setContentView(listView);
+    ListView liste = new ListView(this);
+		liste.setOnItemClickListener(this);
+		liste.setAdapter(adapter);
+
+		setContentView(liste);
 	}
 
 	public void onItemClick(AdapterView<?> liste, View v, int position, long id) {

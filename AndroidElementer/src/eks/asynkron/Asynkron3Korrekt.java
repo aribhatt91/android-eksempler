@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -98,10 +99,7 @@ class AsyncTaskMedUdskifteligAktivitet extends AsyncTask<Integer, Double, String
 		int antalSkridt = param[0];
 		int ventetidPrSkridtIMilisekunder = param[1];
 		for (int i = 0; i < antalSkridt; i++) {
-			try {
-				Thread.sleep(ventetidPrSkridtIMilisekunder);
-			} catch (InterruptedException ex) {
-			}
+      SystemClock.sleep(ventetidPrSkridtIMilisekunder);
 			if (isCancelled()) {
 				return null; // stop uden resultat
 			}

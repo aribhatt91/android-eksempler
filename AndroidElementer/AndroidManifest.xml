@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="dk.nordfalk.android.elementer"
-  android:versionCode="24"
-  android:versionName="1.24">
+  android:versionCode="26"
+  android:versionName="1.26">
 
 	<!--
     denne app virker fra Android 2.1 (API 7) og frem
-    men den er beregnet til Android 2.3.3 (API 9)
-    Bemærk at man ikke må bruge hovedtråden til netværk fra API 10,
-    så f.eks Byvejr vil ikke virke med API 10 og senere
+    men den er beregnet til Android 2.3.2 (API 9)
+    Bemærk at man ikke må bruge hovedtråden til netværk fra Android 2.3.3,
+    så f.eks Byvejr vil ikke virke med android:targetSdkVersion="10" og højere
     -->
   <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="9"/>
 
@@ -125,6 +125,7 @@
     <activity android:name="eks.lister.BenytListViewMedEgetLayout"/>
     <activity android:name="eks.lister.BenytGallery"/>
     <activity android:name="eks.lister.BenytGridView"/>
+    <activity android:name="eks.lister.BenytSpinner"/>
     <activity android:name="eks.lister.BenytListViewMedEgetLayout2"/>
     <activity android:name="eks.lister.VisAndroidDrawables"/>
     <activity android:name="eks.lister.VisOverskrifter"/>

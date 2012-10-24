@@ -141,16 +141,15 @@ public class BenytDialogerOgToasts extends Activity implements OnClickListener {
 			});
 			dialog.show();
 		} else if (hvadBlevDerKlikketPå == visNoitification) {
-			Context ctx = getApplicationContext(); // Undgå this for ikke at lække hukommelse
-			Intent tegneIntent = new Intent(ctx, Tegneprogram.class);
-			PendingIntent tegneAktivitet = PendingIntent.getActivity(ctx, 0, tegneIntent, 0);
+			Intent tegneIntent = new Intent(this, Tegneprogram.class);
+			PendingIntent tegneAktivitet = PendingIntent.getActivity(this, 0, tegneIntent, 0);
 			Notification notification = new Notification(R.drawable.logo, "Tegn!", System.currentTimeMillis());
-			notification.setLatestEventInfo(ctx, "Der skal tegnes!", "Du er nødt til at tegne lidt", tegneAktivitet);
+			notification.setLatestEventInfo(this, "Der skal tegnes!", "Du er nødt til at tegne lidt", tegneAktivitet);
 
 			long[] vibrate = {0, 100, 300, 400, 500, 510, 550, 560, 600, 610, 650, 610, -1};
 			notification.vibrate = vibrate;
 
-			NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+			NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 			notificationManager.notify(42, notification);
 		}
 	}

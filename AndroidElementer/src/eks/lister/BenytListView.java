@@ -16,9 +16,11 @@ public class BenytListView extends Activity implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 
 		String[] lande = {"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal"};
+    ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, lande);
+
 		ListView listView = new ListView(this);
 		listView.setOnItemClickListener(this);
-		listView.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, lande));
+		listView.setAdapter(adapter);
 
 		setContentView(listView);
 	}

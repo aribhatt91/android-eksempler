@@ -94,13 +94,21 @@ public class KortAktivitet extends MapActivity {
 			// Ingen nøgle fundet. Vis hjælp til brugeren
 			AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 			dialog.setTitle("Mangler API-nøgle");
-			String tekst = "Før kortet kan vises skal du registrere dig og få en API-nøgle .\n"
-					+ "Dit MD5 certificat, som er: \n\n" + md5
-					+ "\n\nskal registreres på:\nhttp://code.google.com/android/maps-api-signup.html\n"
-					+ "Derefter skal begge dele skrives ind i kildekoden (" + this.getClass().getSimpleName() + ".java).\n"
+
+      String tekst = "Før kortet kan vises skal du registrere dig og få en API-nøgle .\n"
+					+ "Dit MD5 er: \n\n" + md5
+					+ "\n\nDet skal registreres på:\n"
+          + "http://code.google.com/android/maps-api-signup.html"
+					+ "\nDerefter skal begge dele skrives ind i kildekoden (" + this.getClass().getSimpleName() + ".java).\n"
 					+ "Denne meddelelse er også kommet i loggen så du kan gøre det fra din PC.\n"
 					+ "MD5-certifikatet er også glevet gemt i udklipsholderen på telefonen.";
-			Log.w("findApiNøgle", tekst);
+
+			Log.e("findApiNøgle", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+			Log.e("findApiNøgle", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+			Log.e("findApiNøgle", tekst);  // Skriv teksten tydelig ud med RØDT i loggen
+			Log.e("findApiNøgle", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+			Log.e("findApiNøgle", "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+
 			ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 			clipboardManager.setText(md5);
 			EditText et = new EditText(this);

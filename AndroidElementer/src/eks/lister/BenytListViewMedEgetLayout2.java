@@ -21,10 +21,7 @@ public class BenytListViewMedEgetLayout2 extends Activity implements OnItemClick
 
 		String[] lande = {"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal", "Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal",};
 
-		ListView listView = new ListView(this);
-		listView.setOnItemClickListener(this);
-
-		listView.setAdapter(new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande) {
+		ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande) {
 			@Override
 			public View getView(int position, View cachedView, ViewGroup parent) {
 				View view = super.getView(position, cachedView, parent);
@@ -40,7 +37,11 @@ public class BenytListViewMedEgetLayout2 extends Activity implements OnItemClick
 
 				return view;
 			}
-		});
+		};
+
+		ListView listView = new ListView(this);
+		listView.setOnItemClickListener(this);
+    listView.setAdapter(adapter);
 
 		//listView.setDivider(getResources().getDrawable(android.R.drawable.divider_horizontal_dark));
 		// Rød kasse omkring det valgte element

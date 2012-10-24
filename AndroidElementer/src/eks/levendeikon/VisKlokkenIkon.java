@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.RemoteViews;
 import dk.nordfalk.android.elementer.R;
@@ -87,10 +88,7 @@ public class VisKlokkenIkon extends AppWidgetProvider {
 			@Override
 			public void run() {
 				for (int i = 0; i < 60; i++) {
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException ex) {
-					}
+          SystemClock.sleep(1000);
 					opdaterIkoner(ctx);
 					/*
 					remoteViews.setTextViewText(R.id.etTextView, "KL er:\n" + new Date());
