@@ -64,20 +64,20 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
 
 			indlæsAktiviteter();
 
-			// App'en startes i frist JVM, den er sikkert lige installeret fra USB-kabel, så...
-			// Fjern evt skærmlås ...
-			KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Activity.KEYGUARD_SERVICE);
-			KeyguardLock lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
-			lock.disableKeyguard();
-
-			// ... og tænd skærmen 30 sekunder og, også lidt efter...
 			try {
+        // App'en startes i frist JVM, den er sikkert lige installeret fra USB-kabel, så...
+        // Fjern evt skærmlås ...
+        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(Activity.KEYGUARD_SERVICE);
+        KeyguardLock lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
+        lock.disableKeyguard();
+
+        // ... og tænd skærmen 30 sekunder og, også lidt efter...
 				PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
 				WakeLock wakeLock = powerManager.newWakeLock(
 						PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "Aktivitetsliste");
 				wakeLock.acquire(30000);
 			} catch (Exception e) {
-				Toast.makeText(this, "Kunne ikke holde skærmen tændt:\n"+e, Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Kunne ikke fjerne skærmlås og holde skærmen tændt:\n"+e, Toast.LENGTH_LONG).show();
 			}
 
 			Toast.makeText(this, "Lav langt tryk for at se kildekoden", Toast.LENGTH_LONG).show();
