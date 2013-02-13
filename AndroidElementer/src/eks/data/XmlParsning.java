@@ -49,12 +49,12 @@ public class XmlParsning extends Activity {
 			else {
 				is.reset(); // Der var ingen BOM - hop tilbage til start
 			}
-			/*  Standard Java bruger xpp3-1.1.4.jar fra http://www.extreme.indiana.edu/xgws/xsoap/xpp/
+			/*  Til udvikliing i standard Java kan du bruge xpp3-1.1.4.jar fra http://www.extreme.indiana.edu/xgws/xsoap/xpp/
 			XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
 			XmlPullParser xpp=factory.newPullParser();
 			 */
 			XmlPullParser parser = android.util.Xml.newPullParser();  // Android-kald til at oprette parser
-			parser.setInput(is, "UTF-8"); // evt "ISO-8859-1"
+			parser.setInput(is, null); // null detekterer indkodning, brug evt. "UTF-8" eller "ISO-8859-1" her
 
 			Bank bank = null; // Husker den aktuelle bank
 			Kunde kunde = null; // Husker den aktuelle kunde

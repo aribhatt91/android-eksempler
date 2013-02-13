@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="dk.nordfalk.android.elementer"
-  android:versionCode="26"
-  android:versionName="1.26">
+  android:versionCode="27"
+  android:versionName="1.27">
 
 	<!--
     denne app virker fra Android 2.1 (API 7) og frem
@@ -140,9 +140,11 @@
     <activity android:name="eks.recievers.ModtagSMSer"/>
 
 
-    <activity android:name="eks.service.HoldAppLevende"/>
+    <activity android:name="eks.service.BenytService"/>
 		<!-- Simpel service der, når startet, forsøger at holde app'en i hukommelsen -->
-    <service android:name="eks.service.HoldAppLevendeService" />
+    <service android:name="eks.service.BaggrundsService" />
+		<!-- Simpel service der, når startet, insisterer på at holde app'en i hukommelsen -->
+    <service android:name="eks.service.ForgrundsService" />
 
 
 		<activity android:name="eks.touchinput.BenytGestureDetector"/>

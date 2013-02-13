@@ -14,7 +14,7 @@ import android.widget.Toast;
  * Simpel service der, når startet, forsøger at holde app'en i hukommelsen
  * @author j
  */
-public class HoldAppLevendeService extends Service {
+public class BaggrundsService extends Service {
 	final String TAG = getClass().getName();
 
 	/** Service-mekanik. Ligegyldig da vi kører i samme proces og ikke
@@ -32,7 +32,8 @@ public class HoldAppLevendeService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Toast.makeText(this, TAG+" onStartCommand(\n"
-				+ intent + " " + flags + " " + startId, Toast.LENGTH_LONG).show();
+				+ intent + " " + flags + " " + startId+"\n"
+        + intent.getExtras(), Toast.LENGTH_LONG).show();
 		return START_STICKY;
 	}
 
