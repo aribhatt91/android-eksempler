@@ -1,6 +1,7 @@
 package eks.touchinput;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,7 +13,7 @@ import android.widget.TextView;
  *
  * @author Jacob Nordfalk
  */
-public class BenytScaleGestureDetector extends Activity {
+public class BenytScaleGestureDetector extends Activity implements OnScaleGestureListener {
 
 	ScaleGestureDetector detector;
 	TextView tv;
@@ -20,11 +21,9 @@ public class BenytScaleGestureDetector extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		detector = new ScaleGestureDetector(this, new GestusLytter());
+		detector = new ScaleGestureDetector(this, this); // Context, OnScaleGestureListener
 		tv = new TextView(this);
-		//tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-		//tv.setTextSize(16);
-		tv.setText("Spred eller knib sammen på skærmen");
+		tv.setText("Spred fingrene på skærmen eller knib dem sammen");
 		setContentView(tv);
 	}
 
@@ -43,20 +42,18 @@ public class BenytScaleGestureDetector extends Activity {
 		Log.d("Gestus", tekst);
 	}
 
-	class GestusLytter implements OnScaleGestureListener {
 
-		public boolean onScale(ScaleGestureDetector sgd) {
-			log("onScale()", sgd);
-			return false;
-		}
+  public boolean onScale(ScaleGestureDetector sgd) {
+    log("onScale()", sgd);
+    return false;
+  }
 
-		public boolean onScaleBegin(ScaleGestureDetector sgd) {
-			log("onScaleBegin()", sgd);
-			return true;
-		}
+  public boolean onScaleBegin(ScaleGestureDetector sgd) {
+    log("onScaleBegin()", sgd);
+    return true;
+  }
 
-		public void onScaleEnd(ScaleGestureDetector sgd) {
-			log("onScaleEnd()", sgd);
-		}
-	}
+  public void onScaleEnd(ScaleGestureDetector sgd) {
+    log("onScaleEnd()", sgd);
+  }
 }
