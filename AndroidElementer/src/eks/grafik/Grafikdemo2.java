@@ -22,18 +22,18 @@ public class Grafikdemo2 extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		MinGrafik minGrafik = new MinGrafik(this);
-		minGrafik.setBackgroundResource(R.drawable.logo);
-		setContentView(minGrafik);
+		GrafikView2 grafikView = new GrafikView2(this);
+		grafikView.setBackgroundResource(R.drawable.logo);
+		setContentView(grafikView);
 	}
 }
 
 
-class MinGrafik extends View {
+class GrafikView2 extends View {
 
 	float rotation = -45;
 
-	public MinGrafik(Context context) {
+	public GrafikView2(Context context) {
 		super(context);
 	}
 

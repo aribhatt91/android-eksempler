@@ -1,6 +1,7 @@
 package eks.grafik;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.Path.Direction;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import dk.nordfalk.android.elementer.R;
 
@@ -16,12 +18,13 @@ import dk.nordfalk.android.elementer.R;
  * @author Jacob Nordfalk
  */
 public class Grafikdemo1 extends Activity {
+
 	private Drawable enBil;
 	private Paint tekststreg;
 	private Path cirkel;
 	private Paint cirkelstreg;
 	private long t0;
-	private View grafikView;
+	private GrafikView1 grafikView;
 
 
 	@Override
@@ -46,16 +49,24 @@ public class Grafikdemo1 extends Activity {
 
 		t0 = System.currentTimeMillis();
 
-		grafikView = new View(this) { // anonym nedarving af View
-			@Override
-			protected void onDraw(Canvas c) {
-				tegnGrafik(c);
-			}
-		};
+		grafikView = new GrafikView1(this);
 		setContentView(grafikView);
 	}
 
 
+	class GrafikView1 extends View {
+		// programmatisk konstruktør
+		public GrafikView1(Context a) {
+			super(a);
+		}
+
+		@Override
+		protected void onDraw(Canvas c) {
+			tegnGrafik(c);
+		}
+	}
+	
+	
 
 
 	void tegnGrafik(Canvas c) {
