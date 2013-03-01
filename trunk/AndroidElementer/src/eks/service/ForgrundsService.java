@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package eks.service;
 
 import android.app.Notification;
@@ -9,10 +5,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
-import eks.grafik.Tegneprogram;
 
 /**
  * Simpel service der, når startet, forsøger at holde app'en i hukommelsen
@@ -34,19 +28,22 @@ public class ForgrundsService extends Service {
 	}
 
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		Toast.makeText(this, TAG+" onStartCommand(\n"
-				+ intent + " " + flags + " " + startId, Toast.LENGTH_LONG).show();
-    Intent i = new Intent(this, BenytService.class);
-    PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
-    Notification notification = new Notification(R.drawable.logo, "AndroidElementer holdes i hukommelsen", System.currentTimeMillis());
-    notification.setLatestEventInfo(this, "Bliver i hukommelsen", "Klik her for at stoppe servicen", pi);
-    startForeground(42, notification);
-		return START_STICKY;
+	public void onDestroy() {
+		Toast.makeText(this, TAG+" onDestroy", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
-	public void onDestroy() {
-		Toast.makeText(this, TAG+" onDestroy", Toast.LENGTH_LONG).show();
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		Toast.makeText(this, TAG+" onStartCommand(\n"
+				+ intent + " " + flags + " " + startId+"\n"
+        + intent.getExtras(), Toast.LENGTH_LONG).show();
+    Intent i = new Intent(this, BenytService.class);
+    PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+    Notification notification = new Notification(R.drawable.logo,
+				"AndroidElementer holdes i hukommelsen", System.currentTimeMillis());
+    notification.setLatestEventInfo(this,
+				"Bliver i hukommelsen", "Klik her for at stoppe servicen", pi);
+    startForeground(42, notification);
+		return START_STICKY;
 	}
 }

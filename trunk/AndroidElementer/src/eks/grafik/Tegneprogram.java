@@ -1,6 +1,7 @@
 package eks.grafik;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,12 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import java.util.ArrayList;
 
-/**
- *
- * @author Jacob Nordfalk
- */
+
 public class Tegneprogram extends Activity {
-	View tegneflade;
+	Tegneflade tegneflade;
 	ArrayList<Point> berøringspunkter = new ArrayList<Point>();
 	Paint tekstStregtype = new Paint();
 
@@ -24,32 +22,33 @@ public class Tegneprogram extends Activity {
 		super.onCreate(savedInstanceState);
 		tekstStregtype.setColor(Color.GREEN);
 		tekstStregtype.setTextSize(24);
-
-		tegneflade = new View(this) { // anonym nedarving af View
-			@Override
-			protected void onDraw(Canvas c) {
-				super.onDraw(c);
-				tegnFladen(c);
-			}
-		};
-
+		tegneflade = new Tegneflade(this);
 		setContentView(tegneflade);
 	}
 
-	private void tegnFladen(Canvas c) {
-		c.drawText("Tryk og træk over skærmen", 0, 20, tekstStregtype);
-		for (Point p : berøringspunkter) {
-			c.drawCircle(p.x, p.y, 3, tekstStregtype);
+	class Tegneflade extends View {
+		// programmatisk konstruktør
+		public Tegneflade(Context a) {
+			super(a);
 		}
-	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent berøring) {
-		System.out.println(berøring);
-		Point punktet = new Point((int) berøring.getX(), (int) berøring.getY());
-		berøringspunkter.add(punktet);
-		//System.out.println(berøringspunkter);
-		tegneflade.invalidate();
-		return true;
-	}
+		@Override
+		protected void onDraw(Canvas c) {
+			super.onDraw(c);
+			c.drawText("Tryk og træk over skærmen", 0, 20, tekstStregtype);
+			for (Point p : berøringspunkter) {
+				c.drawCircle(p.x, p.y, 3, tekstStregtype);
+			}
+		}
+		
+		@Override
+		public boolean onTouchEvent(MotionEvent berøring) {
+			System.out.println(berøring);
+			Point punktet = new Point((int) berøring.getX(), (int) berøring.getY());
+			berøringspunkter.add(punktet);
+			//System.out.println(berøringspunkter);
+			tegneflade.invalidate();
+			return true;
+		}
+	}	
 }

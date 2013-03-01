@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import dk.nordfalk.android.elementer.R;
 
 public class BenytSpinner extends Activity implements OnItemSelectedListener {
 
@@ -18,6 +19,8 @@ public class BenytSpinner extends Activity implements OnItemSelectedListener {
 		liste.setOnItemSelectedListener(this);
     ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, android.R.id.text1, lande);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    //ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande);
+    //adapter.setDropDownViewResource(R.layout.listeelement);
 
     liste.setAdapter(adapter);
     liste.setPrompt("Vælg et land");

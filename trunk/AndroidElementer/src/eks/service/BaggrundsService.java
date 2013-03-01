@@ -1,13 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package eks.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -30,15 +25,15 @@ public class BaggrundsService extends Service {
 	}
 
 	@Override
+	public void onDestroy() {
+		Toast.makeText(this, TAG+" onDestroy", Toast.LENGTH_LONG).show();
+	}
+
+	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Toast.makeText(this, TAG+" onStartCommand(\n"
 				+ intent + " " + flags + " " + startId+"\n"
         + intent.getExtras(), Toast.LENGTH_LONG).show();
 		return START_STICKY;
-	}
-
-	@Override
-	public void onDestroy() {
-		Toast.makeText(this, TAG+" onDestroy", Toast.LENGTH_LONG).show();
 	}
 }

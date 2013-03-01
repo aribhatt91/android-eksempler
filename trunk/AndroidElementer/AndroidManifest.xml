@@ -10,7 +10,7 @@
     Bemærk at man ikke må bruge hovedtråden til netværk fra Android 2.3.3,
     så f.eks Byvejr vil ikke virke med android:targetSdkVersion="10" og højere
     -->
-  <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="9"/>
+  <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="9"/>
 
   <!-- tilladelser -->
   <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -51,7 +51,7 @@
     <activity android:name="begynder.BenytFlereKnapperXml"/>
     <activity android:name="begynder.BenytMenuer1"/>
     <activity android:name="begynder.BenytWebView1"/>
-    <activity android:name="begynder.flere_aktiviteter.Velkomstbillede_akt"/>
+    <activity android:name="begynder.flere_aktiviteter.Splash_akt"/>
     <activity android:name="begynder.flere_aktiviteter.Hovedmenu_akt"/>
     <activity android:name="begynder.flere_aktiviteter.Hjaelp_akt"/>
     <activity android:name="begynder.flere_aktiviteter.Indstillinger_akt"/>
@@ -88,6 +88,7 @@
     <activity android:name="eks.grafik.Tegneprogram"/>
     <activity android:name="eks.grafik.Grafikdemo0"/>
     <activity android:name="eks.grafik.Grafikdemo1"/>
+    <activity android:name="eks.grafik.Braetspil"/>
     <activity android:name="eks.grafik.Kompas" android:screenOrientation="portrait"/>
     <activity android:name="eks.grafik.Balancespil" android:screenOrientation="portrait"/>
     <activity android:name="eks.grafik.Grafikdemo2"/>

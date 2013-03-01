@@ -4,16 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 import dk.nordfalk.android.elementer.R;
 
-public class Velkomstbillede_akt extends Activity implements Runnable {
-  Handler handler = new Handler();
-  static Velkomstbillede_akt aktivitetDerVisesNu = null;
+public class Splash_akt extends Activity implements Runnable {
+  private static final String TAG = "AndroidElementer slash";
+Handler handler = new Handler();
+  static Splash_akt aktivitetDerVisesNu = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    
+    Log.d(TAG, "aktiviteten blev startet!");
 
     ImageView iv = new ImageView(this);
     iv.setImageResource(R.drawable.logo);
@@ -31,4 +35,14 @@ public class Velkomstbillede_akt extends Activity implements Runnable {
     aktivitetDerVisesNu.finish();  // <2> Luk velkomsaktiviteten
     aktivitetDerVisesNu = null;
   }
+
+  /** 
+   * Kaldes hvis brugeren trykker på tilbage-knappen. 
+   * I så tilfælde skal vi ikke hoppe videre til næste aktivitet
+   */
+  @Override
+	public void finish() {
+		super.finish();
+		handler.removeCallbacks(this);
+	}
 }

@@ -9,10 +9,7 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 
-/**
- *
- * @author Jacob Nordfalk
- */
+
 class GrafikView extends View {
 
 	// programmatisk konstruktør
@@ -20,7 +17,7 @@ class GrafikView extends View {
 		super(a);
 	}
 
-	// deklarariv konstruktør
+	// deklarativ konstruktør
 	public GrafikView(Context a, AttributeSet at) {
 		super(a, at);
 	}
