@@ -2,13 +2,10 @@ package eks.touchinput;
 
 import android.view.GestureDetector.OnGestureListener;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 /**
@@ -18,15 +15,15 @@ import android.widget.TextView;
 public class BenytGestureDetector extends Activity implements OnGestureListener {
 
 	GestureDetector detector;
-	TextView tv;
+	TextView textView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		detector = new GestureDetector(this, this); // Context, OnGestureListener
-		tv = new TextView(this);
-		tv.setText("Lav nogle gestusser");
-		setContentView(tv);
+		textView = new TextView(this);
+		textView.setText("Lav nogle gestusser");
+		setContentView(textView);
 	}
 
 	/**
@@ -38,7 +35,7 @@ public class BenytGestureDetector extends Activity implements OnGestureListener 
 	}
 
 	public void log(String tekst) {
-		tv.setText(tekst);
+		textView.setText(tekst);
 		Log.d("Gestus", tekst);
 	}
 
@@ -59,7 +56,7 @@ public class BenytGestureDetector extends Activity implements OnGestureListener 
 
   /** Bemærk at dx og dy er ændringer i forhold til sidste punkt, ikke i forh til startPkt */
   public boolean onScroll(MotionEvent startPkt, MotionEvent nuvPkt, float dx, float dy) {
-    log("onScroll()\n" + startPkt + " -> \n" + nuvPkt + " d=" + dx + "," + dy);
+    log("onScroll()\n" + startPkt + " -> \n" + nuvPkt + "\nd=" + dx + ", " + dy);
     return false;
   }
 
@@ -67,16 +64,15 @@ public class BenytGestureDetector extends Activity implements OnGestureListener 
     log("onLongPress()\n" + pkt);
   }
 
-  Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
   public boolean onFling(MotionEvent startPkt, MotionEvent slutPkt, float vx, float vy) {
     float dx = slutPkt.getX() - startPkt.getX();
     float dy = slutPkt.getY() - startPkt.getY();
-    log("onFling()\n" + startPkt + " -> \n" + slutPkt + " v=" + vx + "," + vy + "\nd=" + dx + "," + dy);
+    log("onFling()\n" + startPkt + " -> \n" + slutPkt + "\nv=" + vx + "," + vy + "\nd=" + dx + "," + dy);
 
     // Eksempel på detektering af swipe højre/venstre hen over skærmen
     // Krav: dy < dx/4 (ikke for skråt) og dx>skærmbredde/3  (ikke for kort)
-    if (Math.abs(dy) < Math.abs(dx) / 4 && Math.abs(dx) > display.getWidth() / 3) {
+    if (Math.abs(dy) < Math.abs(dx) / 4 && Math.abs(dx) > textView.getWidth() / 3) {
       if (dx < 0) {
         log("swipe venstre");
       } else {
@@ -86,7 +82,7 @@ public class BenytGestureDetector extends Activity implements OnGestureListener 
     }
 
     // Krav: dx < dy/4 (ikke for skråt) og dy>skærmhøjde/3  (ikke for kort)
-    if (Math.abs(dx) < Math.abs(dy) / 4 && Math.abs(dy) > display.getHeight() / 3) {
+    if (Math.abs(dx) < Math.abs(dy) / 4 && Math.abs(dy) > textView.getHeight() / 3) {
       if (dy < 0) {
         log("swipe op");
       } else {
