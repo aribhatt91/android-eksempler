@@ -33,7 +33,7 @@ public class BenytSQLite extends Activity {
 
 		// Oprette tabel - foregår via SQL
 		db.execSQL("DROP TABLE IF EXISTS kunder;");
-		db.execSQL("CREATE TABLE kunder (_id INTEGER PRIMARY KEY AUTOINCREMENT, navn TEXT NOT NULL, kredit INTEGER);");
+		db.execSQL("CREATE TABLE kunder (_id INTEGER PRIMARY KEY, navn TEXT NOT NULL, kredit INTEGER);");
 
 		// Oprette en række
 		ContentValues række = new ContentValues();
