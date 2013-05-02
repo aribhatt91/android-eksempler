@@ -23,9 +23,16 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import dk.nordfalk.android.elementer.R;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /** Simplificeret udgave af Android ApiDemos kompas-eksempel
  *	(com.example.android.apis.graphics.Compass)
@@ -65,6 +72,60 @@ public class Kompas extends Activity implements SensorEventListener {
 		hældning = event.values[1];
 		krængning = event.values[2];
 		kompasView.invalidate();
+
+    SensorObs so = new SensorObs(event.timestamp, event.values);
+    SensorData.liste.add(so);
+    System.out.println("&t="+so.timestamp+"&v="+so.values[0]);
+
+    /*
+    long nu = System.currentTimeMillis();
+    if (SensorData.sidstDerBlevSendtData < nu - 1000*10) {
+      SensorData.sidstDerBlevSendtData = nu;
+      System.out.println("SensorData.sidstDerBlevSendtData = "+SensorData.sidstDerBlevSendtData);
+
+      new AsyncTask() {
+        int n = 0;
+        @Override
+        protected Object doInBackground(Object... params) {
+          System.out.println("doInBackground START");
+
+          try {
+            String data = "";
+            for (; n<SensorData.liste.size(); n++) {
+              SensorObs sobs = SensorData.liste.get(n);
+              data = data + "_t="+sobs.timestamp+"_v="+sobs.values[0];
+            }
+
+            URL url = new URL("http://javabog.dk/sensorObs_id=jacob"+data);
+            URLConnection uc = url.openConnection();
+            uc.setDoOutput(true);
+            uc.connect();
+            uc.getOutputStream();
+            System.out.println(""+url);
+            Object c = url.getContent();
+            System.out.println("c="+c);
+
+          } catch (Exception ex) {
+            ex.printStackTrace();
+            n = 0;
+          }
+          System.out.println("doInBackground SLUT");
+
+          return "ok";
+        }
+
+        @Override
+        protected void onPostExecute(Object result) {
+          SensorData.liste = new ArrayList<SensorObs>(
+              SensorData.liste.subList(n, SensorData.liste.size()));
+        }
+
+      }.execute();
+
+      
+    }
+    */
+
 	}
 
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {

@@ -1,4 +1,4 @@
-package begynder.flere_aktiviteter;
+package lekt02_aktiviteter;
 
 import android.app.Activity;
 import android.content.Intent;

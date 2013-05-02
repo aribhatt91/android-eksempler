@@ -46,16 +46,16 @@
 			aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
 			internt i programmet
 		-->
-    <activity android:name="begynder.BenytEnKnap"/>
-    <activity android:name="begynder.BenytFlereKnapper"/>
-    <activity android:name="begynder.BenytFlereKnapperXml"/>
-    <activity android:name="begynder.BenytMenuer1"/>
-    <activity android:name="begynder.BenytWebView1"/>
-    <activity android:name="begynder.flere_aktiviteter.Velkomstbillede_akt"/>
-    <activity android:name="begynder.flere_aktiviteter.Hovedmenu_akt"/>
-    <activity android:name="begynder.flere_aktiviteter.Hjaelp_akt"/>
-    <activity android:name="begynder.flere_aktiviteter.Indstillinger_akt"/>
-    <activity android:name="begynder.flere_aktiviteter.Spillet_akt"/>
+    <activity android:name="lekt01_views.BenytEnKnap"/>
+    <activity android:name="lekt01_views.BenytFlereKnapper"/>
+    <activity android:name="lekt01_views.BenytFlereKnapperXml"/>
+    <activity android:name="lekt01_views.BenytMenuer1"/>
+    <activity android:name="lekt01_views.BenytWebView1"/>
+    <activity android:name="lekt02_aktiviteter.Velkomstbillede_akt"/>
+    <activity android:name="lekt02_aktiviteter.Hovedmenu_akt"/>
+    <activity android:name="lekt02_aktiviteter.Hjaelp_akt"/>
+    <activity android:name="lekt02_aktiviteter.Indstillinger_akt"/>
+    <activity android:name="lekt02_aktiviteter.Spillet_akt"/>
 
     <activity android:name="eks.diverse.AfspilLyd" />
     <activity android:name="eks.diverse.AfspilVideo"/>
