@@ -35,8 +35,7 @@ public class ForgrundsService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Toast.makeText(this, TAG+" onStartCommand(\n"
-				+ intent + " " + flags + " " + startId+"\n"
-        + intent.getExtras(), Toast.LENGTH_LONG).show();
+				+ intent + " " + flags + " " + startId, Toast.LENGTH_LONG).show();
     Intent i = new Intent(this, BenytService.class);
     PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
     Notification notification = new Notification(R.drawable.logo,

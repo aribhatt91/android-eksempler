@@ -1,4 +1,4 @@
-package begynder;
+package lekt01_views;
 
 import android.app.Activity;
 import android.os.Bundle;

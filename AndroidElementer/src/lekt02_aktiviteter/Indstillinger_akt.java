@@ -1,4 +1,4 @@
-package begynder.flere_aktiviteter;
+package lekt02_aktiviteter;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

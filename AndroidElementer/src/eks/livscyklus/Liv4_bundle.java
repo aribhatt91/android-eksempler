@@ -61,10 +61,10 @@ public class Liv4_bundle extends LogAktivitet {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState); // gem indhold for alle views med id
 		outState.putInt("alder", data.alder++);
 		outState.putString("navn", data.navn);
 		outState.putStringArrayList("liste", data.liste);
 		outState.putSerializable("data", data);
+		super.onSaveInstanceState(outState); // gem indhold for alle views med id
 	}
 }

@@ -22,11 +22,8 @@ public class BenytWebView2 extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		WebView webView = new WebView(this);
-		//webView.loadUrl("http://javabog.dk");
-		webView.loadUrl("file:///android_asset/benytwebview.html");
 
 		webView.getSettings().setJavaScriptEnabled(true);
-		//webView.loadUrl("javascript:alert('Hej')");
 
 		MinKlasse mitObjekt = new MinKlasse();
 		mitObjekt.visToast("Dette er en toast fra Java");
@@ -34,6 +31,10 @@ public class BenytWebView2 extends Activity {
 		webView.addJavascriptInterface(mitObjekt, "mitObjekt");
 		webView.addJavascriptInterface(this, "aktiviteten");
 
+		//webView.loadUrl("http://javabog.dk");
+		webView.loadUrl("file:///android_asset/benytwebview.html");
+		//webView.loadUrl("javascript:alert('Hej')");
+    
 		setContentView(webView);
 	}
 }
