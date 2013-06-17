@@ -108,8 +108,14 @@ public class VisKildekode extends Activity {
 					public final String transformUrl(final Matcher match, String url) {
 						// http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/layout/simple_list_item_1.xml"
 						// http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/res/res/" + match.group(1).replace('.', '/') + ".xml";
-						// https://github.com/android/platform_frameworks_base/blob/master/core/res/res/
 
+						//        https://github.com/android/platform_frameworks_base/blob/master/core/res/res/
+						//return "https://github.com/android/platform_frameworks_base/blob/master/core/res/res/" + match.group(1).replace('.', '/') + ".xml";
+
+						//        https://android.googlesource.com/platform/frameworks/base.git/+/master/core/res/res/
+						//return "https://android.googlesource.com/platform/frameworks/base.git/+/master/core/res/res/" + match.group(1).replace('.', '/') + ".xml";
+
+						//      https://github.com/android/platform_frameworks_base/blob/master/core/res/res/
 						return "https://github.com/android/platform_frameworks_base/blob/master/core/res/res/" + match.group(1).replace('.', '/') + ".xml";
 					}
 				};
