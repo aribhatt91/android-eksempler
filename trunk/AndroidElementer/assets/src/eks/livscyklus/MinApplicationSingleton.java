@@ -36,7 +36,7 @@ public class MinApplicationSingleton extends Application
 	public static SharedPreferences prefs;
 
   /** Håndtag til forgrundstråden */
-  public static Handler forgrundstråd;
+  public static Handler forgrundstråd = new Handler();
 
 	@Override
 	public void onCreate() {
@@ -45,9 +45,6 @@ public class MinApplicationSingleton extends Application
 
 		// Initialisering der kræver en Context
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-    // Application-objektet oprettes fra forgrundstråden
-    forgrundstråd = new Handler();
 
 
 		// Initialisering af hjælpeklasser, f.eks. mappen som en cache af filer
