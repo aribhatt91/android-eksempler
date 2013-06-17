@@ -139,6 +139,10 @@
     <service android:name="eks.service.ForgrundsService" />
 
 
+    <activity android:name="eks.service.BenytIntentService" />
+    <service android:name="eks.service.MinIntentService" />
+
+
 		<activity android:name="eks.touchinput.BenytGestureDetector"/>
     <activity android:name="eks.touchinput.BenytScaleGestureDetector"/>
     <activity android:name="eks.touchinput.BenytMultiTouchController"/>
