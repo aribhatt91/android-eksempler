@@ -19,6 +19,7 @@ package eks.livscyklus;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import eks.youtube.FilCache;
@@ -34,6 +35,9 @@ public class MinApplicationSingleton extends Application
 	/** Data kunne lige så godt være gemt i en klassevariabel andetsteds */
 	public static SharedPreferences prefs;
 
+  /** Håndtag til forgrundstråden */
+  public static Handler forgrundstråd;
+
 	@Override
 	public void onCreate() {
 		Log.d("MinApplicationSingleton", "onCreate() kaldt");
@@ -41,6 +45,10 @@ public class MinApplicationSingleton extends Application
 
 		// Initialisering der kræver en Context
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+    // Application-objektet oprettes fra forgrundstråden
+    forgrundstråd = new Handler();
+
 
 		// Initialisering af hjælpeklasser, f.eks. mappen som en cache af filer
 		// hentet over netværket behøver, er en fin ide at lægge her, for ellers

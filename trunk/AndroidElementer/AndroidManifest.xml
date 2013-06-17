@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="dk.nordfalk.android.elementer"
-  android:versionCode="27"
-  android:versionName="1.27">
+  android:versionCode="29"
+  android:versionName="1.29">
 
 	<!--
     denne app virker fra Android 2.1 (API 7) og frem
@@ -110,6 +110,7 @@
     <activity android:name="eks.asynkron.Asynkron2AsyncTask"/>
     <activity android:name="eks.asynkron.Asynkron2Handler"/>
     <activity android:name="eks.asynkron.Asynkron3Korrekt"/>
+    <activity android:name="eks.asynkron.Asynkron3KorrektStatic"/>
 
     <activity android:name="eks.lister.BenytListView"/>
     <activity android:name="eks.lister.BenytListActivity"/>

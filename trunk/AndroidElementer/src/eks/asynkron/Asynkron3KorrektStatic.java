@@ -20,12 +20,13 @@ import android.widget.TableLayout;
  * Se også diskussionen på
  * http://groups.google.com/group/android-developers/browse_thread/thread/e1d5b8f8a3142892
  */
-public class Asynkron3Korrekt extends Activity implements OnClickListener {
+public class Asynkron3KorrektStatic extends Activity implements OnClickListener {
 
 	ProgressBar progressBar;
 	Button knap, annullerknap;
 
-	AsyncTaskMedUdskifteligAktivitet asyncTask;
+  static Asynkron3KorrektStatic akt;
+	static AsyncTaskMedUdskifteligAktivitet asyncTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,88 +58,83 @@ public class Asynkron3Korrekt extends Activity implements OnClickListener {
 		knap.setOnClickListener(this);
 		annullerknap.setOnClickListener(this);
 
+    akt = this;
+
 		// Hvis der er sket en konfigurationsændring så kan det være vi har en gammel
 		// asynctask som vi skal genbruge
-		asyncTask = (AsyncTaskMedUdskifteligAktivitet) getLastNonConfigurationInstance();
 		if (asyncTask!=null) {
-			asyncTask.akt = this;
 			knap.setEnabled(false);
 			annullerknap.setVisibility(View.VISIBLE);
 		}
 	}
 
-	/** Kaldes når der sker en konfigurationsændring (skærm vendes, den dokkes i bilen, ...) */
-	@Override
-	public Object onRetainNonConfigurationInstance() {
-		return asyncTask;
-	}
+  @Override
+  protected void onDestroy() {
+    akt = null; // Vigtigt, ellers bliver aktivitetsinstansen hængende i hukommelsen
+    super.onDestroy();
+  }
+
 
 
 	public void onClick(View hvadBlevDerKlikketPå) {
 
 		if (hvadBlevDerKlikketPå == knap) {
-
 			asyncTask = new AsyncTaskMedUdskifteligAktivitet();
-			asyncTask.akt = this;
 			asyncTask.execute(500, 50);
 			knap.setEnabled(false);
 			annullerknap.setVisibility(View.VISIBLE);
 		} else if (hvadBlevDerKlikketPå == annullerknap) {
-
 			asyncTask.cancel(false);
-
 		}
 	}
 
-  @Override
-  public void onBackPressed() {
-    super.onBackPressed(); //To change body of generated methods, choose Tools | Templates.
+  /** en AsyncTask hvor input er int, progress er double, resultat er String */
+  static class AsyncTaskMedUdskifteligAktivitet extends AsyncTask<Integer, Double, String> {
+
+    @Override
+    protected String doInBackground(Integer... param) {
+      int antalSkridt = param[0];
+      int ventetidPrSkridtIMilisekunder = param[1];
+      for (int i = 0; i < antalSkridt; i++) {
+        SystemClock.sleep(ventetidPrSkridtIMilisekunder);
+        if (isCancelled()) {
+          return null; // stop uden resultat
+        }
+        double procent = i * 100.0 / antalSkridt;
+        double resttidISekunder = (antalSkridt - i) * ventetidPrSkridtIMilisekunder / 100 / 10.0;
+        publishProgress(procent, resttidISekunder); // sendes som parameter til onProgressUpdate()
+      }
+      return "færdig med doInBackground()!"; // resultat (String) sendes til onPostExecute()
+    }
+
+    @Override
+    protected void onProgressUpdate(Double... progress) {
+      if (akt==null) return;
+      double procent = progress[0];
+      double resttidISekunder = progress[1];
+      String tekst = "arbejder - " + procent + "% færdig, mangler " + resttidISekunder + " sekunder endnu";
+      Log.d("AsyncTask", tekst);
+      akt.knap.setText(tekst);
+      akt.progressBar.setProgress((int) procent);
+    }
+
+    @Override
+    protected void onPostExecute(String resultat) {
+      if (akt==null) return;
+      akt.knap.setText(resultat);
+      akt.knap.setEnabled(true);
+      akt.annullerknap.setVisibility(View.GONE); // Skjul knappen
+      asyncTask = null;
+    }
+
+    @Override
+    protected void onCancelled() {
+      if (akt==null) return;
+      akt.knap.setText("Annulleret før tid");
+      akt.knap.setEnabled(true);
+      akt.annullerknap.setVisibility(View.GONE); // Skjul knappen
+      asyncTask = null;
+    }
   }
 }
-/** en AsyncTask hvor input er int, progress er double, resultat er String */
-class AsyncTaskMedUdskifteligAktivitet extends AsyncTask<Integer, Double, String> {
 
-	public Asynkron3Korrekt akt;
-
-	@Override
-	protected String doInBackground(Integer... param) {
-		int antalSkridt = param[0];
-		int ventetidPrSkridtIMilisekunder = param[1];
-		for (int i = 0; i < antalSkridt; i++) {
-      SystemClock.sleep(ventetidPrSkridtIMilisekunder);
-			if (isCancelled()) {
-				return null; // stop uden resultat
-			}
-			double procent = i * 100.0 / antalSkridt;
-			double resttidISekunder = (antalSkridt - i) * ventetidPrSkridtIMilisekunder / 100 / 10.0;
-			publishProgress(procent, resttidISekunder); // sendes som parameter til onProgressUpdate()
-		}
-		return "færdig med doInBackground()!"; // resultat (String) sendes til onPostExecute()
-	}
-
-	@Override
-	protected void onProgressUpdate(Double... progress) {
-		double procent = progress[0];
-		double resttidISekunder = progress[1];
-    String tekst = "arbejder - " + procent + "% færdig, mangler " + resttidISekunder + " sekunder endnu";
-    Log.d("AsyncTask", tekst);
-		akt.knap.setText(tekst);
-		akt.progressBar.setProgress((int) procent);
-	}
-
-	@Override
-	protected void onPostExecute(String resultat) {
-		akt.knap.setText(resultat);
-		akt.knap.setEnabled(true);
-		akt.annullerknap.setVisibility(View.GONE); // Skjul knappen
-		akt.asyncTask = null;
-	}
-
-	@Override
-	protected void onCancelled() {
-		akt.knap.setText("Annulleret før tid");
-		akt.knap.setEnabled(true);
-		akt.annullerknap.setVisibility(View.GONE); // Skjul knappen
-		akt.asyncTask = null;
-	}
-}
