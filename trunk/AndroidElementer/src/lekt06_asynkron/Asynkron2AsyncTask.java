@@ -1,4 +1,4 @@
-package lekt05_asynkron;
+package lekt06_asynkron;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -74,7 +74,6 @@ public class Asynkron2AsyncTask extends Activity implements OnClickListener {
           knap1.setText("færdig!");
         }
       }
-      ;
       new AsyncTask1().execute();
 
 

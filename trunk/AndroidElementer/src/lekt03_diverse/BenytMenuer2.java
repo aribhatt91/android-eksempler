@@ -1,4 +1,4 @@
-package lekt01_diverse;
+package lekt03_diverse;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,16 +12,16 @@ import android.widget.TextView;
 import lekt02_aktiviteter.Indstillinger_akt;
 import lekt03_net.ByvejrAktivitet;
 
-public class BenytMenuer extends Activity {
-  private TextView logTextView;
+public class BenytMenuer2 extends Activity {
+  private TextView textView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    logTextView = new TextView(this);
-    logTextView.setText("Dette eksempel viser hvordan menuer virker i Android 2, og hvordan ActionBar fungerer i Android 4\n");
-    logTextView.append("Tryk på menu-knappen (F2 i emulatoren)\n");
-    setContentView(logTextView);
+    textView = new TextView(this);
+    textView.setText("Dette eksempel viser hvordan menuer virker i Android 2, og hvordan ActionBar fungerer i Android 4\n");
+    textView.append("Tryk på menu-knappen (F2 i emulatoren)\n");
+    setContentView(textView);
   }
 
   /**
@@ -30,7 +30,7 @@ public class BenytMenuer extends Activity {
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu); // tilføj systemets standardmenuer
-    logTextView.append("\nonCreateOptionsMenu " + menu);
+    textView.append("\nonCreateOptionsMenu " + menu);
     menu.add(Menu.NONE, 101, Menu.NONE, "javabog.dk");
     menu.add(Menu.NONE, 102, Menu.NONE, "Vejrudsigt").setIcon(android.R.drawable.ic_menu_compass);
     menu.add(Menu.NONE, 103, Menu.NONE, "Indstillinger").setIcon(android.R.drawable.ic_menu_preferences);
@@ -45,7 +45,7 @@ public class BenytMenuer extends Activity {
    */
   @Override
   public boolean onPrepareOptionsMenu(Menu menu) {
-    logTextView.append("\nonPrepareOptionsMenu " + menu);
+    textView.append("\nonPrepareOptionsMenu " + menu);
     super.onPrepareOptionsMenu(menu); // forbered systemets standardmenuer
     return true;
   }
@@ -55,18 +55,26 @@ public class BenytMenuer extends Activity {
    */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    logTextView.append("\nonOptionsItemSelected(" + item.getTitle());
+    textView.append("\nonOptionsItemSelected(" + item.getTitle());
     if (item.getItemId() == 101) {
+
       Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://javabog.dk"));
       startActivity(intent);
+
     } else if (item.getItemId() == 102) {
-      Intent i = new Intent(this, ByvejrAktivitet.class);
-      startActivity(i);
+
+      Intent intent = new Intent(this, ByvejrAktivitet.class);
+      startActivity(intent);
+
     } else if (item.getItemId() == 103) {
-      Intent i = new Intent(this, Indstillinger_akt.class);
-      startActivity(i);
+
+      Intent intent = new Intent(this, Indstillinger_akt.class);
+      startActivity(intent);
+
     } else if (item.getItemId() == 104) {
+
       finish();
+
     } else {
       // Ikke håndteret - send kaldet videre til standardhåntering
       return super.onOptionsItemSelected(item);
@@ -79,7 +87,7 @@ public class BenytMenuer extends Activity {
    */
   @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
-    logTextView.append("\nonKeyDown " + keyCode);
+    textView.append("\nonKeyDown " + keyCode);
     return super.onKeyDown(keyCode, event);
   }
 }

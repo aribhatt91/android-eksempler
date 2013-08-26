@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+
 import dk.nordfalk.android.elementer.R;
 
 /**
@@ -50,8 +52,11 @@ public class BenytFlereKnapperXml extends Activity implements OnClickListener {
 		} else if (v == knap3) {
 
 			knap2.setText("Hey, hvis der skal trykkes, så er det på MIG!\n"+etTal);
+      // Erstat logoet med en bil
+      ImageView ikon = (ImageView) findViewById(R.id.ikon);
+      ikon.setImageResource(R.drawable.bil);
 
-		}
+    }
 
-	}
+  }
 }

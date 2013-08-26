@@ -1,4 +1,4 @@
-package lekt05_asynkron;
+package lekt06_asynkron;
 
 import android.app.Activity;
 import android.os.Bundle;
