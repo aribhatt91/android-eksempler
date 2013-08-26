@@ -382,8 +382,9 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
       pakkekategorier = new ArrayList(pakkenavne); // tag kopi og ændr den
       for (int i = 1; i < pakkekategorier.size(); i++) {
         String pakkenavn = pakkekategorier.get(i);
-        if (pakkenavn.startsWith("eks")) {
-          pakkenavn = pakkenavn.substring(4); // tag 'diverse' fra 'diverse'
+        //pakkenavn = pakkenavn.replaceFirst("_","\n"); // Linjeskift
+        if (pakkenavn.startsWith("lekt")) {
+          pakkenavn = pakkenavn.substring(4); // tag 'lekt' fra 'lekt_05'
           pakkekategorier.set(i, pakkenavn);
         }
         manglerTjekForAndreFiler.add(i);

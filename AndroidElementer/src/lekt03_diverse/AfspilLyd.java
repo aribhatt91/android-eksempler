@@ -1,4 +1,4 @@
-package lekt01_diverse;
+package lekt03_diverse;
 
 import android.app.Activity;
 import android.media.AudioManager;
