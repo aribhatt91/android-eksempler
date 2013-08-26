@@ -1,4 +1,4 @@
-package lekt07_levendeikon;
+package lekt10_levendeikon;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;

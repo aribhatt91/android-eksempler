@@ -1,4 +1,4 @@
-package lekt06_providers;
+package lekt07_providers;
 
 import android.app.Activity;
 import android.database.Cursor;

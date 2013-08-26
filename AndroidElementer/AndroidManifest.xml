@@ -141,25 +141,25 @@
 
       <activity android:name="lekt05_lister.BenytExpandableListActivity"/>
 
-      <activity android:name="lekt06_providers.VisOpkald"/>
-      <activity android:name="lekt06_providers.VisKontakter"/>
-      <activity android:name="lekt06_providers.VisKontakterIListView"/>
+      <activity android:name="lekt07_providers.VisOpkald"/>
+      <activity android:name="lekt07_providers.VisKontakter"/>
+      <activity android:name="lekt07_providers.VisKontakterIListView"/>
 
-      <activity android:name="lekt07_recievers.OpdagAppInstallation"/>
-      <activity android:name="lekt07_recievers.ModtagSMSer"/>
+      <activity android:name="lekt10_recievers.OpdagAppInstallation"/>
+      <activity android:name="lekt10_recievers.ModtagSMSer"/>
 
 
-      <activity android:name="lekt07_services.BenytService"/>
+      <activity android:name="lekt10_services.BenytService"/>
 
       <!-- Simpel service der, når startet, forsøger at holde app'en i hukommelsen -->
-      <service android:name="lekt07_services.BaggrundsService"/>
+      <service android:name="lekt10_services.BaggrundsService"/>
 
       <!-- Simpel service der, når startet, insisterer på at holde app'en i hukommelsen -->
-      <service android:name="lekt07_services.ForgrundsService"/>
+      <service android:name="lekt10_services.ForgrundsService"/>
 
 
-      <activity android:name="lekt07_services.BenytIntentService"/>
-      <service android:name="lekt07_services.MinIntentService"/>
+      <activity android:name="lekt10_services.BenytIntentService"/>
+      <service android:name="lekt10_services.MinIntentService"/>
 
 
       <activity android:name="touchinput.BenytGestureDetector"/>
@@ -182,7 +182,7 @@
 
       <!-- Levende baggrund på hjemmeskærmen der viser en esperanto-stjerne -->
       <service
-              android:name="lekt07_levendebaggrund.Esperantotapet"
+              android:name="lekt10_levendebaggrund.Esperantotapet"
               android:permission="android.permission.BIND_WALLPAPER">
           <intent-filter>
               <action android:name="android.service.wallpaper.WallpaperService"/>
@@ -194,8 +194,8 @@
 
 
       <!-- Levende ikon på hjemmeskærmen der viser hvad klokken er -->
-      <receiver android:name="lekt07_levendeikon.VisKlokkenIkon">
-             
+      <receiver android:name="lekt10_levendeikon.VisKlokkenIkon">
+         
           <intent-filter>
                      
               <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
