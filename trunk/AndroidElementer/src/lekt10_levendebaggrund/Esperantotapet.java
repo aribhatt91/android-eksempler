@@ -15,7 +15,7 @@
  *
  * Ændret/ŝanĝta de: Jacob Nordfalk
  */
-package lekt07_levendebaggrund;
+package lekt10_levendebaggrund;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

@@ -1,4 +1,4 @@
-package lekt07_services;
+package lekt10_services;
 
 import android.app.Activity;
 import android.content.Intent;

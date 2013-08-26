@@ -1,4 +1,4 @@
-package lekt07_recievers;
+package lekt10_recievers;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package lekt07_services;
+package lekt10_services;
 
 import android.app.IntentService;
 import android.content.Intent;
