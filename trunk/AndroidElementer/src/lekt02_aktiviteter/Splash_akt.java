@@ -6,25 +6,26 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
+
 import dk.nordfalk.android.elementer.R;
 
 public class Splash_akt extends Activity implements Runnable {
-  private static final String TAG = "AndroidElementer slash";
-Handler handler = new Handler();
+
+  Handler handler = new Handler();
   static Splash_akt aktivitetDerVisesNu = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    
-    Log.d(TAG, "aktiviteten blev startet!");
+
+    Log.d(getClass().getSimpleName(), "aktiviteten blev startet!");
 
     ImageView iv = new ImageView(this);
     iv.setImageResource(R.drawable.logo);
     setContentView(iv);
 
     // Hvis savedInstanceState ikke er null er det en aktivitet der er ved at blive genstartet
-    if (savedInstanceState==null) {
+    if (savedInstanceState == null) {
       handler.postDelayed(this, 3000); // <1> Kør run() om 3 sekunder
     }
     aktivitetDerVisesNu = this;
@@ -36,13 +37,13 @@ Handler handler = new Handler();
     aktivitetDerVisesNu = null;
   }
 
-  /** 
-   * Kaldes hvis brugeren trykker på tilbage-knappen. 
+  /**
+   * Kaldes hvis brugeren trykker på tilbage-knappen.
    * I så tilfælde skal vi ikke hoppe videre til næste aktivitet
    */
   @Override
-	public void finish() {
-		super.finish();
-		handler.removeCallbacks(this);
-	}
+  public void finish() {
+    super.finish();
+    handler.removeCallbacks(this);
+  }
 }

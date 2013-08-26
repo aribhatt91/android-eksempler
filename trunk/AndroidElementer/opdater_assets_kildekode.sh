@@ -1,12 +1,9 @@
 cd ~/android/android-eksempler/AndroidElementer
 svn up
 cd assets/
-svn up
-svn delete src AndroidManifest.xml
-svn commit -m "Ny kildekode"
-svn up
-svn copy ../src ../AndroidManifest.xml .
-svn commit -m "Ny kildekode"
+rm -rf src AndroidManifest.xml
+cp -a ../src ../AndroidManifest.xml .
+svn commit -m "Ny kildekode" .
 
 cd ..
 ant clean
