@@ -51,9 +51,9 @@
       <activity android:name="lekt01_views.BenytEnKnap"/>
       <activity android:name="lekt01_views.BenytFlereKnapper"/>
       <activity android:name="lekt01_views.BenytFlereKnapperXml"/>
+      <activity android:name="lekt01_views.ProgrammatiskLayout"/>
       <activity android:name="lekt01_views.BenytWebView1"/>
       <activity android:name="lekt01_views.BenytHtmlTags"/>
-      <activity android:name="lekt01_views.ProgrammatiskLayout"/>
       <activity android:name="lekt01_views.BenytMenuer1"/>
 
 
@@ -85,10 +85,10 @@
       </activity>
 
 
-      <activity android:name="lekt03_diverse.BenytMenuer2"/>
       <activity android:name="lekt03_diverse.AfspilLyd"/>
       <activity android:name="lekt03_diverse.AfspilVideo"/>
       <activity android:name="lekt03_diverse.BenytWebView2"/>
+      <activity android:name="lekt03_diverse.BenytMenuer2"/>
       <activity android:name="lekt03_diverse.Stedbestemmelse"/>
       <activity android:name="lekt03_diverse.TekstTilTale"/>
 
@@ -96,16 +96,11 @@
       <activity android:name="lekt03_net.ByvejrAktivitet"/>
       <activity android:name="lekt03_net.ByvejrAktivitet2"/>
 
+
       <activity android:name="lekt04_grafik.Tegneprogram"/>
       <activity android:name="lekt04_grafik.Grafikdemo0"/>
       <activity android:name="lekt04_grafik.Grafikdemo1"/>
       <activity android:name="lekt04_grafik.Braetspil"/>
-      <activity
-              android:name="lekt04_sensorer.Kompas"
-              android:screenOrientation="portrait"/>
-      <activity
-              android:name="lekt04_sensorer.Balancespil"
-              android:screenOrientation="portrait"/>
       <activity android:name="lekt04_grafik.Grafikdemo2"/>
       <activity android:name="lekt04_grafik.BenytAnimationer"/>
       <activity android:name="lekt04_grafik.BenytBilledeknapper"/>
@@ -116,18 +111,13 @@
               android:name="lekt04_sensorer.VisSensorer"
               android:screenOrientation="portrait"/>
       <activity android:name="lekt04_grafik.ProgrammatiskLayout2"/>
+      <activity
+              android:name="lekt04_sensorer.Kompas"
+              android:screenOrientation="portrait"/>
+      <activity
+              android:name="lekt04_sensorer.Balancespil"
+              android:screenOrientation="portrait"/>
 
-      <activity android:name="lekt06_data.CSVParsning"/>
-      <activity android:name="lekt06_data.JsonParsning"/>
-      <activity android:name="lekt06_data.JsonGenerering"/>
-      <activity android:name="lekt06_data.XmlParsning"/>
-      <activity android:name="lekt06_data.BenytSQLite"/>
-
-      <activity android:name="lekt06_asynkron.Asynkron1Thread"/>
-      <activity android:name="lekt06_asynkron.Asynkron2AsyncTask"/>
-      <activity android:name="lekt06_asynkron.Asynkron2Handler"/>
-      <activity android:name="lekt06_asynkron.Asynkron3Korrekt"/>
-      <activity android:name="lekt06_asynkron.Asynkron3KorrektStatic"/>
 
       <activity android:name="lekt05_lister.BenytListView"/>
       <activity android:name="lekt05_lister.BenytListActivity"/>
@@ -138,33 +128,31 @@
       <activity android:name="lekt05_lister.BenytListViewMedEgetLayout2"/>
       <activity android:name="lekt05_lister.VisAndroidDrawables"/>
       <activity android:name="lekt05_lister.VisOverskrifter"/>
-
       <activity android:name="lekt05_lister.BenytExpandableListActivity"/>
+
+
+      <activity android:name="lekt06_data.CSVParsning"/>
+      <activity android:name="lekt06_data.JsonParsning"/>
+      <activity android:name="lekt06_data.JsonGenerering"/>
+      <activity android:name="lekt06_data.XmlParsning"/>
+      <activity android:name="lekt06_data.BenytSQLite"/>
+
+      <activity android:name="lekt06_youtube.YoutubeRssParsning"/>
+      <activity
+              android:name="lekt06_youtube.BenytVideoView"
+              android:configChanges="orientation"/>
+
+      <activity android:name="lekt06_asynkron.Asynkron1Thread"/>
+      <activity android:name="lekt06_asynkron.Asynkron2AsyncTask"/>
+      <activity android:name="lekt06_asynkron.Asynkron2Handler"/>
+      <activity android:name="lekt06_asynkron.Asynkron3Korrekt"/>
+      <activity android:name="lekt06_asynkron.Asynkron3KorrektStatic"/>
+
 
       <activity android:name="lekt07_providers.VisOpkald"/>
       <activity android:name="lekt07_providers.VisKontakter"/>
       <activity android:name="lekt07_providers.VisKontakterIListView"/>
 
-      <activity android:name="lekt10_recievers.OpdagAppInstallation"/>
-      <activity android:name="lekt10_recievers.ModtagSMSer"/>
-
-
-      <activity android:name="lekt10_services.BenytService"/>
-
-      <!-- Simpel service der, når startet, forsøger at holde app'en i hukommelsen -->
-      <service android:name="lekt10_services.BaggrundsService"/>
-
-      <!-- Simpel service der, når startet, insisterer på at holde app'en i hukommelsen -->
-      <service android:name="lekt10_services.ForgrundsService"/>
-
-
-      <activity android:name="lekt10_services.BenytIntentService"/>
-      <service android:name="lekt10_services.MinIntentService"/>
-
-
-      <activity android:name="touchinput.BenytGestureDetector"/>
-      <activity android:name="touchinput.BenytScaleGestureDetector"/>
-      <activity android:name="touchinput.BenytMultiTouchController"/>
 
       <activity android:name="lekt09_livscyklus.ManglendeKaldTilSuperklasse"/>
       <activity android:name="lekt09_livscyklus.LogAktivitet"/>
@@ -174,11 +162,18 @@
       <activity android:name="lekt09_livscyklus.Liv4_bundle"/>
       <activity android:name="lekt09_livscyklus.DialogDerOverleverVending"/>
 
-      <activity android:name="lekt06_youtube.YoutubeRssParsning"/>
-      <activity
-              android:name="lekt06_youtube.BenytVideoView"
-              android:configChanges="orientation"/>
 
+      <activity android:name="lekt10_recievers.OpdagAppInstallation"/>
+      <activity android:name="lekt10_recievers.ModtagSMSer"/>
+
+      <activity android:name="lekt10_services.BenytService"/>
+      <!-- Simpel service der, når startet, forsøger at holde app'en i hukommelsen -->
+      <service android:name="lekt10_services.BaggrundsService"/>
+      <!-- Simpel service der, når startet, insisterer på at holde app'en i hukommelsen -->
+      <service android:name="lekt10_services.ForgrundsService"/>
+
+      <activity android:name="lekt10_services.BenytIntentService"/>
+      <service android:name="lekt10_services.MinIntentService"/>
 
       <!-- Levende baggrund på hjemmeskærmen der viser en esperanto-stjerne -->
       <service
@@ -194,18 +189,20 @@
 
 
       <!-- Levende ikon på hjemmeskærmen der viser hvad klokken er -->
-      <receiver android:name="lekt10_levendeikon.VisKlokkenIkon">
-         
+      <receiver android:name="lekt10_levendeikon.VisKlokkenIkon">   
           <intent-filter>
-                     
               <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                 
           </intent-filter>
-             
           <meta-data
                   android:name="android.appwidget.provider"
                   android:resource="@xml/levendeikon_visklokken"/>
       </receiver>
+
+
+      <activity android:name="touchinput.BenytGestureDetector"/>
+      <activity android:name="touchinput.BenytScaleGestureDetector"/>
+      <activity android:name="touchinput.BenytMultiTouchController"/>
+
 
       <!-- aktivitet som kan ses fra startskærmen -->
       <activity android:name="dk.nordfalk.aktivitetsliste.Aktivitetsliste" android:label="AndroidElementer">
@@ -225,18 +222,6 @@
     </activity>
 
 
-
-
   </application>
-
-
-
-  <!-- Undgå dette - burde være unødvendigt iflg http://d.android.com/guide/practices/screens_support.html
-    <supports-screens
-        android:largeScreens="true"
-        android:normalScreens="true"
-        android:smallScreens="true"
-        android:anyDensity="true" />
-   -->
 
 </manifest>
