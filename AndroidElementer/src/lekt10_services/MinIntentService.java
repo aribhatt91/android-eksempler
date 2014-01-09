@@ -37,9 +37,10 @@ public class MinIntentService extends IntentService {
       if (annulleret) return;
       SystemClock.sleep(100);
       final int progress = i;
+//      if (aktivitetDerSkalOpdateres != null) Farligt: Sættes af hovedtråd, aflæses fra baggrundstråd.
       forgrundstråd.post(new Runnable() {
         public void run() {
-          if (aktivitetDerSkalOpdateres == null) return;  // Nødvendigt tjek
+          if (aktivitetDerSkalOpdateres == null) return;  // OK: Sættes af hovedtråd, aflæses fra hovedtråd
           aktivitetDerSkalOpdateres.progressBar.setProgress(progress);
           aktivitetDerSkalOpdateres.knap.setText("progress = " + progress);
         }

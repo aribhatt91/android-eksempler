@@ -51,23 +51,24 @@ public class BenytIntentsFraGoogle extends Activity implements OnClickListener {
     setContentView(tl);
   }
 
+  /* Sæt placering fra kommandolinjen med f.eks.
+     (echo geo fix 12.493775 55.65407 100; sleep 1) | telnet localhost 5554
+     Sætter placering til Valby i 100 meters højde
+   */
+
   public void onClick(View hvadBlevDerKlikketPå) {
     try {
       if (hvadBlevDerKlikketPå == kortvisning) {
-        Intent i = new Intent(Intent.ACTION_VIEW,
-            Uri.parse("geo:55.65407,12.493775?z=3"));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:55.65407,12.493775?z=3"));
         startActivity(i);
       } else if (hvadBlevDerKlikketPå == rutevisning) {
-        Intent i = new Intent(Intent.ACTION_VIEW,
-            Uri.parse("http://maps.google.com/maps?saddr=55.65407,12.493775&daddr=55.66,12.5"));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=55.65407,12.493775&daddr=55.66,12.5"));
         startActivity(i);
       } else if (hvadBlevDerKlikketPå == gadevisning) {
-        Intent i = new Intent(Intent.ACTION_VIEW,
-            Uri.parse("google.streetview:cbll=55.65407,12.493775&cbp=1"));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("google.streetview:cbll=55.65407,12.493775&cbp=1"));
         startActivity(i);
       } else if (hvadBlevDerKlikketPå == googlePlay) {
-        Intent i = new Intent(Intent.ACTION_VIEW,
-            Uri.parse("market://details?id=dk.nordfalk.esperanto.radio"));
+        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=dk.nordfalk.esperanto.radio"));
         startActivity(i);
       }
     } catch (ActivityNotFoundException e) {

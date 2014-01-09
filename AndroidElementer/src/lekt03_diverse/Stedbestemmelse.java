@@ -5,6 +5,7 @@
 package lekt03_diverse;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -13,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -45,18 +47,15 @@ public class Stedbestemmelse extends Activity implements LocationListener {
 		 */
 
 
+    textView.append("locationManager.getAllProviders() : " + locationManager.getAllProviders() + "\n\n");
     // Løb igennem alle udbyderne (typisk "gps", "network" og "passive")
-    for (String udbyderNavn : locationManager.getAllProviders()) {
-      LocationProvider udbyder = locationManager.getProvider(udbyderNavn);
-      Location sidsteSted = locationManager.getLastKnownLocation(udbyderNavn);
+    for (String udbyder : locationManager.getAllProviders()) {
+      LocationProvider lp = locationManager.getProvider(udbyder);
+      Location sted = locationManager.getLastKnownLocation(udbyder);
 
-      textView.append(udbyderNavn + " - tændt: " + locationManager.isProviderEnabled(udbyderNavn) + "\n"
-          + "præcision=" + udbyder.getAccuracy() + " " + "strømforbrug=" + udbyder.getPowerRequirement() + "\n"
-          + "requiresSatellite=" + udbyder.requiresSatellite() + " requiresNetwork=" + udbyder.requiresNetwork() + "\n"
-          + "sidsteSted=" + sidsteSted + "\n\n");
+      textView.append(udbyder + " - tændt: " + locationManager.isProviderEnabled(udbyder) + "\n" + "præcision=" + lp.getAccuracy() + " " + "strømforbrug=" + lp.getPowerRequirement() + "\n" + "requiresSatellite=" + lp.requiresSatellite() + " requiresNetwork=" + lp.requiresNetwork() + "\n" + "sted=" + sted + "\n\n");
 
     }
-
   }
 
   @Override
@@ -65,26 +64,28 @@ public class Stedbestemmelse extends Activity implements LocationListener {
 
     Criteria kriterium = new Criteria();
     kriterium.setAccuracy(Criteria.ACCURACY_FINE);
-    String bedsteUdbyder = locationManager.getBestProvider(kriterium, true);
+    String udbyder = locationManager.getBestProvider(kriterium, true); // giver "gps" hvis den er slået til
 
-    textView.append("========= Lytter til udbyder: " + bedsteUdbyder + "\n\n");
+    textView.append("\n\n========= Lytter til udbyder: " + udbyder + "\n\n");
 
-    if (bedsteUdbyder == null) {
+    if (udbyder == null) {
       textView.append("\n\nUps, der var ikke tændt for nogen udbyder. Tænd for GPS eller netværksbaseret stedplacering og prøv igen.");
+      startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
       return;
     }
 
-    //  Bed om opdateringer hvert 60. sekunder eller 20. meter
-    locationManager.requestLocationUpdates(bedsteUdbyder, 60000, 20, this);
+    //  Bed om opdateringer, der går mindst 60. sekunder og mindst 20. meter mellem hver
+    locationManager.requestLocationUpdates(udbyder, 60000, 20, this);
 
-    Location sidsteSted = locationManager.getLastKnownLocation(bedsteUdbyder);
+    Location sted = locationManager.getLastKnownLocation(udbyder);
 
-    if (sidsteSted != null) {
-      try { // forsøg at finde nærmeste adresse
+    if (sted != null) { // forsøg at finde nærmeste adresse
+      try {
         Geocoder geocoder = new Geocoder(this);
-        List<Address> adresser = geocoder.getFromLocation(sidsteSted.getLatitude(), sidsteSted.getLongitude(), 1);
+        List<Address> adresser = geocoder.getFromLocation(sted.getLatitude(), sted.getLongitude(), 1);
         if (adresser != null && adresser.size() > 0) {
-          textView.append("NÆRMESTE ADRESSE: " + adresser.get(0).toString() + "\n\n");
+          Address adresse = adresser.get(0);
+          textView.append("NÆRMESTE ADRESSE: " + adresse + "\n\n");
         }
       } catch (IOException ex) {
         ex.printStackTrace();
@@ -104,8 +105,8 @@ public class Stedbestemmelse extends Activity implements LocationListener {
     scrollView.scrollTo(0, textView.getHeight()); // rul ned i bunden
   }
 
+  // ignorér - men vi er nødt til at have metoderne for at implementere LocationListener
   public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-    // ignorér - men vi er nødt til at have metoden for at implementere LocationListener
   }
 
   public void onProviderEnabled(String arg0) {
