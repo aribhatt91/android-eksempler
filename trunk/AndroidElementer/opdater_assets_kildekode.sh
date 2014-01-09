@@ -7,6 +7,7 @@ svn commit -m "Ny kildekode" .
 
 cd ..
 ant clean
+rm -rf out
 cd ..
 rm -f AndroidElementer.zip
 zip -9r AndroidElementer.zip AndroidElementer

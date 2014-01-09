@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
 
+import java.util.Locale;
+
 /**
  * http://stackoverflow.com/questions/3058919/text-to-speechtts-android
  * http://developer.android.com/resources/samples/ApiDemos/src/com/example/android/apis/app/TextToSpeechActivity.html
@@ -52,7 +54,6 @@ public class TekstTilTale extends Activity implements OnInitListener, OnClickLis
     ll.addView(udtalKnap);
     setContentView(ll);
     tts = new TextToSpeech(this, this);
-    //tts.setLanguage(Locale.US);
   }
 
   @Override
@@ -65,19 +66,37 @@ public class TekstTilTale extends Activity implements OnInitListener, OnClickLis
   // Fra TextToSpeech.OnInitListener
   public void onInit(int status) {
     if (status == TextToSpeech.SUCCESS) {
-      udtalKnap.setText("TTS klar for " + tts.getLanguage()
-          + "\nMotor: " + tts.getDefaultEngine());
-      udtalKnap.setEnabled(true);
-      //tts.addSpeech("jeg bremser hårdt", getPackageName(), R.raw.jeg_bremser_haardt);
-
-      if (friskStart) {
-        tts.speak("Android-Elementers eksempel på text til tale er klar.", TextToSpeech.QUEUE_ADD, null);
+      boolean initialiseret = true;
+      int res = tts.setLanguage(new Locale("da", ""));
+      if (res == TextToSpeech.LANG_MISSING_DATA || res == TextToSpeech.LANG_NOT_SUPPORTED) {
+        res = tts.setLanguage(Locale.getDefault());
+        if (res == TextToSpeech.LANG_MISSING_DATA || res == TextToSpeech.LANG_NOT_SUPPORTED) {
+          res = tts.setLanguage(Locale.US);
+          if (res == TextToSpeech.LANG_MISSING_DATA || res == TextToSpeech.LANG_NOT_SUPPORTED) {
+            initialiseret = false;
+          }
+        }
       }
-      // Vis tastaturet
-      InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-      imm.showSoftInput(udtaleTekst, InputMethodManager.SHOW_FORCED);
+
+
+      if (initialiseret) {
+        Locale sprog = tts.getLanguage();
+        tts.speak("Tekst til tale initialiseret for sproget " + sprog.getDisplayLanguage(sprog), TextToSpeech.QUEUE_ADD, null);
+        udtalKnap.setText("TTS klar for " + tts.getLanguage() + "\nMotor: " + tts.getDefaultEngine());
+        udtalKnap.setEnabled(true);
+        //tts.addSpeech("jeg bremser hårdt", getPackageName(), R.raw.jeg_bremser_haardt);
+
+        if (friskStart) {
+          tts.speak("Android-Elementers eksempel på text til tale er klar.", TextToSpeech.QUEUE_ADD, null);
+        }
+        // Vis tastaturet
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(udtaleTekst, InputMethodManager.SHOW_FORCED);
+      } else {
+        udtalKnap.setText("Kunne ikke indlæse sprog. res er " + res);
+      }
     } else {
-      udtalKnap.setText("Kunne ikke indlæse TTS");
+      udtalKnap.setText("Kunne ikke indlæse TTS. Status er " + status);
     }
   }
 

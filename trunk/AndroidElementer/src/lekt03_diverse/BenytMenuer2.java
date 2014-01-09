@@ -31,7 +31,7 @@ public class BenytMenuer2 extends Activity {
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu); // tilføj systemets standardmenuer
     textView.append("\nonCreateOptionsMenu " + menu);
-    menu.add(Menu.NONE, 101, Menu.NONE, "javabog.dk");
+    menu.add(Menu.NONE, 101, Menu.NONE, "javabog.dk");//.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     menu.add(Menu.NONE, 102, Menu.NONE, "Vejrudsigt").setIcon(android.R.drawable.ic_menu_compass);
     menu.add(Menu.NONE, 103, Menu.NONE, "Indstillinger").setIcon(android.R.drawable.ic_menu_preferences);
     menu.add(Menu.NONE, 104, Menu.NONE, "Afslut").setIcon(android.R.drawable.ic_menu_close_clear_cancel);

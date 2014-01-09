@@ -10,6 +10,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import dk.nordfalk.android.elementer.R;
+
 public class BenytSpinner extends Activity implements OnItemSelectedListener {
 
   @Override
@@ -19,10 +21,13 @@ public class BenytSpinner extends Activity implements OnItemSelectedListener {
     String[] lande = {"Danmark", "Norge", "Sverige", "Finland", "Holland", "Italien", "Nepal"};
     Spinner liste = new Spinner(this);
     liste.setOnItemSelectedListener(this);
-    ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, android.R.id.text1, lande);
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    //ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande);
-    //adapter.setDropDownViewResource(R.layout.listeelement);
+    // Standard-udseende
+    //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, android.R.id.text1, lande);
+    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+    // Eget layout af listeelementerne
+    ArrayAdapter adapter = new ArrayAdapter(this, R.layout.listeelement, R.id.listeelem_overskrift, lande);
+    adapter.setDropDownViewResource(R.layout.listeelement);
 
     liste.setAdapter(adapter);
     liste.setPrompt("Vælg et land");
