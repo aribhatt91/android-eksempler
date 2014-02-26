@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="dk.nordfalk.android.elementer"
-          android:versionCode="31"
-          android:versionName="1.90">
+          android:versionCode="32"
+          android:versionName="1.91">
 
     <!--
     denne app virker fra Android 2.1 (API 7) og frem
@@ -103,6 +103,7 @@
         <activity android:name="lekt03_diverse.AfspilVideo"/>
         <activity android:name="lekt03_diverse.BenytWebView2"/>
         <activity android:name="lekt03_diverse.BenytMenuer2"/>
+        <activity android:name="lekt03_diverse.BenytDialogerOgToasts"/>
         <activity android:name="lekt03_diverse.Stedbestemmelse"/>
         <activity android:name="lekt03_diverse.TekstTilTale"/>
 

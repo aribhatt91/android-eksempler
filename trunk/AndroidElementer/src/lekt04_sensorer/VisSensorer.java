@@ -71,7 +71,8 @@ public class VisSensorer extends Activity implements SensorEventListener {
     if (sensortype == Sensor.TYPE_ORIENTATION) {
       måling = måling + "\n" + e.values[0] + " - vinkel til nord\n" + e.values[1] + " - hældning\n" + e.values[2] + " - krængning";
     } else {
-      måling = måling + "\n" + e.values[0] + "\n" + e.values[1] + "\n" + e.values[2];
+      for (float v : e.values)
+        måling = måling + "\n" + v; // Normalt 3, men det er set på en Nexus 5 at der er en sensor med kun 1 værdi
     }
 
     if (sensortype == Sensor.TYPE_ACCELEROMETER) {

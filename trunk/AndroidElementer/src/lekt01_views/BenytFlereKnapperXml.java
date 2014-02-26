@@ -10,48 +10,49 @@ import android.widget.ImageView;
 import dk.nordfalk.android.elementer.R;
 
 /**
- *
  * @author Jacob Nordfalk
  */
 public class BenytFlereKnapperXml extends Activity implements OnClickListener {
-	// Vi erklærer variabler herude så de huskes fra metode til metode
-	Button knap1, knap2, knap3;
+  // Vi erklærer variabler herude så de huskes fra metode til metode
+  Button knap1, knap2, knap3;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-		// Hvis vi erklærer variabler herinde så er de ikke tilgængelige i andre metoder
-		//Button knap1, knap2, knap3;
+    System.out.println("savedInstanceState==" + savedInstanceState);
 
-		setContentView(R.layout.tre_knapper);
-		// findViewById() kan først kaldes efter setContentView()
-		knap1 = (Button) findViewById(R.id.knap1);
-		knap2 = (Button) findViewById(R.id.knap2);
-		knap3 = (Button) findViewById(R.id.knap3);
+    // Hvis vi erklærer variabler herinde så er de ikke tilgængelige i andre metoder
+    //Button knap1, knap2, knap3;
 
-		knap1.setOnClickListener(this);
-		knap2.setOnClickListener(this);
-		knap3.setOnClickListener(this);
-	}
+    setContentView(R.layout.tre_knapper);
+    // findViewById() kan først kaldes efter setContentView()
+    knap1 = (Button) findViewById(R.id.knap1);
+    knap2 = (Button) findViewById(R.id.knap2);
+    knap3 = (Button) findViewById(R.id.knap3);
 
-	public void onClick(View v) {
-		System.out.println("Der blev trykket på en knap");
+    knap1.setOnClickListener(this);
+    knap2.setOnClickListener(this);
+    knap3.setOnClickListener(this);
+  }
 
-		// Vis et tal der skifter så vi kan se hver gang der trykkes
-		long etTal = System.currentTimeMillis();
+  public void onClick(View v) {
+    System.out.println("Der blev trykket på en knap");
 
-		if (v == knap1) {
+    // Vis et tal der skifter så vi kan se hver gang der trykkes
+    long etTal = System.currentTimeMillis();
 
-			knap1.setText("Du trykkede på mig. Tak! \n"+etTal);
+    if (v == knap1) {
 
-		} else if (v == knap2) {
+      knap1.setText("Du trykkede på mig. Tak! \n" + etTal);
 
-			knap3.setText("Nej nej, tryk på mig i stedet!\n"+etTal);
+    } else if (v == knap2) {
 
-		} else if (v == knap3) {
+      knap3.setText("Nej nej, tryk på mig i stedet!\n" + etTal);
 
-			knap2.setText("Hey, hvis der skal trykkes, så er det på MIG!\n"+etTal);
+    } else if (v == knap3) {
+
+      knap2.setText("Hey, hvis der skal trykkes, så er det på MIG!\n" + etTal);
       // Erstat logoet med en bil
       ImageView ikon = (ImageView) findViewById(R.id.ikon);
       ikon.setImageResource(R.drawable.bil);
