@@ -10,13 +10,13 @@ public class BenytWebView2 extends Activity {
   public class MinKlasse {
 
     // Skal med fra API level 17+:
-    // @android.webkit.JavascriptInterface
+    @android.webkit.JavascriptInterface
     public void visToast(String tekst) {
       Toast.makeText(BenytWebView2.this, tekst, Toast.LENGTH_LONG).show();
     }
 
     // Skal med fra API level 17+:
-    // @android.webkit.JavascriptInterface
+    @android.webkit.JavascriptInterface
     public void afslut() {
       finish();
     }
@@ -32,7 +32,7 @@ public class BenytWebView2 extends Activity {
     MinKlasse mitObjekt = new MinKlasse();
     mitObjekt.visToast("Dette er en toast fra Java");
 
-    webView.addJavascriptInterface(this, "mitObjekt");
+    webView.addJavascriptInterface(mitObjekt, "mitObjekt");
 
     //webView.loadUrl("http://javabog.dk");
     webView.loadUrl("file:///android_asset/benytwebview.html");

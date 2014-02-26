@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -128,6 +129,7 @@ public class HentData extends Activity implements OnClickListener {
     while (linje != null) {
       sb.append(linje + "\n");
       linje = br.readLine();
+      Log.d("LÆST LINJE", "" + linje);
     }
     return sb.toString();
   }
