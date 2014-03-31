@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="dk.nordfalk.android.elementer"
-          android:versionCode="32"
-          android:versionName="1.91">
+          android:versionCode="33"
+          android:versionName="1.92">
 
     <!--
     denne app virker fra Android 2.1 (API 7) og frem
@@ -55,7 +55,6 @@
 
 
     <application
-            android:debuggable="true"
             android:icon="@drawable/logo"
             android:name="lekt09_livscyklus.MinApplicationSingleton">
         <!--
@@ -121,14 +120,16 @@
         <activity android:name="lekt04_grafik.BenytBilledeknapper"/>
         <activity android:name="lekt04_grafik.FlytbarVejrudsigt"/>
 
-        <!-- android:screenOrientation slår vending af skærmen fra på denne aktivitet -->
+        <!-- android:configChanges gør at aktiviteten selv håndterer skærvendingen, dvs den bliver ikke mere genstartet -->
         <activity
                 android:name="lekt04_sensorer.VisSensorer"
-                android:screenOrientation="portrait"/>
+                android:configChanges="orientation"/>
         <activity android:name="lekt04_grafik.ProgrammatiskLayout2"/>
+        <!-- android:screenOrientation slår vending af skærmen fra på denne aktivitet -->
         <activity
                 android:name="lekt04_sensorer.Kompas"
                 android:screenOrientation="portrait"/>
+        <activity android:name="lekt04_sensorer.Kompas2"/>
         <activity
                 android:name="lekt04_sensorer.Balancespil"
                 android:screenOrientation="portrait"/>

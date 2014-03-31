@@ -1,6 +1,8 @@
 package lekt10_services;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,13 +11,14 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * @author Jacob Nordfalk
  */
 public class BenytService extends Activity implements OnClickListener {
 
-  Button knap1, knap2, knap3, knap4, knap5;
+  Button knap1, knap2, knap3, knap4, knap5, knap6, knap7;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +45,24 @@ public class BenytService extends Activity implements OnClickListener {
     tl.addView(knap2);
 
     knap3 = new Button(this);
-    knap3.setText("Start forgrundsservice");
+    knap3.setText("Start regelmæssig service");
     tl.addView(knap3);
 
     knap4 = new Button(this);
-    knap4.setText("Stop forgrundsservice");
+    knap4.setText("Stop regelmæssig service");
     tl.addView(knap4);
 
     knap5 = new Button(this);
-    knap5.setText("Stop proces");
+    knap5.setText("Start forgrundsservice");
     tl.addView(knap5);
+
+    knap6 = new Button(this);
+    knap6.setText("Stop forgrundsservice");
+    tl.addView(knap6);
+
+    knap7 = new Button(this);
+    knap7.setText("Stop proces");
+    tl.addView(knap7);
 
     ScrollView sv = new ScrollView(this);
     sv.addView(tl);
@@ -62,21 +73,35 @@ public class BenytService extends Activity implements OnClickListener {
     knap3.setOnClickListener(this);
     knap4.setOnClickListener(this);
     knap5.setOnClickListener(this);
+    knap6.setOnClickListener(this);
+    knap7.setOnClickListener(this);
   }
 
-  public void onClick(View hvadBlevDerKlikketPå) {
+  public void onClick(View klikketPå) {
 
-    if (hvadBlevDerKlikketPå == knap1) {
+    if (klikketPå == knap1) {
       Intent i = new Intent(this, BaggrundsService.class);
       i.putExtra("nogle ekstra data", "med en værdi");
       startService(i);
-    } else if (hvadBlevDerKlikketPå == knap2) {
+    } else if (klikketPå == knap2) {
       stopService(new Intent(this, BaggrundsService.class));
-    } else if (hvadBlevDerKlikketPå == knap3) {
+    } else if (klikketPå == knap3) {
+      AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+      PendingIntent pi = PendingIntent.getService(this, 0, new Intent(this, MinIntentService.class), 0);
+      am.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + 1000, 20000, pi);
+      Toast.makeText(this, "Hopper ind i BenytIntentService for at se hved der sker", Toast.LENGTH_LONG).show();
+      startActivity(new Intent(this, BenytIntentService.class));
+    } else if (klikketPå == knap4) {
+      AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+      PendingIntent pi = PendingIntent.getService(this, 0, new Intent(this, MinIntentService.class), 0);
+      am.cancel(pi);
+      Toast.makeText(this, "Hopper ind i BenytIntentService for at se at den er stoppet", Toast.LENGTH_LONG).show();
+      startActivity(new Intent(this, BenytIntentService.class));
+    } else if (klikketPå == knap5) {
       startService(new Intent(this, ForgrundsService.class));
-    } else if (hvadBlevDerKlikketPå == knap4) {
+    } else if (klikketPå == knap6) {
       stopService(new Intent(this, ForgrundsService.class));
-    } else if (hvadBlevDerKlikketPå == knap5) {
+    } else if (klikketPå == knap7) {
       System.exit(0);
     }
   }
