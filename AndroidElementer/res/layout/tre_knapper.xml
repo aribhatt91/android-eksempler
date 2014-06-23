@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Filnavn: res/layout/tre_knapper.xml -->
 <ScrollView
-	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
 	android:background="#88a5db"
     android:layout_width="match_parent"
     android:layout_height="fill_parent">
@@ -15,7 +15,8 @@
 			android:src="@drawable/logo"
 			android:paddingBottom="10dip"
 			android:adjustViewBounds="true"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+			android:layout_width="wrap_content"
+      android:layout_height="wrap_content"/>
 
 		<Button android:id="@+id/knap1"
 			android:text="En knap"

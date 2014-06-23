@@ -1,14 +1,18 @@
 package lekt04_sensorer;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import java.text.DecimalFormat;
 
 import dk.nordfalk.android.elementer.R;
 
@@ -17,7 +21,7 @@ import dk.nordfalk.android.elementer.R;
  */
 public class VisSensorer extends Activity implements SensorEventListener {
   TextView textView;
-  String[] senesteMålinger = new String[15];
+  String[] senesteMålinger = new String[20];
   SensorManager sensorManager;
   MediaPlayer enLyd;
 
@@ -25,6 +29,7 @@ public class VisSensorer extends Activity implements SensorEventListener {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     textView = new TextView(this);
+    //textView.setTypeface(Typeface.MONOSPACE);
     ScrollView scrollView = new ScrollView(this);
     scrollView.addView(textView);
     setContentView(scrollView);
@@ -64,15 +69,16 @@ public class VisSensorer extends Activity implements SensorEventListener {
   public void onSensorChanged(SensorEvent e) {
     int sensortype = e.sensor.getType();
 
-    String måling = "Type: " + sensortype + " navn: " + e.sensor.getName() + "\n"
-        + "Udbyder " + e.sensor.getVendor() + "\n"
-        + "Tid: " + e.timestamp + "  præcision: " + e.accuracy;
+    String måling = "Type " + sensortype + " " + e.sensor.getName() + "\n"
+        + "Fra: " + e.sensor.getVendor() + "  ("+e.sensor.getPower()+" mA)\n"
+        + "Tid: " + e.timestamp + "  præcision: " + e.accuracy+"\n";
+
+    for (float v : e.values)
+      måling = måling + String.format("%9.4f", v); // Normalt 3, men det er set på en Nexus 5 at der er en sensor med kun 1 værdi og med 5 værdier
 
     if (sensortype == Sensor.TYPE_ORIENTATION) {
-      måling = måling + "\n" + e.values[0] + " - vinkel til nord\n" + e.values[1] + " - hældning\n" + e.values[2] + " - krængning";
-    } else {
-      for (float v : e.values)
-        måling = måling + "\n" + v; // Normalt 3, men det er set på en Nexus 5 at der er en sensor med kun 1 værdi
+      måling = måling + "\nnordvinkel hældning krængning";
+
     }
 
     if (sensortype == Sensor.TYPE_ACCELEROMETER) {
@@ -86,21 +92,22 @@ public class VisSensorer extends Activity implements SensorEventListener {
       }
     }
 
-    //System.out.println(måling);
+    Log.d("VisSensorer", måling);
 
     if (sensortype < senesteMålinger.length) {
       senesteMålinger[sensortype] = måling;
     }
 
-    StringBuilder tekst = new StringBuilder(måling);
-    tekst.append("\n===========");
-
+    StringBuilder tekst = new StringBuilder();
     // Tilføj alle de forskellige sensorers seneste målinger til tekst
     for (String enMåling : senesteMålinger) {
       if (enMåling != null) {
-        tekst.append("\n\n").append(enMåling);
+        tekst.append(enMåling).append("\n\n");
       }
     }
+    tekst.append("=========== Aktuel måling ===========\n"+måling);
+
+
     textView.setText(tekst);
   }
 

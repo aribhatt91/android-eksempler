@@ -2,6 +2,7 @@ package lekt10_services;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
 
@@ -34,8 +35,9 @@ public class BaggrundsService extends Service {
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
+    Bundle b = intent.getExtras();
     Toast.makeText(this, TAG + " onStartCommand(\n"
-        + intent + " " + flags + " " + startId, Toast.LENGTH_LONG).show();
+        + intent + " "+ " " + flags + " " + startId, Toast.LENGTH_LONG).show();
     return START_STICKY;
   }
 }

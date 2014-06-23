@@ -60,7 +60,7 @@ public class Liv4_bundle extends LogAktivitet {
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
-    outState.putInt("alder", data.alder++);
+    outState.putInt("alder", ++data.alder);
     outState.putString("navn", data.navn);
     outState.putStringArrayList("liste", data.liste);
     outState.putSerializable("data", data);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="dk.nordfalk.android.elementer"
-          android:versionCode="33"
-          android:versionName="1.92">
+          android:versionCode="34"
+          android:versionName="1.93 ">
 
     <!--
     denne app virker fra Android 2.1 (API 7) og frem
@@ -29,6 +29,9 @@
 
 
     <!-- Undgå at appen bliver utilgængelig for visse enheder i Android Marked. Se
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
       http://developer.android.com/guide/topics/manifest/uses-feature-element.html
     -->
     <uses-feature
@@ -78,9 +81,7 @@
 
         <activity android:name="lekt02_intents.BenytIntents"/>
         <activity android:name="lekt02_intents.BenytIntentsFraGoogle"/>
-        <activity
-                android:name="lekt02_intents.BenytIntentsMedResultat"
-                android:screenOrientation="portrait"/>
+        <activity android:name="lekt02_intents.BenytIntentsMedResultat" android:screenOrientation="portrait"/>
 
         <!-- Denne aktivitet fanger browsning af URLer der starter med http://javabog.dk/OOP/ -->
         <activity android:name="lekt02_intents.FangBrowseIntent">
@@ -126,13 +127,9 @@
                 android:configChanges="orientation"/>
         <activity android:name="lekt04_grafik.ProgrammatiskLayout2"/>
         <!-- android:screenOrientation slår vending af skærmen fra på denne aktivitet -->
-        <activity
-                android:name="lekt04_sensorer.Kompas"
-                android:screenOrientation="portrait"/>
-        <activity android:name="lekt04_sensorer.Kompas2"/>
-        <activity
-                android:name="lekt04_sensorer.Balancespil"
-                android:screenOrientation="portrait"/>
+        <activity android:name="lekt04_sensorer.Kompas" android:screenOrientation="portrait"/>
+        <activity android:name="lekt04_sensorer.Kompas2" android:screenOrientation="portrait"/>
+        <activity android:name="lekt04_sensorer.Balancespil" android:screenOrientation="portrait"/>
 
 
         <activity android:name="lekt05_lister.BenytListView"/>
@@ -154,9 +151,7 @@
         <activity android:name="lekt06_data.BenytSQLite"/>
 
         <activity android:name="lekt06_youtube.YoutubeRssParsning"/>
-        <activity
-                android:name="lekt06_youtube.BenytVideoView"
-                android:configChanges="orientation"/>
+        <activity android:name="lekt06_youtube.BenytVideoView" android:configChanges="orientation"/>
 
         <activity android:name="lekt06_asynkron.Asynkron1Thread"/>
         <activity android:name="lekt06_asynkron.Asynkron2AsyncTask"/>
