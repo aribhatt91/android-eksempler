@@ -27,18 +27,19 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+
+import java.util.Arrays;
 
 import dk.nordfalk.android.elementer.R;
 
 /**
- * Simplificeret udgave af Android ApiDemos kompas-eksempel
- * (com.example.android.apis.graphics.Compass)
+ * Simpelt kompas.
+ * Bemærk at Sensor.TYPE_ORIENTATION frarådes, se Kompas2 for korrekt implementation
  */
 public class Kompas extends Activity implements SensorEventListener {
   SensorManager sensorManager;
-  Sensor sensor;
-  float vinkelTilNord, hældning, krængning;
   KompasView kompasView;
 
   @Override
@@ -49,14 +50,13 @@ public class Kompas extends Activity implements SensorEventListener {
     setContentView(kompasView);
 
     sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-    sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
+    Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+    sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
   }
 
   @Override
@@ -66,16 +66,24 @@ public class Kompas extends Activity implements SensorEventListener {
   }
 
   public void onSensorChanged(SensorEvent event) {
-    vinkelTilNord = event.values[0];
-    hældning = event.values[1];
-    krængning = event.values[2];
+    Log.d("Kompas", Arrays.toString(event.values));
+    kompasView.nordvinkel = event.values[0]; // Vinkel til nord
+    kompasView.hældning = event.values[1];
+    kompasView.krængning = event.values[2];
     kompasView.invalidate();
+  }
+
+  public void onAccuracyChanged(Sensor sensor, int accuracy) {
+  }
+}
+
+    /*
+    Eksempel på hvordan data kunne logges til en server
 
     SensorObs so = new SensorObs(event.timestamp, event.values);
     SensorData.liste.add(so);
     System.out.println("&t=" + so.timestamp + "&v=" + so.values[0]);
 
-    /*
     long nu = System.currentTimeMillis();
     if (SensorData.sidstDerBlevSendtData < nu - 1000*10) {
       SensorData.sidstDerBlevSendtData = nu;
@@ -120,62 +128,7 @@ public class Kompas extends Activity implements SensorEventListener {
 
       }.execute();
 
-      
+
     }
     */
 
-  }
-
-  public void onAccuracyChanged(Sensor sensor, int accuracy) {
-  }
-
-
-  class KompasView extends View {
-    Paint paint = new Paint();
-    Path kompaspilPath = new Path();
-
-    // Indlæs res/drawable/bil.png
-    Drawable enBil = getResources().getDrawable(R.drawable.bil);
-
-    public KompasView(Context context) {
-      super(context);
-
-      // Lav en form som en kompas-pil
-      kompaspilPath.moveTo(0, -50);
-      kompaspilPath.lineTo(-20, 60);
-      kompaspilPath.lineTo(0, 50);
-      kompaspilPath.lineTo(20, 60);
-      kompaspilPath.close();
-
-      paint.setAntiAlias(true);
-      paint.setColor(Color.BLACK);
-      paint.setStyle(Paint.Style.FILL);
-
-      enBil.setBounds(-100, -100, 100, 100);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-      // Tegn en hvid baggrund
-      canvas.drawColor(Color.WHITE);
-
-      // Tegn kompas-pilen
-      canvas.save();
-      canvas.translate(getWidth() / 2, getHeight() / 2);
-      canvas.rotate(-vinkelTilNord);
-      canvas.drawPath(kompaspilPath, paint);
-      canvas.restore();
-
-      // Tegn også en bil for sjovs skyld
-      // Den drejer afhængig af hældning og bliver trykket skæv afhængig af krængning
-      canvas.save();
-      canvas.translate(100, 100);
-      canvas.rotate(hældning);
-      canvas.skew(krængning / 20, 0);
-      enBil.draw(canvas);
-      canvas.restore();
-
-    }
-  }
-
-}

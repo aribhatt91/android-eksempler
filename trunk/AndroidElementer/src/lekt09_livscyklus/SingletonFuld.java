@@ -8,6 +8,7 @@ public class SingletonFuld {
   private Programdata programdata = new Programdata();
 
   private static SingletonFuld instansen;
+  private SingletonFuld() {};
 
   public static SingletonFuld getInstans() {
     if (instansen == null) {
