@@ -83,7 +83,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
         Toast.makeText(this, "Kunne ikke fjerne skærmlås og holde skærmen tændt:\n" + e, Toast.LENGTH_LONG).show();
       }
 
-      Toast.makeText(this, "Lav langt tryk for at se kildekoden", Toast.LENGTH_LONG).show();
+      Toast.makeText(this, "Langt tryk for at se kildekoden", Toast.LENGTH_LONG).show();
       Log.d("Aktivitetsliste", "1 tid: " + (System.currentTimeMillis() - tid));
     }
 
