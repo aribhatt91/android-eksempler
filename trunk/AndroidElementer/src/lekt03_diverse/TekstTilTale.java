@@ -50,7 +50,7 @@ public class TekstTilTale extends Activity implements OnInitListener, OnClickLis
     udtalKnap.setEnabled(false);
 
     TableLayout ll = new TableLayout(this);
-    ll.addView(udtaleTekst, new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, 0, 1));
+    ll.addView(udtaleTekst, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1));
     ll.addView(udtalKnap);
     setContentView(ll);
     tts = new TextToSpeech(this, this);

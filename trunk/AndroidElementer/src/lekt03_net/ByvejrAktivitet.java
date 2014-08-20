@@ -156,7 +156,7 @@ public class ByvejrAktivitet extends Activity {
 
   private void advarBruger(String advarsel) {
     Log.w(TAG, advarsel);
-    Toast.makeText(ByvejrAktivitet.this, advarsel, Toast.LENGTH_LONG).show();
+    Toast.makeText(this, advarsel, Toast.LENGTH_LONG).show();
   }
 
   public static Bitmap opretBitmapFraUrl(String url) throws IOException {

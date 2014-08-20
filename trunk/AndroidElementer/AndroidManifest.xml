@@ -59,7 +59,7 @@
 
     <application
             android:icon="@drawable/logo"
-            android:name="lekt09_livscyklus.MinApplicationSingleton">
+            android:name="lekt04_arkitektur.MinApp">
         <!--
           aktiviteter som ikke kan ses fra startskærmen men som kan kaldes
           internt i programmet
@@ -107,41 +107,47 @@
         <activity android:name="lekt03_diverse.Stedbestemmelse"/>
         <activity android:name="lekt03_diverse.TekstTilTale"/>
 
-        <activity android:name="lekt03_net.HentData"/>
+        <activity android:name="lekt03_net.BenytNetOgAsyncTask"/>
         <activity android:name="lekt03_net.ByvejrAktivitet"/>
         <activity android:name="lekt03_net.ByvejrAktivitet2"/>
 
 
-        <activity android:name="lekt04_grafik.Tegneprogram"/>
-        <activity android:name="lekt04_grafik.Grafikdemo0"/>
-        <activity android:name="lekt04_grafik.Grafikdemo1"/>
-        <activity android:name="lekt04_grafik.Braetspil"/>
-        <activity android:name="lekt04_grafik.Grafikdemo2"/>
-        <activity android:name="lekt04_grafik.BenytAnimationer"/>
-        <activity android:name="lekt04_grafik.BenytBilledeknapper"/>
-        <activity android:name="lekt04_grafik.FlytbarVejrudsigt"/>
+        <activity android:name="lekt05_grafik.Tegneprogram"/>
+        <activity android:name="lekt05_grafik.Grafikdemo0"/>
+        <activity android:name="lekt05_grafik.Grafikdemo1"/>
+        <activity android:name="lekt05_grafik.Braetspil"/>
+        <activity android:name="lekt05_grafik.Grafikdemo2"/>
+        <activity android:name="lekt05_grafik.BenytAnimationer"/>
+        <activity android:name="lekt05_grafik.BenytBilledeknapper"/>
+        <activity android:name="lekt05_grafik.FlytbarVejrudsigt"/>
 
         <!-- android:configChanges gør at aktiviteten selv håndterer skærvendingen, dvs den bliver ikke mere genstartet -->
         <activity
-                android:name="lekt04_sensorer.VisSensorer"
+                android:name="lekt05_sensorer.VisSensorer"
                 android:configChanges="orientation"/>
-        <activity android:name="lekt04_grafik.ProgrammatiskLayout2"/>
+        <activity android:name="lekt05_grafik.ProgrammatiskLayout2"/>
         <!-- android:screenOrientation slår vending af skærmen fra på denne aktivitet -->
-        <activity android:name="lekt04_sensorer.Kompas" android:screenOrientation="portrait"/>
-        <activity android:name="lekt04_sensorer.Kompas2" android:screenOrientation="portrait"/>
-        <activity android:name="lekt04_sensorer.Balancespil" android:screenOrientation="portrait"/>
+        <activity
+                android:name="lekt05_sensorer.Kompas"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="lekt05_sensorer.Kompas2"
+                android:screenOrientation="portrait"/>
+        <activity
+                android:name="lekt05_sensorer.Balancespil"
+                android:screenOrientation="portrait"/>
 
 
-        <activity android:name="lekt05_lister.BenytListView"/>
-        <activity android:name="lekt05_lister.BenytListActivity"/>
-        <activity android:name="lekt05_lister.BenytListViewMedEgetLayout"/>
-        <activity android:name="lekt05_lister.BenytGallery"/>
-        <activity android:name="lekt05_lister.BenytGridView"/>
-        <activity android:name="lekt05_lister.BenytSpinner"/>
-        <activity android:name="lekt05_lister.BenytListViewMedEgetLayout2"/>
-        <activity android:name="lekt05_lister.VisAndroidDrawables"/>
-        <activity android:name="lekt05_lister.VisOverskrifter"/>
-        <activity android:name="lekt05_lister.BenytExpandableListActivity"/>
+        <activity android:name="lekt04_lister.BenytListView"/>
+        <activity android:name="lekt04_lister.BenytListActivity"/>
+        <activity android:name="lekt04x_lister.BenytListViewMedEgetLayout"/>
+        <activity android:name="lekt04_lister.BenytGallery"/>
+        <activity android:name="lekt04_lister.BenytGridView"/>
+        <activity android:name="lekt04_lister.BenytSpinner"/>
+        <activity android:name="lekt04x_lister.BenytListViewMedEgetLayout2"/>
+        <activity android:name="lekt04x_lister.VisAndroidDrawables"/>
+        <activity android:name="lekt04x_lister.VisOverskrifter"/>
+        <activity android:name="lekt04x_lister.BenytExpandableListActivity"/>
 
 
         <activity android:name="lekt06_data.CSVParsning"/>
@@ -171,7 +177,7 @@
         <activity android:name="lekt09_livscyklus.Liv2_gemIFil"/>
         <activity android:name="lekt09_livscyklus.Liv3_nonConfigurationInstance"/>
         <activity android:name="lekt09_livscyklus.Liv4_bundle"/>
-        <activity android:name="lekt09_livscyklus.DialogDerOverleverVending"/>
+        <activity android:name="lekt09_livscyklus.DialogDerOverleverSkaermvending"/>
 
         <activity android:name="lekt10_recievers.OpdagAppInstallation"/>
         <activity android:name="lekt10_recievers.ModtagSMSer"/>

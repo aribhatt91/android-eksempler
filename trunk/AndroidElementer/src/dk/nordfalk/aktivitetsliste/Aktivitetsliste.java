@@ -163,7 +163,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     //tr.addView(søgEditText);
 
 
-    tr.addView(kategorivalg, new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1));
+    tr.addView(kategorivalg, new TableRow.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT, 1));
     tl.addView(tr);
 
     setContentView(tl);
@@ -298,7 +298,7 @@ public class Aktivitetsliste extends Activity implements OnItemClickListener, On
     try { // Skan efter filer der ikke er aktiviteter og vis også dem
       //System.out.println(klasserDerVisesNu);
       String mappe = pnavn.replace(".", "/");
-      ydre:
+        ydre:
       for (String fil : getAssets().list("src/" + mappe)) {
         Log.d("fil", fil);
         int filendelsePos = fil.lastIndexOf(".");

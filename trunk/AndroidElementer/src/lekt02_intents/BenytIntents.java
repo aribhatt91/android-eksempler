@@ -41,7 +41,7 @@ public class BenytIntents extends Activity implements OnClickListener {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return "\nProgram: " + getPackageName() + " version " + version + "\nTelefonmodel: " + Build.MODEL + "\n" + Build.PRODUCT + "\nAndroid v" + Build.VERSION.RELEASE + "\nsdk: r" + Build.VERSION.SDK // SDK_INT kommer først i Androd 1.6
+    return "\nProgram: " + getPackageName() + " version " + version + "\nTelefonmodel: " + Build.MODEL + "\n" + Build.PRODUCT + "\nAndroid v" + Build.VERSION.RELEASE + "\nsdk: r" + Build.VERSION.SDK_INT
         + "\nAndroid ID: " + Secure.getString(getContentResolver(), Secure.ANDROID_ID);
   }
 
