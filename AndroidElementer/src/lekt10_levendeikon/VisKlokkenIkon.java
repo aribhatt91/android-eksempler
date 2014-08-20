@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import dk.nordfalk.android.elementer.R;
-import lekt04_grafik.Tegneprogram;
+import lekt05_grafik.Tegneprogram;
 
 public class VisKlokkenIkon extends AppWidgetProvider {
 

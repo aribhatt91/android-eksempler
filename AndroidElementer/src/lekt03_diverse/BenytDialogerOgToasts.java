@@ -22,7 +22,7 @@ import android.widget.TableLayout;
 import android.widget.Toast;
 
 import dk.nordfalk.android.elementer.R;
-import lekt04_grafik.Tegneprogram;
+import lekt05_grafik.Tegneprogram;
 
 /**
  * @author Jacob Nordfalk
