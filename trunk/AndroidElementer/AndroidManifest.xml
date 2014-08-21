@@ -12,7 +12,7 @@
     -->
     <uses-sdk
             android:minSdkVersion="8"
-            android:targetSdkVersion="9"/>
+            android:targetSdkVersion="20"/>
 
     <!-- tilladelser -->
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -145,8 +145,8 @@
         <activity android:name="lekt04_lister.BenytGridView"/>
         <activity android:name="lekt04_lister.BenytSpinner"/>
         <activity android:name="lekt04x_lister.BenytListViewMedEgetLayout2"/>
-        <activity android:name="lekt04x_lister.VisAndroidDrawables"/>
-        <activity android:name="lekt04x_lister.VisOverskrifter"/>
+        <activity android:name="lekt04x_lister.VisAlleAndroidDrawables"/>
+        <activity android:name="lekt04x_lister.BenytListviewMedOverskrifter"/>
         <activity android:name="lekt04x_lister.BenytExpandableListActivity"/>
 
 
@@ -165,36 +165,39 @@
         <activity android:name="lekt06_asynkron.Asynkron3Korrekt"/>
         <activity android:name="lekt06_asynkron.Asynkron3KorrektStatic"/>
 
-
-        <activity android:name="lekt07_providers.VisOpkald"/>
-        <activity android:name="lekt07_providers.VisKontakter"/>
-        <activity android:name="lekt07_providers.VisKontakterIListView"/>
+        <activity android:name="lekt07_fragmenter.BenytFragment"/>
+        <activity android:name="lekt07_fragmenter.BenytFragmenter"/>
 
 
-        <activity android:name="lekt09_livscyklus.ManglendeKaldTilSuperklasse"/>
-        <activity android:name="lekt09_livscyklus.LogAktivitet"/>
-        <activity android:name="lekt09_livscyklus.Liv1_singleton"/>
-        <activity android:name="lekt09_livscyklus.Liv2_gemIFil"/>
-        <activity android:name="lekt09_livscyklus.Liv3_nonConfigurationInstance"/>
-        <activity android:name="lekt09_livscyklus.Liv4_bundle"/>
-        <activity android:name="lekt09_livscyklus.DialogDerOverleverSkaermvending"/>
+        <activity android:name="lekt08_providers.VisOpkald"/>
+        <activity android:name="lekt08_providers.VisKontakter"/>
+        <activity android:name="lekt08_providers.VisKontakterIListView"/>
 
-        <activity android:name="lekt10_recievers.OpdagAppInstallation"/>
-        <activity android:name="lekt10_recievers.ModtagSMSer"/>
-        <activity android:name="lekt10_recievers.OpdagNetvaerksAEndring"/>
 
-        <activity android:name="lekt10_services.BenytService"/>
+        <activity android:name="lekt10_livscyklus.ManglendeKaldTilSuperklasse"/>
+        <activity android:name="lekt10_livscyklus.LogAktivitet"/>
+        <activity android:name="lekt10_livscyklus.Liv1_singleton"/>
+        <activity android:name="lekt10_livscyklus.Liv2_gemIFil"/>
+        <activity android:name="lekt10_livscyklus.Liv3_nonConfigurationInstance"/>
+        <activity android:name="lekt10_livscyklus.Liv4_bundle"/>
+        <activity android:name="lekt10_livscyklus.DialogDerOverleverSkaermvending"/>
+
+        <activity android:name="lekt09_recievers.OpdagAppInstallation"/>
+        <activity android:name="lekt09_recievers.ModtagSMSer"/>
+        <activity android:name="lekt09_recievers.OpdagNetvaerksAEndring"/>
+
+        <activity android:name="lekt09_services.BenytService"/>
         <!-- Simpel service der, når startet, forsøger at holde app'en i hukommelsen -->
-        <service android:name="lekt10_services.BaggrundsService"/>
+        <service android:name="lekt09_services.BaggrundsService"/>
         <!-- Simpel service der, når startet, insisterer på at holde app'en i hukommelsen -->
-        <service android:name="lekt10_services.ForgrundsService"/>
+        <service android:name="lekt09_services.ForgrundsService"/>
 
-        <activity android:name="lekt10_services.BenytIntentService"/>
-        <service android:name="lekt10_services.MinIntentService"/>
+        <activity android:name="lekt09_services.BenytIntentService"/>
+        <service android:name="lekt09_services.MinIntentService"/>
 
         <!-- Levende baggrund på hjemmeskærmen der viser en esperanto-stjerne -->
         <service
-                android:name="lekt10_levendebaggrund.Esperantotapet"
+                android:name="lekt09_levendebaggrund.Esperantotapet"
                 android:permission="android.permission.BIND_WALLPAPER">
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService"/>
@@ -206,7 +209,7 @@
 
 
         <!-- Levende ikon på hjemmeskærmen der viser hvad klokken er -->
-        <receiver android:name="lekt10_levendeikon.VisKlokkenIkon">   
+        <receiver android:name="lekt09_levendeikon.VisKlokkenIkon">   
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>

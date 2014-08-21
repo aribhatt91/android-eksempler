@@ -15,22 +15,33 @@ import java.util.ArrayList;
 
 public class Tegneprogram extends Activity {
   Tegneflade tegneflade;
-  ArrayList<Point> berøringspunkter = new ArrayList<Point>();
-  Paint tekstStregtype = new Paint();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    tekstStregtype.setColor(Color.GREEN);
-    tekstStregtype.setTextSize(24);
     tegneflade = new Tegneflade(this);
     setContentView(tegneflade);
   }
 
-  class Tegneflade extends View {
+  public static class Tegneflade extends View {
+    ArrayList<Point> berøringspunkter = new ArrayList<Point>();
+    Paint tekstStregtype = new Paint();
+
     // programmatisk konstruktør
     public Tegneflade(Context a) {
       super(a);
+      tekstStregtype.setColor(Color.GREEN);
+      tekstStregtype.setTextSize(24);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent berøring) {
+      System.out.println(berøring);
+      Point punktet = new Point((int) berøring.getX(), (int) berøring.getY());
+      berøringspunkter.add(punktet);
+      //System.out.println(berøringspunkter);
+      invalidate(); // forårsager kald til onDraw()
+      return true;
     }
 
     @Override
@@ -40,16 +51,6 @@ public class Tegneprogram extends Activity {
       for (Point p : berøringspunkter) {
         c.drawCircle(p.x, p.y, 3, tekstStregtype);
       }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent berøring) {
-      System.out.println(berøring);
-      Point punktet = new Point((int) berøring.getX(), (int) berøring.getY());
-      berøringspunkter.add(punktet);
-      //System.out.println(berøringspunkter);
-      tegneflade.invalidate();
-      return true;
     }
   }
 }
