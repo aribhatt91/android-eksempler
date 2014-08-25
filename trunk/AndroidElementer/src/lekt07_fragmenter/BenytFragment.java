@@ -38,7 +38,7 @@ public class BenytFragment extends Activity {
    * Et simpelt fragment. Fragmenter SKAL erklæres static
    * Sammenlign med BenytFlereKnapperXml
    *
-   * @see lekt01_views.BenytFlereKnapperXml
+   * @see lekt01_views.BenytKnapperDeklarativ
    */
   public static class MitFragment extends Fragment implements View.OnClickListener {
     // Vi erklærer variabler herude så de huskes fra metode til metode

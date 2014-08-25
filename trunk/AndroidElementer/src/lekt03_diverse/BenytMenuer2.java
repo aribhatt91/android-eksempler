@@ -1,8 +1,10 @@
 package lekt03_diverse;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -27,13 +29,19 @@ public class BenytMenuer2 extends Activity {
   /**
    * Kaldes én gang for generelt at forberede menuen
    */
+  @TargetApi(Build.VERSION_CODES.HONEYCOMB)
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu); // tilføj systemets standardmenuer
     textView.append("\nonCreateOptionsMenu " + menu);
-    menu.add(Menu.NONE, 101, Menu.NONE, "javabog.dk");//.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-    menu.add(Menu.NONE, 102, Menu.NONE, "Vejrudsigt").setIcon(android.R.drawable.ic_menu_compass);
-    menu.add(Menu.NONE, 103, Menu.NONE, "Indstillinger").setIcon(android.R.drawable.ic_menu_preferences);
+    menu.add(Menu.NONE, 101, Menu.NONE, "javabog.dk");
+    MenuItem mi1 = menu.add(Menu.NONE, 102, Menu.NONE, "Vejrudsigt").setIcon(android.R.drawable.ic_menu_compass);
+    MenuItem mi2 = menu.add(Menu.NONE, 103, Menu.NONE, "Indstillinger").setIcon(android.R.drawable.ic_menu_preferences);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+      // Vis i ActionBar på Android 4
+      mi1.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+      mi2.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+    }
     menu.add(Menu.NONE, 104, Menu.NONE, "Afslut").setIcon(android.R.drawable.ic_menu_close_clear_cancel);
     // ofte vil man lægge menupunkterne ud i en XML-fil og pakke den ud således
     // getMenuInflater().inflate(R.menu.benytmenuer, menu);

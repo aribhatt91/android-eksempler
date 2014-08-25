@@ -12,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,7 +34,7 @@ import java.io.InputStream;
  */
 public class BenytIntentsMedResultat extends Activity implements OnClickListener {
 
-  Button vælgKontakt, vælgKontaktFraBillede, vælgFlereKontakter, vælgBillede, tagBillede, dokumentation;
+  Button vælgKontakt, vælgKontaktFraBillede, vælgBillede, tagBillede, dokumentation;
   TextView resultatTextView;
   LinearLayout resultatHolder;
   private int VÆLG_KONTAKT = 1111;
@@ -53,17 +52,10 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
     vælgKontakt.setOnClickListener(this);
     tl.addView(vælgKontakt);
 
-
     vælgKontaktFraBillede = new Button(this);
     vælgKontaktFraBillede.setText("Vælg kontakt fra billede");
     vælgKontaktFraBillede.setOnClickListener(this);
     tl.addView(vælgKontaktFraBillede);
-
-
-    vælgFlereKontakter = new Button(this);
-    vælgFlereKontakter.setText("Vælg flere kontakter\nVirker KUN PÅ HTC");
-    vælgFlereKontakter.setOnClickListener(this);
-    tl.addView(vælgFlereKontakter);
 
     vælgBillede = new Button(this);
     vælgBillede.setText("Vælg billede fra galleri");
@@ -96,13 +88,6 @@ public class BenytIntentsMedResultat extends Activity implements OnClickListener
       if (hvadBlevDerKlikketPå == vælgKontakt) {
         Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(i, VÆLG_KONTAKT);
-
-      } else if (hvadBlevDerKlikketPå == vælgFlereKontakter) {
-        // Dette intent virker kun på HTC-telefoner og bør derfor undgås
-        // med mindre man laver noget til en specifik enhed
-        // http://stackoverflow.com/questions/3146377/selecting-multiple-contacts-in-android/6450200#6450200
-        Intent i = new Intent(Intent.ACTION_GET_CONTENT, Email.CONTENT_URI);
-        startActivityForResult(Intent.createChooser(i, ""), VÆLG_KONTAKT);
 
       } else if (hvadBlevDerKlikketPå == vælgBillede) {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);

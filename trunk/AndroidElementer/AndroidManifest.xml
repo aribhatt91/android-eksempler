@@ -65,12 +65,13 @@
           internt i programmet
         -->
         <activity android:name="lekt01_views.BenytEnKnap"/>
-        <activity android:name="lekt01_views.BenytFlereKnapper"/>
-        <activity android:name="lekt01_views.BenytFlereKnapperXml"/>
-        <activity android:name="lekt01_views.ProgrammatiskLayout"/>
-        <activity android:name="lekt01_views.BenytWebView1"/>
+        <activity android:name="lekt01_views.BenytKnapperProgrammatisk"/>
+        <activity android:name="lekt01_views.BenytKnapperDeklarativ"/>
+        <activity android:name="lekt01_views.BenytWebView"/>
+        <activity android:name="lekt01_views.ByvejrProgrammatisk"/>
+        <activity android:name="lekt01_views.ByvejrDeklarativ"/>
         <activity android:name="lekt01_views.BenytHtmlTags"/>
-        <activity android:name="lekt01_views.BenytMenuer1"/>
+        <activity android:name="lekt01_views.BenytMenuer"/>
 
 
         <activity android:name="lekt02_aktiviteter.Splash_akt"/>

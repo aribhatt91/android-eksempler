@@ -17,10 +17,11 @@ import android.widget.Toast;
 /**
  * @author Jacob Nordfalk
  */
-public class ProgrammatiskLayout extends Activity implements OnClickListener {
+public class ByvejrProgrammatisk extends Activity implements OnClickListener {
 
-  Button okKnap;
+  Button okKnap, annullerKnap;
   EditText postnrEditText;
+  WebView webView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +33,12 @@ public class ProgrammatiskLayout extends Activity implements OnClickListener {
     TableRow række = new TableRow(this);
     TextView textView = new TextView(this);
     textView.setText("Vejret for ");
-    textView.setTextColor(Color.YELLOW);
     række.addView(textView);
 
     postnrEditText = new EditText(this);
     postnrEditText.setText("2500");
     postnrEditText.setSingleLine(true);
+    postnrEditText.setTextColor(Color.BLUE);
     //postnrEditText.setSelection(0, 4);  // postnrEditText.getText().length() giver 4
     række.addView(postnrEditText);
     tableLayout.addView(række);
@@ -46,11 +47,11 @@ public class ProgrammatiskLayout extends Activity implements OnClickListener {
     okKnap.setText("OK");
     tableLayout.addView(okKnap);
 
-    Button annullerKnap = new Button(this);
+    annullerKnap = new Button(this);
     annullerKnap.setText("Annuller!");
     tableLayout.addView(annullerKnap);
 
-    WebView webView = new WebView(this);
+    webView = new WebView(this);
     webView.loadUrl("http://javabog.dk");
     tableLayout.addView(webView);
     webView.getLayoutParams().height = 300; //LayoutParams.WRAP_CONTENT;
@@ -66,6 +67,12 @@ public class ProgrammatiskLayout extends Activity implements OnClickListener {
 
   public void onClick(View hvadBlevDerKlikketPå) {
     System.out.println("Der blev klikket på " + hvadBlevDerKlikketPå);
-    Toast.makeText(this, "Denne knap er ikke implementeret endnu", Toast.LENGTH_LONG).show();
+    if (hvadBlevDerKlikketPå == okKnap) {
+      String valgtPostNr = postnrEditText.getText().toString();
+      Toast.makeText(this, "Viser byvejr for " + valgtPostNr, Toast.LENGTH_LONG).show();
+      webView.loadUrl("http://servlet.dmi.dk/byvejr/servlet/byvejr_dag1?by=" + valgtPostNr + "&mode=long");
+    } else {
+      Toast.makeText(this, "Denne knap er ikke implementeret endnu", Toast.LENGTH_LONG).show();
+    }
   }
 }
