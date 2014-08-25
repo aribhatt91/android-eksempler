@@ -13,7 +13,7 @@ import android.widget.Toast;
 import dk.nordfalk.android.elementer.R;
 import lekt02_aktiviteter.Indstillinger_akt;
 
-public class BenytMenuer1 extends Activity {
+public class BenytMenuer extends Activity {
   private TextView textView;
 
   @Override
@@ -60,8 +60,8 @@ public class BenytMenuer1 extends Activity {
 
     } else if (item.getItemId() == 104) {
 
-      textView.append("Bemærk at det er generelt ikke er nødvendigt med afslut-knapper\n");
-      textView.append("Da brugeren godt ved hvad TILBAGE-knappen gør\n");
+      Toast.makeText(this, "Bemærk at det er generelt ikke er nødvendigt med afslut-knapper\n"
+          + "Da brugeren godt ved hvad TILBAGE-knappen gør", Toast.LENGTH_LONG).show();
       finish();
 
     }

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
 
-public class BenytWebView1 extends Activity {
+public class BenytWebView extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

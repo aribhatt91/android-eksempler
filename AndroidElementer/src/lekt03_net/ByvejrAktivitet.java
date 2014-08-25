@@ -147,7 +147,7 @@ public class ByvejrAktivitet extends Activity {
 
       Bitmap byvejr_dag10_14 = opretBitmapFraUrl("http://servlet.dmi.dk/byvejr/servlet/byvejr?by=" + valgtPostNr + "&tabel=dag10_14");
       imageView_dag10_14.setImageBitmap(byvejr_dag10_14);
-    } catch (IOException ex) {
+    } catch (Exception ex) {
       ex.printStackTrace();
       advarBruger("Kunne ikke få data fra DMI");
       advarBruger("" + ex);
