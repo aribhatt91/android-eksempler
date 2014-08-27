@@ -38,7 +38,7 @@ public class VideoViewDemo extends Activity {
         setContentView(R.layout.videoview);
         mVideoView = (VideoView) findViewById(R.id.surface_view);
 
-        if (path == "") {
+        if (path == "rtsp://v1.cache4.c.youtube.com/CigLENy73wIaHwmFqdJ8zYT2TRMYDSANFEgGUgx1c2VyX3VwbG9hZHMM/0/0/0/video.3gp") {
             // Tell the user to provide a media file URL/path.
             Toast.makeText(
                     VideoViewDemo.this,
